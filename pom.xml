@@ -8,14 +8,22 @@
 		<version>2.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>ci.pme</groupId>
 	<artifactId>multimodule-ci.pme</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>multimodule-ci.pme</name>
 	<description>Demo project for Spring Boot</description>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
+	<modules>
+		<module>administration</module>
+		<module>scoring</module>
+	</modules>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
