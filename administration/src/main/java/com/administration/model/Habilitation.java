@@ -12,7 +12,12 @@ import java.io.Serializable;
 @Table(name = "habilitations")
 public class Habilitation implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1812602355944843550L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long				id;

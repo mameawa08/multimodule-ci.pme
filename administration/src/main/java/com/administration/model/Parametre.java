@@ -1,4 +1,4 @@
-package com.administration.modele;
+package com.administration.model;
 
 import java.io.Serializable;
 
@@ -9,10 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author agileway
  */
 
+@Setter
+@Getter
 @Entity
 @Table(name = "parametre")
 public class Parametre implements Serializable {

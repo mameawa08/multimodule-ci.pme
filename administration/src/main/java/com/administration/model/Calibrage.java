@@ -1,4 +1,4 @@
-package com.administration.modele;
+package com.administration.model;
 
 import java.io.Serializable;
 
@@ -9,18 +9,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author agileway
  */
 
+@Setter
+@Getter
 @Entity
-@Table(name = "ratio")
-public class Ratio implements Serializable {
-	
+@Table(name = "calibrage")
+public class Calibrage implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2029430097177604663L;
+	private static final long serialVersionUID = 8013200006199539481L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,16 +33,13 @@ public class Ratio implements Serializable {
     private Long id;
 	
 	@Column
-	private String code;
+	private double min;
 
     @Column
-    private String formule;
+    private double max;
     
     @Column
-    private Long ponderation;
-    
-    @Column
-    private String unite;
+    private int classe;
     
     @Column(name = "actif")
 	private int	actif;

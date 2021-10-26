@@ -1,14 +1,13 @@
 package com.administration.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.List;
-
 @Getter
 @Setter
-public class ProfilDTO implements Serializable {
+public class ProfilDTO {
 
     private Long id;
 

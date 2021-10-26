@@ -1,4 +1,4 @@
-package com.administration.modele;
+package com.administration.model;
 
 import java.io.Serializable;
 
@@ -11,19 +11,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author agileway
  */
 
+@Setter
+@Getter
 @Entity
-@Table(name = "question")
-public class Question implements Serializable {
+@Table(name = "reponse_qualitative")
+public class ReponseQualitative implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9024440466491855084L;
+	private static final long serialVersionUID = 5297205263579630551L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,11 +40,14 @@ public class Question implements Serializable {
     @Column
     private String libelle;
     
-    @Column(name = "actif")
-	private int	actif;
+    @Column
+    private int score;
     
     @ManyToOne
-  	@JoinColumn(name = "id_parametre", nullable = true)
-    private Parametre  parametre;
+  	@JoinColumn(name = "id_pquestion", nullable = true)
+    private Question  question;
+    
+    @Column(name = "actif")
+	private int	actif;
 
 }

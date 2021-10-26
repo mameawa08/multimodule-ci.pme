@@ -1,4 +1,4 @@
-package com.administration.serviceImplements;
+package com.administration.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
