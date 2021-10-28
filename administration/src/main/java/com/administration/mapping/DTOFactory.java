@@ -8,8 +8,10 @@ import javax.inject.Named;
 
 import com.administration.dto.HabilitationDTO;
 import com.administration.dto.ProfilDTO;
+import com.administration.dto.UserDTO;
 import com.administration.model.Habilitation;
 import com.administration.model.Profil;
+import com.administration.model.User;
 
 @Named("dtoFactory")
 public class DTOFactory {
@@ -51,6 +53,34 @@ public class DTOFactory {
 		
 		return profils.stream().map(this::createProfil).collect(Collectors.toList());
 
+	}
+
+	public List<UserDTO> createListUser(List<User> users) {
+		if(users == null || (users != null && users.size() == 0))
+			return new ArrayList<>();
+
+		return users.stream().map(this::createUser).collect(Collectors.toList());
+	}
+
+	public UserDTO createUser(User user) {
+		if(user == null)
+			return null;
+		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
+		dto.setIdentifiant(user.getIdentifiant());
+		dto.setEmail(user.getEmail());
+		dto.setMotDePasse(user.getMotDePasse());
+		dto.setMotDePassePrecedent(user.getMotDePassePrecedent());
+		dto.setNom(user.getNom());
+		dto.setPrenom(user.getPrenom());
+		dto.setResetPasswordToken(user.getResetPasswordToken());
+		dto.setActif(user.getActif());
+		dto.setMdpModifie(user.getMdpModifie());
+		dto.setProfil(createProfil(user.getProfil()));
+		dto.setDateModificationMdp(user.getDateModificationMdp());
+		dto.setConfirme(user.getConfirme());
+		
+		return dto;
 	}
 
 	
