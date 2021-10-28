@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.administration.dto.ParametreDTO;
 import com.administration.mapping.DTOFactory;
@@ -44,7 +43,10 @@ public class ParametreServiceImpl implements IParametreService {
 	}
 	
 	@Override
-	public ParametreDTO createParametre(@RequestBody ParametrePayload parametrePayload) throws Exception {
+	public ParametreDTO createParametre(ParametrePayload parametrePayload) throws Exception {
+		if (parametrePayload.getCode() == null || parametrePayload.getCode().equals("")) {
+			throw new Exception("Le code du paramètre est obligatoire !");
+		}
 		if (parametrePayload.getLibelle() == null || parametrePayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé  est obligatoire !");
 		}
