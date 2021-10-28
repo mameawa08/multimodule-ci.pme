@@ -9,12 +9,10 @@ import com.administration.service.IProfilService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/auth/profils")
 public class ProfilController {
 	
 	@Autowired
@@ -41,7 +39,7 @@ public class ProfilController {
 		}
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{id}/status")
 	public ResponseEntity switchProfil(@RequestParam Long id){
 		try {
 			boolean rs = profilService.changerStatusProfil(id);
@@ -52,7 +50,7 @@ public class ProfilController {
 	}
 	
 	
-	@GetMapping("/{id}")
+	@PostMapping("")
 	public ResponseEntity create(@RequestBody ProfilPayload payload){
 		try {
 			ProfilDTO profil = profilService.ajouterProfil(payload);
