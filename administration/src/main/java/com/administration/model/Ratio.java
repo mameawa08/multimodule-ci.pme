@@ -34,6 +34,9 @@ public class Ratio implements Serializable {
 	
 	@Column
 	private String code;
+	
+	@Column
+	private String libelle;
 
     @Column
     private String formule;
