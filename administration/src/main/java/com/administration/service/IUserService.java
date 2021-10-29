@@ -13,4 +13,5 @@ public interface IUserService {
 	public UserDTO createUser(UserPaylaod payload) throws UserException;
 	public boolean switchStatus(Long id) throws UserException;
 	public UserDTO findUserByEmail(String email);
+	public boolean validatePassword(String password);
 }

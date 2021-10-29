@@ -139,8 +139,8 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	//Private methodes
-	
-    private boolean validatePassword(String password) {
+	@Override
+    public boolean validatePassword(String password) {
         int min = 8;
         int max = 16;
         int digit = 0;
