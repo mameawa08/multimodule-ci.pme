@@ -9,6 +9,7 @@ import javax.inject.Named;
 import com.administration.dto.CalibrageDTO;
 import com.administration.dto.HabilitationDTO;
 import com.administration.dto.ParametreDTO;
+import com.administration.dto.Ponderation_scoreDTO;
 import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
@@ -16,6 +17,7 @@ import com.administration.dto.ReponseQualitativeDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
+import com.administration.model.Ponderation_score;
 import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
@@ -63,7 +65,6 @@ public class ModelFactory {
 		parametre.setCode(parametreDTO.getCode());
 		parametre.setLibelle(parametreDTO.getLibelle());
 		parametre.setNbre_question(parametreDTO.getNbre_question());
-		parametre.setPonderation(parametreDTO.getPonderation());
 		parametre.setActif(parametreDTO.getActif());
 
 		return parametre;
@@ -104,6 +105,7 @@ public class ModelFactory {
 		Ratio ratio = new Ratio();
 		ratio.setId(ratioDTO.getId());
 		ratio.setCode(ratioDTO.getCode());
+		ratio.setLibelle(ratioDTO.getLibelle());
 		ratio.setFormule(ratioDTO.getFormule());
 		ratio.setPonderation(ratioDTO.getPonderation());
 		ratio.setUnite(ratioDTO.getUnite());
@@ -121,8 +123,22 @@ public class ModelFactory {
 		calibrage.setMax(calibrageDTO.getMax());
 		calibrage.setClasse(calibrageDTO.getClasse());
 		calibrage.setActif(calibrageDTO.getActif());
+		calibrage.setRatio(createRatio(calibrageDTO.getRatioDTO()));
 
 		return calibrage;
+	}
+	
+	public Ponderation_score createPonderationScore(Ponderation_scoreDTO ponderationDTO){
+		if (ponderationDTO == null) 
+			return null;
+		Ponderation_score ponderation = new Ponderation_score();
+		ponderation.setId(ponderationDTO.getId());
+		ponderation.setCode_score(ponderationDTO.getCode_score());
+		ponderation.setPonderation(ponderationDTO.getPonderation());
+		ponderation.setParametre(createParametre(ponderationDTO.getParametreDTO()));
+		ponderation.setActif(ponderationDTO.getActif());
+
+		return ponderation;
 	}
 	
 }

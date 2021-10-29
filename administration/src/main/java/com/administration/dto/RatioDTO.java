@@ -14,6 +14,8 @@ public class RatioDTO {
     private Long id;
 	
 	private String code;
+	
+	private String libelle;
 
     private String formule;
     

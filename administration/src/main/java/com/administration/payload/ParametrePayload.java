@@ -11,5 +11,4 @@ public class ParametrePayload {
 	private String 			code;
 	private String 			libelle;
 	private int 			nbreQuestion;
-	private Long 			ponderation;
 }

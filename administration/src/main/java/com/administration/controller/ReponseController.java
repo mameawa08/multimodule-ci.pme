@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.administration.dto.ReponseQualitativeDTO;
-import com.administration.exception.ParametreException;
+import com.administration.exception.ReponseException;
 import com.administration.payload.ReponsePayload;
 import com.administration.service.IReponseService;
 
@@ -79,7 +79,7 @@ public class ReponseController {
 		try {
 			boolean deleted = reponseService.deleteReponse(id);
 			return ResponseEntity.ok(deleted);
-		} catch (ParametreException e) {
+		} catch (ReponseException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

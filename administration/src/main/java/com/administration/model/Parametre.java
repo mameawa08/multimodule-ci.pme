@@ -41,9 +41,6 @@ public class Parametre implements Serializable {
     @Column
     private int nbre_question;
     
-    @Column
-    private Long ponderation;
-    
     @Column(name = "actif")
 	private int	actif;
 

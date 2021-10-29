@@ -20,5 +20,7 @@ public class CalibrageDTO {
     private int classe;
     
 	private int	actif;
+	
+	private RatioDTO ratioDTO;
 
 }

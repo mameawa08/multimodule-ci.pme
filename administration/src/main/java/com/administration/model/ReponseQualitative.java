@@ -44,7 +44,7 @@ public class ReponseQualitative implements Serializable {
     private int score;
     
     @ManyToOne
-  	@JoinColumn(name = "id_question", nullable = true)
+  	@JoinColumn(name = "id_question")
     private Question  question;
     
     @Column(name = "actif")
