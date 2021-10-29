@@ -13,6 +13,7 @@ import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
+import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
@@ -20,6 +21,8 @@ import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
+import com.administration.model.User;
+import com.administration.payload.UserPaylaod;
 
 @Named("dtoFactory")
 public class DTOFactory {
@@ -61,6 +64,55 @@ public class DTOFactory {
 		
 		return profils.stream().map(this::createProfil).collect(Collectors.toList());
 
+	}
+	
+	public List<UserDTO> createListUser(List<User> users){
+		if(users == null || (users != null && users.size() == 0))
+			return new ArrayList<>();
+		
+		return users.stream().map(this::createUser).collect(Collectors.toList());
+
+	}
+
+	public UserDTO createUser(User user){
+		if (user == null) 
+			return null;
+		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
+		dto.setIdentifiant(user.getIdentifiant());
+		dto.setEmail(user.getEmail());
+		dto.setMotDePasse(user.getMotDePasse());
+		dto.setNom(user.getNom());
+		dto.setPrenom(user.getPrenom());
+		dto.setActif(user.getActif());
+		dto.setMdpModifie(user.getMdpModifie());
+		dto.setMotDePassePrecedent(user.getMotDePassePrecedent());
+		dto.setDateModificationMdp(user.getDateModificationMdp());
+		dto.setResetPasswordToken(user.getResetPasswordToken());
+		dto.setConfirme(user.getConfirme());
+		dto.setProfil(createProfil(user.getProfil()));
+
+		return dto;
+	}
+	/**
+	 * Don't forget to set the profil after the call of this methode
+	 * 
+	 * @param user
+	 * @return UserDTO
+	 */
+	public UserDTO createUser(UserPaylaod user){
+		if (user == null) 
+			return null;
+		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
+		dto.setIdentifiant(user.getIdentifiant());
+		dto.setEmail(user.getEmail());
+		dto.setMotDePasse(user.getMotDePasse());
+		dto.setNom(user.getNom());
+		dto.setPrenom(user.getPrenom());
+		//Don't forget to set the profil after the call of this methode
+
+		return dto;
 	}
 
 	public ParametreDTO createParametre(Parametre parametre){

@@ -13,6 +13,7 @@ import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
+import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
@@ -20,6 +21,7 @@ import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
+import com.administration.model.User;
 
 @Named("modelFactory")
 public class ModelFactory {
@@ -123,6 +125,27 @@ public class ModelFactory {
 		calibrage.setActif(calibrageDTO.getActif());
 
 		return calibrage;
+	}
+
+	public User createUser(UserDTO user){
+		if (user == null) 
+			return null;
+		User usr = new User();
+		usr.setId(user.getId());
+		usr.setIdentifiant(user.getIdentifiant());
+		usr.setEmail(user.getEmail());
+		usr.setMotDePasse(user.getMotDePasse());
+		usr.setNom(user.getNom());
+		usr.setPrenom(user.getPrenom());
+		usr.setActif(user.getActif());
+		usr.setMdpModifie(user.getMdpModifie());
+		usr.setMotDePassePrecedent(user.getMotDePassePrecedent());
+		usr.setDateModificationMdp(user.getDateModificationMdp());
+		usr.setResetPasswordToken(user.getResetPasswordToken());
+		usr.setConfirme(user.getConfirme());
+		usr.setProfil(createProfil(user.getProfil()));
+
+		return usr;
 	}
 	
 }
