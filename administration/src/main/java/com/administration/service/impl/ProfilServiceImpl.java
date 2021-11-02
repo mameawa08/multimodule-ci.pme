@@ -50,28 +50,41 @@ public class ProfilServiceImpl implements IProfilService{
 	
 	@Override
 	public ProfilDTO ajouterProfil(ProfilPayload profil) throws ProfilException{
+		ProfilDTO profilDTO;
 		if(profil == null)
 			throw new ProfilException("Profil :: aucune donnee a ajouter.");
+		if(profil.getId() != null)
+			profilDTO = getProfil(profil.getId());
+		else
+			profilDTO = new ProfilDTO();
+
 		if(profil != null && (profil.getCode() != null && profil.getCode().equals(""))) throw new ProfilException("Le code est obligatoire.");
 		if(profil != null && (profil.getLibelle() != null && profil.getLibelle().equals(""))) throw new ProfilException("Le libelle est obligatoire.");
-		if(profil != null && (profil.getHabilitations() != null && profil.getHabilitations().size() == 0)) throw new ProfilException("Le profil doit avoir une ahbilitation.");
+//		if(profil != null && (profil.getHabilitations() != null && profil.getHabilitations().size() == 0)) throw new ProfilException("Le profil doit avoir une ahbilitation.");
 
-		ProfilDTO profilDTO = new ProfilDTO();
 		profilDTO.setActif(1);
 		profilDTO.setCode(profil.getCode());
 		profilDTO.setLibelle(profil.getLibelle());
 
+//		if (profil.getId() != null){
+//
+//		}
+
 		List<HabilitationDTO> habilitations = new ArrayList<HabilitationDTO>();
-		for (Integer h : profil.getHabilitations()) {
-			try {
-				HabilitationDTO habilitation = habilitationService.getHabilitation(Long.valueOf(h));
-				habilitations.add(habilitation);
-			} catch (HabilitationException e) {
-				throw new ProfilException("Profil :: "+e.getMessage(), e);
+		if(profil.getHabilitations() != null && profil.getHabilitations().size() > 0){
+			for (Integer h : profil.getHabilitations()) {
+				try {
+					HabilitationDTO habilitation = habilitationService.getHabilitation(Long.valueOf(h));
+					habilitations.add(habilitation);
+				} catch (HabilitationException e) {
+					throw new ProfilException("Profil :: "+e.getMessage(), e);
+				}
 			}
+
+			profilDTO.setHabilitations(habilitations);
 		}
 
-		profilDTO.setHabilitations(habilitations);
+
 
 		Profil p = modelFactory.createProfil(profilDTO);
 		try {
