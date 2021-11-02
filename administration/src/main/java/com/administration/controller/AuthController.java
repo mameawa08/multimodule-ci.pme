@@ -68,7 +68,7 @@ public class AuthController {
     // @Operation(summary = "Send reset password mail", description = "Send a link to reset a password", tags = {"auth"})
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotBody forgotBody,  HttpServletRequest request) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         try {
-            User user = userRepository.findByEmailOrIdentifiant(forgotBody.getEmailOrUsername())
+            User user = userRepository.findByEmailOrIdentifiant(forgotBody.getEmailOrUsername(), forgotBody.getEmailOrUsername())
                 .orElseThrow(() -> new UserException("User doesn't exist."));
             UserDTO userDTO = dtoFactory.createUser(user);
 

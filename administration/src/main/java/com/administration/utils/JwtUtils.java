@@ -37,11 +37,11 @@ public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${ecourrier.app.jwtSecret}")
-    private String jwtSecret;
-
-    @Value("${ecourrier.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+//    @Value("${ecourrier.app.jwtSecret}")
+//    private String jwtSecret;
+//
+//    @Value("${ecourrier.app.jwtExpirationMs}")
+//    private int jwtExpirationMs;
 
     // From Medium
 
@@ -57,10 +57,10 @@ public class JwtUtils {
 	@Value("${app.security.jwt.private-key-passphrase}")
 	private String privateKeyPassphrase;
 
-    @PostConstruct
-    protected void init() {
-        jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
-    }
+//    @PostConstruct
+//    protected void init() {
+//        jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
+//    }
 
     // public String generateJwtToken(Authentication authentication) {
 
@@ -98,9 +98,9 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody().getSubject();
-    }
+//    public String getUserNameFromJwtToken(String token) {
+//        return Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody().getSubject();
+//    }
 
     public boolean validateJwtToken(String authToken) throws SignatureException, MalformedJwtException, ExpiredJwtException, UnsupportedJwtException, IllegalArgumentException, UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         try {
