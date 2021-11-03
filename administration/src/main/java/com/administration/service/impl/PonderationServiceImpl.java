@@ -70,9 +70,7 @@ public class PonderationServiceImpl implements IPonderationService {
 		ponderationDTO.setPonderation(ponderationPayload.getPonderation());
 		Parametre parametre = parametreRepository.findById(ponderationPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
 		ponderationDTO.setParametreDTO(dtoFactory.createParametre(parametre));
-		
-		if(ponderationDTO.getId()==null)
-			ponderationDTO.setActif(1);
+		ponderationDTO.setActif(1);
 		
 		Ponderation_score ponderation = modelFactory.createPonderationScore(ponderationDTO);
 		ponderation = ponderationRepository.save(ponderation);

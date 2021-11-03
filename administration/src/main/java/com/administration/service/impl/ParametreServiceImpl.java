@@ -58,11 +58,10 @@ public class ParametreServiceImpl implements IParametreService {
 		parametreDTO.setCode(parametrePayload.getCode());
 		parametreDTO.setLibelle(parametrePayload.getLibelle());
 		parametreDTO.setNbre_question(parametrePayload.getNbreQuestion());
-		if(parametreDTO.getId()==null)
-			parametreDTO.setActif(1);
+		parametreDTO.setActif(1);
 		
 		Parametre parametre = modelFactory.createParametre(parametreDTO);
-		parametre = parametreRepository.save(parametre);
+		parametre = parametreRepository.saveAndFlush(parametre);
 		return parametreDTO;
 		
 	}

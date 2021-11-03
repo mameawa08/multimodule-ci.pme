@@ -73,8 +73,7 @@ public class RatioServiceImpl implements IRatioService {
 		ratioDTO.setFormule(ratioPayload.getFormule());
 		ratioDTO.setUnite(ratioPayload.getUnite());
 		ratioDTO.setPonderation(ratioPayload.getPonderation());
-		if(ratioDTO.getId()==null)
-			ratioDTO.setActif(1);
+		ratioDTO.setActif(1);
 		
 		Ratio ratio = modelFactory.createRatio(ratioDTO);
 		ratio = ratioRepository.save(ratio);

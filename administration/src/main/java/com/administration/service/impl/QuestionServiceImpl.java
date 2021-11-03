@@ -87,9 +87,7 @@ public class QuestionServiceImpl implements IQuestionService {
 		Parametre param = null;
 		param = parametreRepository.findById(questionPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
 		questionDTO.setParametreDTO(dtoFactory.createParametre(param));
-		
-		if(questionDTO.getId()==null)
-			questionDTO.setActif(1);
+		questionDTO.setActif(1);
 		
 		Question question = modelFactory.createQuestion(questionDTO);
 		question = questionRepository.save(question);

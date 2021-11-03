@@ -75,9 +75,7 @@ public class ReponseServiceImpl implements IReponseService {
 		reponseDTO.setScore(reponsePayload.getScore());
 		Question question = questionRepository.findById(reponsePayload.getIdQuestion()).orElseThrow(() -> new Exception("Not found."));
 		reponseDTO.setQuestionDTO(dtoFactory.createQuestion(question));
-		
-		if(reponseDTO.getId()==null)
-			reponseDTO.setActif(1);
+		reponseDTO.setActif(1);
 		
 		ReponseQualitative reponse = modelFactory.createReponseQualitative(reponseDTO);
 		reponse = reponseRepository.save(reponse);

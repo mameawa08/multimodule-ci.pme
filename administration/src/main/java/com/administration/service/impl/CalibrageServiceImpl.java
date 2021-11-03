@@ -74,9 +74,7 @@ public class CalibrageServiceImpl implements ICalibrageService {
 		calibrageDTO.setClasse(calibragePayload.getClasse());
 		Ratio ratio = ratioRepository.findById(calibragePayload.getIdRatio()).orElseThrow(() -> new Exception("Not found."));
 		calibrageDTO.setRatioDTO(dtoFactory.createRatio(ratio));
-		
-		if(calibrageDTO.getId()==null)
-			calibrageDTO.setActif(1);
+		calibrageDTO.setActif(1);
 		
 		Calibrage calibrage = modelFactory.createCalibrage(calibrageDTO);
 		calibrage = calibrageRepository.save(calibrage);
