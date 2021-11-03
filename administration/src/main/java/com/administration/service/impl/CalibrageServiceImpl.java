@@ -88,7 +88,7 @@ public class CalibrageServiceImpl implements ICalibrageService {
 	public boolean deleteCalibrage(Long idCalibrage) throws Exception {
 		try {
 			if (idCalibrage == null) {
-				throw new Exception("Le calibrage à supprimer est nu !");
+				throw new Exception("Le calibrage à supprimer est nul !");
 			}
 			Calibrage c = calibrageRepository.findById(idCalibrage).orElseThrow(()-> new Exception("Not found."));
 			if (c != null)

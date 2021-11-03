@@ -12,7 +12,7 @@ public interface IRatioService {
 
 	List<RatioDTO> getListeRatiosActif();
 
-	List<RatioDTO> getListeRatiosByCode(String code);
+	RatioDTO getRatioByCode(String code);
 
 	RatioDTO createRatio(RatioPayload ratioPayload) throws Exception;
 

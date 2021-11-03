@@ -13,7 +13,7 @@ public interface RatioRepository extends JpaRepository<Ratio, Long> {
 	@Query("SELECT DISTINCT r FROM Ratio r WHERE r.actif = 1 ORDER BY r.id ASC")
 	List<Ratio> findAllActif();
 	
-	@Query("SELECT DISTINCT r FROM Ratio r WHERE r.actif = 1 AND r.code=:code ORDER BY r.id ASC")
-	List<Ratio> findRatioByCode(@Param("code") String code);
+	@Query("SELECT DISTINCT r FROM Ratio r WHERE r.actif = 1 AND LOWER(r.code) LIKE CONCAT('%',cast(LOWER(:code) AS text),'%') ORDER BY r.id ASC")
+	Ratio findRatioByCode(@Param("code") String code);
 
 }

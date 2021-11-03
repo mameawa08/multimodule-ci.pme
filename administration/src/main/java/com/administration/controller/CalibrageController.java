@@ -14,13 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.administration.dto.CalibrageDTO;
-import com.administration.dto.QuestionDTO;
 import com.administration.exception.CalibrageException;
-import com.administration.exception.QuestionException;
 import com.administration.payload.CalibragePayload;
-import com.administration.payload.QuestionPayload;
 import com.administration.service.ICalibrageService;
-import com.administration.service.IQuestionService;
 
 /**
  * 

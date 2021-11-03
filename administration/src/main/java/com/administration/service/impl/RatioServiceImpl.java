@@ -41,10 +41,10 @@ public class RatioServiceImpl implements IRatioService {
 	}
 	
 	@Override
-	public List<RatioDTO> getListeRatiosByCode(String code) {
-		List<Ratio> ratios = ratioRepository.findRatioByCode(code);
-		List<RatioDTO> ratiosDto = dtoFactory.createListRatios(ratios);
-		return ratiosDto;
+	public RatioDTO getRatioByCode(String code) {
+		Ratio ratio = ratioRepository.findRatioByCode(code);
+		RatioDTO ratioDto = dtoFactory.createRatio(ratio);
+		return ratioDto;
 	}
 	
 	@Override
