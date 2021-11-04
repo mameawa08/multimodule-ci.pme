@@ -11,6 +11,7 @@ import com.administration.exception.UserException;
 import com.administration.mapping.DTOFactory;
 import com.administration.mapping.ModelFactory;
 import com.administration.model.User;
+import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
 import com.administration.repository.ProfilRepository;
 import com.administration.repository.UserRepository;
@@ -18,6 +19,7 @@ import com.administration.service.IProfilService;
 import com.administration.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +36,9 @@ public class UserServiceImpl implements IUserService{
 
 	@Autowired
 	private ModelFactory modelFactory;
+
+	@Autowired
+	PasswordEncoder encoder;
 
 	 private final String REGEX_IDENTIFIANT = "^(\\d{6})([a-zA-Z]{1})$";
 
@@ -108,8 +113,15 @@ public class UserServiceImpl implements IUserService{
 
 
 		user = dtoFactory.createUser(payload);
+		if (user.getId() == null) {
+			try {
+				String passwordToEncode = encoder.encode(user.getMotDePasse());
+				user.setMotDePasse(passwordToEncode);
+			} catch (Exception uee) {
+				throw new UserException("Erreur init password ");
+			}
+		}
 
-		user.setActif(1);
 
 		ProfilDTO profil;
 		try {
@@ -180,5 +192,37 @@ public class UserServiceImpl implements IUserService{
         }
         return false;
     }
+
+	@Override
+	public void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException {
+		User user = userRepository.findById(id).orElseThrow(()-> new UserException("User not found."));
+		String oldPassword = user.getMotDePasse();
+		String newPassword ;
+
+		if(!encoder.matches(updatePasswordBody.getPassword(), user.getMotDePasse())){
+			throw new UserException("L'ancien mot de passe n'est pas valide.");
+		}
+
+		if((!updatePasswordBody.getNewPassword().trim().equals("") && !updatePasswordBody.getNewPasswordConfirm().trim().equals("")) ){
+			if(!updatePasswordBody.getNewPassword().trim().equals(updatePasswordBody.getNewPasswordConfirm().trim())) {
+				throw new UserException("Les mots de passe ne sont pas identiques.");
+			}
+			if(!validatePassword(updatePasswordBody.getNewPassword())){
+				throw new UserException("Le nouveau mot de passe n'est pas valide.");
+			}
+			if(encoder.matches(updatePasswordBody.getNewPassword(), user.getMotDePasse())){
+				throw new UserException("L'ancien mot de passe et le nouveau mot de passe sont identiques.");
+			}
+			newPassword = encoder.encode(updatePasswordBody.getNewPassword());
+			user.setMotDePassePrecedent(oldPassword);
+			user.setMotDePasse(newPassword);
+			user.setMdpModifie(1);
+			user.setActif(1);
+			userRepository.save(user);
+		}
+		else{
+			throw new UserException("Le mot de passe est obligatoire.");
+		}
+	}
 
 }
