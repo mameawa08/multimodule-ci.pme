@@ -18,7 +18,7 @@ public class Habilitation implements Serializable {
 	private static final long serialVersionUID = 1812602355944843550L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long				id;
 
