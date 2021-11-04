@@ -30,7 +30,7 @@ public class ProfilController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity show(@RequestParam Long id){
+	public ResponseEntity show(@PathVariable Long id){
 		try {
 			ProfilDTO profil = profilService.getProfil(id);
 			return ResponseEntity.ok(profil);
@@ -40,7 +40,7 @@ public class ProfilController {
 	}
 
 	@GetMapping("/{id}/status")
-	public ResponseEntity switchProfil(@RequestParam Long id){
+	public ResponseEntity switchProfil(@PathVariable Long id){
 		try {
 			boolean rs = profilService.changerStatusProfil(id);
 			return ResponseEntity.ok(rs);
@@ -52,6 +52,16 @@ public class ProfilController {
 	
 	@PostMapping("")
 	public ResponseEntity create(@RequestBody ProfilPayload payload){
+		try {
+			ProfilDTO profil = profilService.ajouterProfil(payload);
+			return ResponseEntity.ok(profil);
+		} catch (ProfilException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/{id}", method = {RequestMethod.PATCH, RequestMethod.PUT})
+	public ResponseEntity update(@PathVariable Long id, @RequestBody ProfilPayload payload){
 		try {
 			ProfilDTO profil = profilService.ajouterProfil(payload);
 			return ResponseEntity.ok(profil);

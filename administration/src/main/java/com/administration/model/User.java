@@ -3,15 +3,7 @@ package com.administration.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +16,7 @@ public class User implements Serializable {
 
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
 
@@ -46,7 +38,8 @@ public class User implements Serializable {
     @Column(name = "actif")
     private int actif;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profil_id", nullable = false)
     private Profil profil;
 
     @Column(name = "mdpamodifier")

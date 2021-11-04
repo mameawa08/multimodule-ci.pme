@@ -2,6 +2,7 @@ package com.administration.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,5 +37,7 @@ public class UserDTO implements Serializable {
     private String resetPasswordToken;
 
     private int confirme;
+
+    private List<String> habilitations;
 
 }

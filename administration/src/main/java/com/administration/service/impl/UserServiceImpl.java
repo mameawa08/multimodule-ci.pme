@@ -57,21 +57,21 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public UserDTO createUser(UserPaylaod payload) throws UserException{
-		if (payload == null) 
+		UserDTO user;
+		if (payload == null)
 			throw new UserException("User :: aucune donnee a ajouter.");
-		
+
+		if(payload.getId() != null){
+			user = getUser(payload.getId());
+		}
+
 		if(payload.getIdentifiant() == null || (payload.getIdentifiant() != null && payload.getIdentifiant().equals("")))
 			throw new UserException("L'identifiant est obligatoire.");
 		
 		if(payload.getEmail() == null || (payload.getEmail() != null && payload.getEmail().equals("")))
 			throw new UserException("L'email est obligatoire.");
 		
-		if(payload.getMotDePasse() == null || (payload.getMotDePasse() != null && payload.getMotDePasse().equals("")))
-			throw new UserException("Le mot de passe est obligatoire.");
-		
-		if(payload.getConfirmationMotDePasse() == null || (payload.getConfirmationMotDePasse() != null && payload.getConfirmationMotDePasse().equals("")))
-			throw new UserException("La confirmation du mot de passe est obligatoire.");
-		
+
 		if(payload.getNom() == null || (payload.getNom() != null && payload.getNom().equals("")))
 			throw new UserException("Le nom est obligatoire.");
 		
@@ -80,29 +80,40 @@ public class UserServiceImpl implements IUserService{
 		
 		if(payload.getProfil() == 0 )
 			throw new UserException("Le profil est obligatoire.");
-		
-		if(!payload.getMotDePasse().equals(payload.getConfirmationMotDePasse()))
-			throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.");
-		
-		// validate mail
-		if(Pattern.compile(REGEX_EMAIL).matcher(payload.getMotDePasse()).matches())
-			throw new UserException("Le format de l'email est invalide.");
-		UserDTO user = findUserByEmail(payload.getEmail());
-		if(user != null)
-			throw new UserException("Cet mail " + payload.getEmail() + " est déjà associé à un compte.");
 
-		// validate password
 		if(payload.getId() == null){
+			if(payload.getMotDePasse() == null || (payload.getMotDePasse() != null && payload.getMotDePasse().equals("")))
+				throw new UserException("Le mot de passe est obligatoire.");
+
+			if(payload.getConfirmationMotDePasse() == null || (payload.getConfirmationMotDePasse() != null && payload.getConfirmationMotDePasse().equals("")))
+				throw new UserException("La confirmation du mot de passe est obligatoire.");
+
+			if(!payload.getMotDePasse().equals(payload.getConfirmationMotDePasse()))
+				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.");
+
+			// validate password
+
 			if(!validatePassword(payload.getMotDePasse()))
 				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.Le mot de passe doit avoir minimum 8 caractères,"
-							+ " composé de majuscules, de minuscules, de chiffres et de caractères spéciaux");
+						+ " composé de majuscules, de minuscules, de chiffres et de caractères spéciaux");
+
+			UserDTO exist = findUserByEmail(payload.getEmail());
+			if(exist != null)
+				throw new UserException("Cet mail " + payload.getEmail() + " est déjà associé à un compte.");
 		}
+
+		// validate mail
+		if(!Pattern.compile(REGEX_EMAIL).matcher(payload.getEmail()).matches())
+			throw new UserException("Le format de l'email est invalide.");
+
 
 		user = dtoFactory.createUser(payload);
 
+		user.setActif(1);
+
 		ProfilDTO profil;
 		try {
-			profil = profilService.getProfil(Long.valueOf(payload.getProfil()));
+			profil = profilService.getProfil((long) payload.getProfil());
 			user.setProfil(profil);
 		} catch (ProfilException e) {
 			throw new UserException("Le profil est obligatoire.");
@@ -129,7 +140,7 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean switchStatus(Long id) throws UserException{
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException("User :: "+id+" not found."));
-		user.setActif(user.getId() == 1 ? 0 : 1);
+		user.setActif(user.getActif() == 1 ? 0 : 1);
 		try {
 			userRepository.save(user);
 			return true;
@@ -139,8 +150,8 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	//Private methodes
-	
-    private boolean validatePassword(String password) {
+	@Override
+    public boolean validatePassword(String password) {
         int min = 8;
         int max = 16;
         int digit = 0;
