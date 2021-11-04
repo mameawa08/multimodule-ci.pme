@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.administration.dto.UserDTO;
+import com.administration.exception.UserException;
+import com.administration.payload.MessageResponse;
+import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
 import com.administration.service.IUserService;
 
@@ -66,6 +69,19 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(user);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/{id}/update-password", method = {RequestMethod.PUT, RequestMethod.PATCH})
+//	@PreAuthorize("hasRole('ADD_USER')")
+//	@Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "Update user password", description = "Update user password by providing the old, new and the new confirmation password", tags = {"User"})
+	public ResponseEntity<?> updatePassword(@PathVariable("id") Long id, @RequestBody UpdatePasswordBody updatePasswordBody){
+		try {
+			userService.updatePassword(id, updatePasswordBody);
+			return ResponseEntity.ok(new MessageResponse("Mot de passe modifié avec succès.", true));
+		}
+		catch (UserException uex){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(uex.getMessage(), false));
 		}
 	}
 }

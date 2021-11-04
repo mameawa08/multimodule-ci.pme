@@ -11,6 +11,7 @@ import com.administration.exception.UserException;
 import com.administration.mapping.DTOFactory;
 import com.administration.mapping.ModelFactory;
 import com.administration.model.User;
+import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
 import com.administration.repository.ProfilRepository;
 import com.administration.repository.UserRepository;
@@ -121,7 +122,6 @@ public class UserServiceImpl implements IUserService{
 			}
 		}
 
-		user.setActif(1);
 
 		ProfilDTO profil;
 		try {
@@ -192,5 +192,37 @@ public class UserServiceImpl implements IUserService{
         }
         return false;
     }
+
+	@Override
+	public void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException {
+		User user = userRepository.findById(id).orElseThrow(()-> new UserException("User not found."));
+		String oldPassword = user.getMotDePasse();
+		String newPassword ;
+
+		if(!encoder.matches(updatePasswordBody.getPassword(), user.getMotDePasse())){
+			throw new UserException("L'ancien mot de passe n'est pas valide.");
+		}
+
+		if((!updatePasswordBody.getNewPassword().trim().equals("") && !updatePasswordBody.getNewPasswordConfirm().trim().equals("")) ){
+			if(!updatePasswordBody.getNewPassword().trim().equals(updatePasswordBody.getNewPasswordConfirm().trim())) {
+				throw new UserException("Les mots de passe ne sont pas identiques.");
+			}
+			if(!validatePassword(updatePasswordBody.getNewPassword())){
+				throw new UserException("Le nouveau mot de passe n'est pas valide.");
+			}
+			if(encoder.matches(updatePasswordBody.getNewPassword(), user.getMotDePasse())){
+				throw new UserException("L'ancien mot de passe et le nouveau mot de passe sont identiques.");
+			}
+			newPassword = encoder.encode(updatePasswordBody.getNewPassword());
+			user.setMotDePassePrecedent(oldPassword);
+			user.setMotDePasse(newPassword);
+			user.setMdpModifie(1);
+			user.setActif(1);
+			userRepository.save(user);
+		}
+		else{
+			throw new UserException("Le mot de passe est obligatoire.");
+		}
+	}
 
 }
