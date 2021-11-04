@@ -9,6 +9,7 @@ import javax.inject.Named;
 import com.administration.dto.CalibrageDTO;
 import com.administration.dto.HabilitationDTO;
 import com.administration.dto.ParametreDTO;
+import com.administration.dto.Ponderation_scoreDTO;
 import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
@@ -17,6 +18,7 @@ import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
+import com.administration.model.Ponderation_score;
 import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
@@ -123,7 +125,6 @@ public class DTOFactory {
 		dto.setCode(parametre.getCode());
 		dto.setLibelle(parametre.getLibelle());
 		dto.setNbre_question(parametre.getNbre_question());
-		dto.setPonderation(parametre.getPonderation());
 		dto.setActif(parametre.getActif());
 
 		return dto;
@@ -188,6 +189,7 @@ public class DTOFactory {
 		RatioDTO dto = new RatioDTO();
 		dto.setId(ratio.getId());
 		dto.setCode(ratio.getCode());
+		dto.setLibelle(ratio.getLibelle());
 		dto.setFormule(ratio.getFormule());
 		dto.setPonderation(ratio.getPonderation());
 		dto.setUnite(ratio.getUnite());
@@ -215,6 +217,7 @@ public class DTOFactory {
 		dto.setMax(calibrage.getMax());
 		dto.setClasse(calibrage.getClasse());
 		dto.setActif(calibrage.getActif());
+		dto.setRatioDTO(createRatio(calibrage.getRatio()));
 
 		return dto;
 	}
@@ -226,6 +229,30 @@ public class DTOFactory {
 		return calibrages.stream().map(this::createCalibrage).collect(Collectors.toList());
 
 	}
+	
+	
+	public Ponderation_scoreDTO createPonderationScore(Ponderation_score ponderation){
+		if (ponderation == null)
+			return null;
+		Ponderation_scoreDTO dto = new Ponderation_scoreDTO();
+		dto.setId(ponderation.getId());
+		dto.setCode_score(ponderation.getCode_score());
+		dto.setPonderation(ponderation.getPonderation());
+		dto.setParametreDTO(createParametre(ponderation.getParametre()));
+		dto.setActif(ponderation.getActif());
+
+		return dto;
+	}
+	
+	public List<Ponderation_scoreDTO> createListPonderations(List<Ponderation_score> ponderations){
+		if(ponderations == null || (ponderations != null && ponderations.size() == 0))
+			return new ArrayList<>();
+
+		return ponderations.stream().map(this::createPonderationScore).collect(Collectors.toList());
+
+	}
+
+
 
 
 	

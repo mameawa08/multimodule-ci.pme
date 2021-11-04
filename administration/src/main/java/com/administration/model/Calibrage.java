@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -43,5 +45,9 @@ public class Calibrage implements Serializable {
     
     @Column(name = "actif")
 	private int	actif;
+    
+    @ManyToOne
+  	@JoinColumn(name = "id_ratio")
+    private Ratio  ratio;
 
 }

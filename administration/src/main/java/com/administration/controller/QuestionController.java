@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.administration.dto.QuestionDTO;
-import com.administration.exception.ParametreException;
+import com.administration.exception.QuestionException;
 import com.administration.payload.QuestionPayload;
 import com.administration.service.IQuestionService;
 
@@ -91,7 +91,7 @@ public class QuestionController {
 		try {
 			boolean deleted = questionService.deleteQuestion(id);
 			return ResponseEntity.ok(deleted);
-		} catch (ParametreException e) {
+		} catch (QuestionException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

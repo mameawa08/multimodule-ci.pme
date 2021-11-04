@@ -5,10 +5,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ParametrePayload {
+public class RatioPayload {
 	
 	private Long 			id;
 	private String 			code;
 	private String 			libelle;
-	private int 			nbreQuestion;
+	private String 			formule;
+	private Long 			ponderation;
+	private String 			unite;
 }

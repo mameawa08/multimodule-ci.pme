@@ -19,8 +19,6 @@ public class ParametreDTO {
     
     private int nbre_question;
     
-    private Long ponderation;
-    
 	private int	actif;
 
 }

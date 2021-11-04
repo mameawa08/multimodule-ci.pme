@@ -3,24 +3,23 @@ package com.administration.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+
 /**
  * @author agileway
  */
 
 @Setter
 @Getter
-public class CalibrageDTO {
+public class Ponderation_scoreDTO {
 
     private Long id;
 	
-	private double min;
+	private String code_score;
 
-    private double max;
-    
-    private int classe;
+    private Long ponderation;
     
 	private int	actif;
-	
-	private RatioDTO ratioDTO;
+    
+    private ParametreDTO  parametreDTO;
 
 }

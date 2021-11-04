@@ -53,20 +53,15 @@ public class ParametreServiceImpl implements IParametreService {
 		if (parametrePayload.getNbreQuestion() == 0) {
 			throw new Exception("Choisissez le nombre de questions associé à ce paramètre !");
 		}
-		if (parametrePayload.getPonderation() == null) {
-			throw new Exception("La pondération est obligatoire !");
-		}
 		ParametreDTO parametreDTO = new ParametreDTO();
 		parametreDTO.setId(parametrePayload.getId());
 		parametreDTO.setCode(parametrePayload.getCode());
 		parametreDTO.setLibelle(parametrePayload.getLibelle());
 		parametreDTO.setNbre_question(parametrePayload.getNbreQuestion());
-		parametreDTO.setPonderation(parametrePayload.getPonderation());
-		if(parametreDTO.getId()==null)
-			parametreDTO.setActif(1);
+		parametreDTO.setActif(1);
 		
 		Parametre parametre = modelFactory.createParametre(parametreDTO);
-		parametre = parametreRepository.save(parametre);
+		parametre = parametreRepository.saveAndFlush(parametre);
 		return parametreDTO;
 		
 	}
