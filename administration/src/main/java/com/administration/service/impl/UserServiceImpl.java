@@ -18,6 +18,7 @@ import com.administration.service.IProfilService;
 import com.administration.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +35,9 @@ public class UserServiceImpl implements IUserService{
 
 	@Autowired
 	private ModelFactory modelFactory;
+
+	@Autowired
+	PasswordEncoder encoder;
 
 	 private final String REGEX_IDENTIFIANT = "^(\\d{6})([a-zA-Z]{1})$";
 
@@ -108,6 +112,14 @@ public class UserServiceImpl implements IUserService{
 
 
 		user = dtoFactory.createUser(payload);
+		if (user.getId() == null) {
+			try {
+				String passwordToEncode = encoder.encode(user.getMotDePasse());
+				user.setMotDePasse(passwordToEncode);
+			} catch (Exception uee) {
+				throw new UserException("Erreur init password ");
+			}
+		}
 
 		user.setActif(1);
 
