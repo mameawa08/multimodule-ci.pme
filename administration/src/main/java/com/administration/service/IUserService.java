@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.administration.dto.UserDTO;
 import com.administration.exception.UserException;
+import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
 
 public interface IUserService {
@@ -14,4 +15,6 @@ public interface IUserService {
 	public boolean switchStatus(Long id) throws UserException;
 	public UserDTO findUserByEmail(String email);
 	public boolean validatePassword(String password);
+
+    void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException;
 }

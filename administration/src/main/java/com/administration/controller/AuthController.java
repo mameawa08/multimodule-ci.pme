@@ -30,13 +30,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import freemarker.template.TemplateException;
 
+@RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -154,7 +152,7 @@ public class AuthController {
 
     }
 
-	@GetMapping("/me")
+	@GetMapping(value = "/me")
     // @Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "User infos", description = "Return connected user informations", tags = {"auth"})
     public ResponseEntity<?> me(Principal principal){
         try {
@@ -162,12 +160,11 @@ public class AuthController {
 
             UserDTO userDTO = dtoFactory.createUser(user);
 
-            String sql = "SELECT DISTINCT h.code FROM habilitation h " +
-                    "INNER JOIN habilitation_par_profil hp ON h.id = hp.habilitation_id " +
-                    "INNER JOIN role_infos r ON r.role_id = hp.role_id " +
-                    "INNER JOIN user_role ur ON ur.role_id = r.role_id " +
-                    "INNER JOIN user_infos u ON ur.user_id = u.user_id " +
-                    "WHERE u.identifiant = ?";
+            String sql = "SELECT DISTINCT h.code FROM habilitations h " +
+                "INNER JOIN habilitation_par_profil hp ON h.id = hp.habilitation_id " +
+                "INNER JOIN profils r ON r.profil_id = hp.role_id " +
+                "INNER JOIN users u ON u.profil_id = r.profil_id " +
+                "WHERE u.identifiant = ?";
 
             List<String> habilitations = jdbcTemplate.queryForList(sql, new String[]{user.getIdentifiant()}, String.class);
 
