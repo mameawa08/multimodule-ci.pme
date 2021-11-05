@@ -1,0 +1,2 @@
+insert into oauth_client_details(access_token_validity, additional_information, authorities, authorized_grant_types, autoapprove, client_id, client_name, client_secret, created, refresh_token_validity, resource_ids, scope, uuid, web_server_redirect_uri)
+values (86400, null, 'ROLE_ADMIN', 'password,authorization_code,refresh_token,client_credentials,implicit', 1, 'cipme', 'CIPME user management', '$2a$14$Pxj3P510G/ynRlGqSdxHNOttTLuFYREdWVMJVUss11082gjUGpTsS', null, 1296000, null, 'read, write', null, null);
