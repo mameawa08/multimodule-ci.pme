@@ -50,9 +50,6 @@ public class RatioServiceImpl implements IRatioService {
 	@Override
 	public RatioDTO createRatio(RatioPayload ratioPayload) throws Exception {
 		
-		if (ratioPayload.getCode() == null || ratioPayload.getCode().equals("")) {
-			throw new Exception("Le code du ratio est obligatoire !");
-		}
 		if (ratioPayload.getLibelle() == null || ratioPayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé du ratio est obligatoire !");
 		}

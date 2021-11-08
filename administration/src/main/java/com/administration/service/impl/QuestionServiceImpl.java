@@ -70,13 +70,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	
 	@Override
 	public QuestionDTO createQuestion(QuestionPayload questionPayload) throws Exception {
-		
-		if (questionPayload.getCode() == null || questionPayload.getCode().equals("")) {
-			throw new Exception("Le code de la question est obligatoire !");
-		}
-		if (questionPayload.getIdParametre() == null) {
-			throw new Exception("Choisissez le type de la question !");
-		}
+	
 		if (questionPayload.getLibelle() == null || questionPayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé de la question est obligatoire !");
 		}

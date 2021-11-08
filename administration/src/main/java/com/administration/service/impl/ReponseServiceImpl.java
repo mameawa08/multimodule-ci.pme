@@ -55,9 +55,7 @@ public class ReponseServiceImpl implements IReponseService {
 	@Override
 	public ReponseQualitativeDTO createReponse(ReponsePayload reponsePayload) throws Exception {
 		
-		if (reponsePayload.getCode() == null || reponsePayload.getCode().equals("")) {
-			throw new Exception("Le code de la réponse est obligatoire !");
-		}
+		
 		if (reponsePayload.getLibelle() == null || reponsePayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé de la réponse est obligatoire !");
 		}

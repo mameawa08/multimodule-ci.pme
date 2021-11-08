@@ -44,9 +44,7 @@ public class ParametreServiceImpl implements IParametreService {
 	
 	@Override
 	public ParametreDTO createParametre(ParametrePayload parametrePayload) throws Exception {
-		if (parametrePayload.getCode() == null || parametrePayload.getCode().equals("")) {
-			throw new Exception("Le code du paramètre est obligatoire !");
-		}
+
 		if (parametrePayload.getLibelle() == null || parametrePayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé  est obligatoire !");
 		}

@@ -74,7 +74,7 @@ public class JwtUtils {
     //             .compact();
     // }
 
-    @Bean
+   /* @Bean
 	public KeyStore keyStore() {
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -86,7 +86,7 @@ public class JwtUtils {
 		}
 		
 		throw new IllegalArgumentException("Unable to load keystore");
-	}
+	}*/
 
     public String generateJwtToken(String payload, int expiration) throws UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
 //        Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
