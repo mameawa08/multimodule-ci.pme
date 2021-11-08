@@ -31,8 +31,8 @@ import java.util.Date;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-//    @Value("${ecourrier.app.jwtSecret}")
-//    private String jwtSecret;
+    @Value("${app.oauth.jwt.secret}")
+    private String jwtSecret;
 
     @Value("${app.oauth.jwt.keystore-location}")
     private String keyStorePath;
@@ -80,30 +80,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenStore tokenStore() {
         JdbcTokenStore store = new JdbcTokenStore(dataSource);
-//        TokenStore store = new CustomTokenStore(accessTokenRepository, refreshTokenRepository);
-//        TokenStore store = new CustomJdbcTokenStore(dataSource);
-//        return new JwtTokenStore(accessTokenConverter());
         return store;
 
     }
 
-//    @Bean
-//    public JwtAccessTokenConverter accessTokenConverter() {
-////        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        JwtAccessTokenConverter converter = new CustomTokenEnhancer();
-//        converter.setSigningKey(jwtSecret);
-//        return converter;
-//    }
-
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-
-        final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
-                new ClassPathResource(keyStorePath), keyStorePassword.toCharArray());
-        converter.setKeyPair(keyStoreKeyFactory.getKeyPair(keyAlias));
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey(jwtSecret);
         return converter;
     }
+
+//    @Bean
+//    public JwtAccessTokenConverter accessTokenConverter() {
+//        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//
+//        final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
+//                new ClassPathResource(keyStorePath), keyStorePassword.toCharArray());
+//        converter.setKeyPair(keyStoreKeyFactory.getKeyPair(keyAlias));
+//        return converter;
+//    }
 
 //    @Bean
 //    @Primary
