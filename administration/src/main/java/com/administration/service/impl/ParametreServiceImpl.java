@@ -53,7 +53,11 @@ public class ParametreServiceImpl implements IParametreService {
 		}
 		ParametreDTO parametreDTO = new ParametreDTO();
 		parametreDTO.setId(parametrePayload.getId());
-		parametreDTO.setCode(parametrePayload.getCode());
+		if(parametreDTO.getId()==null){
+			int nbre = parametreRepository.findNbreParametre()+1;
+			parametreDTO.setCode("P"+nbre);
+		}else
+			parametreDTO.setCode(parametrePayload.getCode());
 		parametreDTO.setLibelle(parametrePayload.getLibelle());
 		parametreDTO.setNbre_question(parametrePayload.getNbreQuestion());
 		parametreDTO.setActif(1);

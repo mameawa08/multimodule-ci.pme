@@ -70,16 +70,27 @@ public class QuestionServiceImpl implements IQuestionService {
 	
 	@Override
 	public QuestionDTO createQuestion(QuestionPayload questionPayload) throws Exception {
-	
+		int nbre;
 		if (questionPayload.getLibelle() == null || questionPayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé de la question est obligatoire !");
 		}
 		QuestionDTO questionDTO = new QuestionDTO();
 		questionDTO.setId(questionPayload.getId());
-		questionDTO.setCode(questionPayload.getCode());
 		questionDTO.setLibelle(questionPayload.getLibelle());
 		Parametre param = null;
-		param = parametreRepository.findById(questionPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
+		if(questionPayload.getIdParametre()!=null) 
+			param = parametreRepository.findById(questionPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
+		if(questionDTO.getId()==null){
+			if(questionPayload.getIdParametre()!=null){
+				nbre = questionRepository.findNbreQuestionByParametre(questionPayload.getIdParametre())+1;
+			}else
+				nbre = questionRepository.findNBreQuestionEligible()+1;
+			if(param!=null)
+				questionDTO.setCode("Q"+nbre+param.getCode());
+			else
+				questionDTO.setCode("QE"+nbre);
+		}else
+			questionDTO.setCode(questionPayload.getCode());
 		questionDTO.setParametreDTO(dtoFactory.createParametre(param));
 		questionDTO.setActif(1);
 		

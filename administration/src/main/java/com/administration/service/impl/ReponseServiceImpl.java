@@ -54,8 +54,6 @@ public class ReponseServiceImpl implements IReponseService {
 	
 	@Override
 	public ReponseQualitativeDTO createReponse(ReponsePayload reponsePayload) throws Exception {
-		
-		
 		if (reponsePayload.getLibelle() == null || reponsePayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé de la réponse est obligatoire !");
 		}
@@ -68,10 +66,14 @@ public class ReponseServiceImpl implements IReponseService {
 		
 		ReponseQualitativeDTO reponseDTO = new ReponseQualitativeDTO();
 		reponseDTO.setId(reponsePayload.getId());
-		reponseDTO.setCode(reponsePayload.getCode());
 		reponseDTO.setLibelle(reponsePayload.getLibelle());
 		reponseDTO.setScore(reponsePayload.getScore());
 		Question question = questionRepository.findById(reponsePayload.getIdQuestion()).orElseThrow(() -> new Exception("Not found."));
+		if(reponseDTO.getId()==null){
+			int nbre = reponseRepository.findNbreReponseByQuestion(reponsePayload.getIdQuestion())+1;
+			reponseDTO.setCode("R"+nbre+question.getCode());
+		}else
+			reponseDTO.setCode(reponsePayload.getCode());
 		reponseDTO.setQuestionDTO(dtoFactory.createQuestion(question));
 		reponseDTO.setActif(1);
 		

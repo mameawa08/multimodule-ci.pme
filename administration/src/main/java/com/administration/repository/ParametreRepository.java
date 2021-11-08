@@ -11,5 +11,8 @@ public interface ParametreRepository extends JpaRepository<Parametre, Long> {
 	
 	@Query("SELECT DISTINCT p FROM Parametre p WHERE p.actif = 1 ORDER BY p.id ASC")
 	List<Parametre> findAllActif();
+	
+	@Query("SELECT  COUNT(p) FROM Parametre p WHERE p.actif = 1")
+	int findNbreParametre();
 
 }

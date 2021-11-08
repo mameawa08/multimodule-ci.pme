@@ -16,5 +16,8 @@ public interface ReponseRepository extends JpaRepository<ReponseQualitative, Lon
 	
 	@Query("SELECT DISTINCT r FROM ReponseQualitative r WHERE r.actif = 1 AND r.question IS NOT NULL AND r.question.id=:idQuestion ORDER BY r.id ASC")
 	List<ReponseQualitative> findReponseByQuestion(@Param("idQuestion") Long idQuestion);
+	
+	@Query("SELECT COUNT(r) FROM ReponseQualitative r WHERE r.actif = 1 AND r.question IS NOT NULL AND r.question.id=:idQuestion")
+	int findNbreReponseByQuestion(@Param("idQuestion") Long idQuestion);
 
 }
