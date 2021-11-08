@@ -46,7 +46,7 @@ public class PonderationController {
 	}
 	
 	@GetMapping(value = "/parametre/{idParametre}")
-	public ResponseEntity<List<Ponderation_scoreDTO>> getListePonderationsByParametre(@RequestBody Long idParametre) throws Exception {
+	public ResponseEntity<List<Ponderation_scoreDTO>> getListePonderationsByParametre(@PathVariable Long idParametre) throws Exception {
 	       List<Ponderation_scoreDTO> ponderationsListes = ponderationService.getListePonderationsByParametre(idParametre);
 	       return ResponseEntity.ok(ponderationsListes);
 	}

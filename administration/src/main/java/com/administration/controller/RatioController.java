@@ -46,7 +46,7 @@ public class RatioController {
 	}
 	
 	@GetMapping(value = "/code/{code}")
-	public ResponseEntity<RatioDTO> getRatioParCode(@RequestBody String code) throws Exception {
+	public ResponseEntity<RatioDTO> getRatioParCode(@PathVariable String code) throws Exception {
 	       RatioDTO ratio = ratioService.getRatioByCode(code);
 	       return ResponseEntity.ok(ratio);
 	}

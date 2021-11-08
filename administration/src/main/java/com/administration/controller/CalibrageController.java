@@ -46,7 +46,7 @@ public class CalibrageController {
 	}
 	
 	@GetMapping(value = "/ratio/{idRatio}")
-	public ResponseEntity<List<CalibrageDTO>> getListeCalibragesByRatio(@RequestBody Long idRatio) throws Exception {
+	public ResponseEntity<List<CalibrageDTO>> getListeCalibragesByRatio(@PathVariable Long idRatio) throws Exception {
 	       List<CalibrageDTO> calibragesListes = calibrageService.getListeCalibragesByRatio(idRatio);
 	       return ResponseEntity.ok(calibragesListes);
 	}

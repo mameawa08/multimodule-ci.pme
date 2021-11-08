@@ -58,7 +58,7 @@ public class QuestionController {
 	}
 	
 	@GetMapping(value = "/parametre/{idParametre}")
-	public ResponseEntity<List<QuestionDTO>> getListeQuestionsByParametre(@RequestBody Long idParametre) throws Exception {
+	public ResponseEntity<List<QuestionDTO>> getListeQuestionsByParametre(@PathVariable Long idParametre) throws Exception {
        List<QuestionDTO> questionListes = questionService.getListeQuestionsByParametre(idParametre);
        return ResponseEntity.ok(questionListes);
 	}

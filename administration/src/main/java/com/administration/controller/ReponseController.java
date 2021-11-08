@@ -46,7 +46,7 @@ public class ReponseController {
 	}
 	
 	@GetMapping(value = "/question/{idQuestion}")
-	public ResponseEntity<List<ReponseQualitativeDTO>> getListeReponsesByQuestion(@RequestBody Long idQuestion) throws Exception {
+	public ResponseEntity<List<ReponseQualitativeDTO>> getListeReponsesByQuestion(@PathVariable Long idQuestion) throws Exception {
 	       List<ReponseQualitativeDTO> reponseListes = reponseService.getListeReponsesByQuestion(idQuestion);
 	       return ResponseEntity.ok(reponseListes);
 	}
