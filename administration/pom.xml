@@ -143,6 +143,16 @@
                 </configuration>
             </plugin>
 		</plugins>
+		
+		<resources>
+        	<resource>
+            	<directory>src/main/resources</directory>
+            	<filtering>true</filtering>
+            	<excludes>
+                	<exclude>*.jks</exclude>
+            	</excludes>
+        	</resource>
+    	</resources>
 	</build>
 	
 	<repositories>
