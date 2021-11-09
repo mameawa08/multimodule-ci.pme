@@ -53,14 +53,11 @@ public class RatioServiceImpl implements IRatioService {
 		if (ratioPayload.getLibelle() == null || ratioPayload.getLibelle().equals("")) {
 			throw new Exception("Le libellé du ratio est obligatoire !");
 		}
-		if (ratioPayload.getPonderation() == null) {
+		/*if (ratioPayload.getPonderation() == null) {
 			throw new Exception("La pondération du ratio est obligatoire !");
-		}
+		}*/
 		if (ratioPayload.getFormule() == null || ratioPayload.getFormule().equals("")) {
 			throw new Exception("La formule du ratio est obligatoire !");
-		}
-		if (ratioPayload.getUnite() == null || ratioPayload.getUnite().equals("")) {
-			throw new Exception("L'unité du ratio est obligatoire !");
 		}
 		
 		RatioDTO ratioDTO = new RatioDTO();

@@ -68,7 +68,9 @@ public class PonderationServiceImpl implements IPonderationService {
 		ponderationDTO.setId(ponderationPayload.getId());
 		ponderationDTO.setCode_score(ponderationPayload.getCode_score());
 		ponderationDTO.setPonderation(ponderationPayload.getPonderation());
-		Parametre parametre = parametreRepository.findById(ponderationPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
+		Parametre parametre = null;
+		if(ponderationPayload.getIdParametre()!=null) 
+			parametre = parametreRepository.findById(ponderationPayload.getIdParametre()).orElseThrow(() -> new Exception("Not found."));
 		ponderationDTO.setParametreDTO(dtoFactory.createParametre(parametre));
 		ponderationDTO.setActif(1);
 		
