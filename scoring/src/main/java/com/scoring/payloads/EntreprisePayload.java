@@ -8,7 +8,7 @@ import lombok.Setter;
 public class EntreprisePayload {
 	
 	private Long 		id;
-	private String 		raisonSocial;
+	private String 	raisonSociale;
 	private int 		annee;
 	private Long 		capital;
 	private String 		secteur;
@@ -18,4 +18,6 @@ public class EntreprisePayload {
 	private String 		siteWeb;
 	private String 		logo;
 	private boolean 	eligible;
+	private String 		formeJur;
+
 }

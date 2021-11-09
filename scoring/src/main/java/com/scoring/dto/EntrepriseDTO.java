@@ -8,7 +8,7 @@ import lombok.Setter;
 public class EntrepriseDTO {
 	
 	private Long 		id;
-	private String 		raisonSocial;
+	private String raisonSociale;
 	private int 		annee;
 	private Long 		capital;
 	private String 		secteur;
@@ -19,4 +19,7 @@ public class EntrepriseDTO {
 	private String 		logo;
 	private boolean 	eligible;
 	private boolean 	actif;
+
+	private DirigeantDTO dirigeant;
+	private String		 formeJur;
 }
