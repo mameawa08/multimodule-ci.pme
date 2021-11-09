@@ -34,7 +34,7 @@ INSERT INTO ratio(id, code, libelle, formule, ponderation, unite, actif) VALUES 
 INSERT INTO ratio(id, code, libelle, formule, ponderation, unite, actif) VALUES (2, 'R2', 'Ratio de rentabilité (bceao)', 'Résultat net/CA % (+- 5%)', 20, '%', 1);
 
 --CALIBRAGE
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (1, null, 0.30, 1, 1, 1);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (1, 0, 0.30, 1, 1, 1);
 
 --PONDERATION
 INSERT INTO ponderation(id, code_score, ponderation, actif, id_parametre) VALUES (1, 'SF', 20, 1, null);

@@ -57,12 +57,6 @@ public class CalibrageServiceImpl implements ICalibrageService {
 	@Override
 	public CalibrageDTO createCalibrage(CalibragePayload calibragePayload) throws Exception {
 		
-		if (calibragePayload.getMin() == 0 ) {
-			throw new Exception("La valeur minimale est obligatoire !");
-		}
-		if (calibragePayload.getMax() == 0 ) {
-			throw new Exception("La valeur maximale est obligatoire !");
-		}
 		if (calibragePayload.getClasse() == 0 ) {
 			throw new Exception("La classe est obligatoire !");
 		}
