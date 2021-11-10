@@ -1,5 +1,7 @@
 package com.administration.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +23,7 @@ public class QuestionDTO {
 	private int	actif;
     
     private ParametreDTO  parametreDTO;
+    
+    private List<ReponseQualitativeDTO> listReponsesDTO;
 
 }
