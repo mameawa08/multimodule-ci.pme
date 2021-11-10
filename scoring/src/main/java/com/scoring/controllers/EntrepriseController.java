@@ -2,10 +2,6 @@ package com.scoring.controllers;
 
 import java.util.List;
 
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.payloads.EntreprisePayload;
-import com.scoring.services.IEntrepriseService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.scoring.dto.EntrepriseDTO;
+import com.scoring.payloads.EntreprisePayload;
+import com.scoring.services.IEntrepriseService;
 
 
 @RestController
@@ -74,4 +74,6 @@ public class EntrepriseController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	
 }

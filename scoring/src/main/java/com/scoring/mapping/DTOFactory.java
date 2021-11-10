@@ -5,13 +5,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Named;
-
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.ParametreDTO;
+import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.RepondantDTO;
+import com.scoring.dto.ReponseQualitativeDTO;
+import com.scoring.dto.Reponse_par_entreprise_DTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
+import com.scoring.models.Parametre;
+import com.scoring.models.Question;
 import com.scoring.models.Repondant;
+import com.scoring.models.ReponseQualitative;
+import com.scoring.models.Reponse_par_entreprise;
 
 @Named
 public class DTOFactory {
@@ -102,5 +109,66 @@ public class DTOFactory {
 			return new ArrayList<>();
 
 		return repondants.stream().map(this::createRepondant).collect(Collectors.toList());
+	}
+	
+	public QuestionDTO createQuestion(Question question){
+		if (question == null)
+			return null;
+		QuestionDTO dto = new QuestionDTO();
+		dto.setId(question.getId());
+		dto.setCode(question.getCode());
+		dto.setLibelle(question.getLibelle());
+		dto.setActif(question.getActif());
+		if(question.getParametre()!=null)
+			dto.setParametreDTO(createParametre(question.getParametre()));
+
+		return dto;
+	}
+	
+	public ParametreDTO createParametre(Parametre parametre){
+		if (parametre == null)
+			return null;
+		ParametreDTO dto = new ParametreDTO();
+		dto.setId(parametre.getId());
+		dto.setCode(parametre.getCode());
+		dto.setLibelle(parametre.getLibelle());
+		dto.setNbre_question(parametre.getNbre_question());
+		dto.setActif(parametre.getActif());
+
+		return dto;
+	}
+	
+	public ReponseQualitativeDTO createReponseQualitative(ReponseQualitative reponse){
+		if (reponse == null)
+			return null;
+		ReponseQualitativeDTO dto = new ReponseQualitativeDTO();
+		dto.setId(reponse.getId());
+		dto.setCode(reponse.getCode());
+		dto.setLibelle(reponse.getLibelle());
+		dto.setActif(reponse.getActif());
+		dto.setScore(reponse.getScore());
+		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+
+		return dto;
+	}
+	
+	public Reponse_par_entreprise_DTO createReponseParPME(Reponse_par_entreprise reponse){
+		if (reponse == null)
+			return null;
+		Reponse_par_entreprise_DTO dto = new Reponse_par_entreprise_DTO();
+		dto.setId(reponse.getId());
+		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
+		dto.setEntrepriseDTO(createEntreprise(reponse.getEntreprise()));
+		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+		dto.setReponse_quali_DTO(createReponseQualitative(reponse.getReponse_quali()));
+		return dto;
+	}
+
+	public List<Reponse_par_entreprise_DTO> createListReponseParPME(List<Reponse_par_entreprise> reponses){
+		if(reponses == null || (reponses != null && reponses.size() == 0))
+			return new ArrayList<>();
+
+		return reponses.stream().map(this::createReponseParPME).collect(Collectors.toList());
+
 	}
 }

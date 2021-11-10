@@ -58,7 +58,7 @@ public class ReponseServiceImpl implements IReponseService {
 			throw new Exception("Le libellé de la réponse est obligatoire !");
 		}
 		if (reponsePayload.getScore() == 0) {
-			throw new Exception("Le score de la réponse est obligatoire !");
+			throw new Exception("La classe de la réponse est obligatoire !");
 		}
 		if (reponsePayload.getIdQuestion() == null) {
 			throw new Exception("Veuillez choisir une question à rattacher à cette réponse !");

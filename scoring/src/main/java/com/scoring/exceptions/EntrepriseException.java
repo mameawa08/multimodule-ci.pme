@@ -2,6 +2,11 @@ package com.scoring.exceptions;
 
 public class EntrepriseException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7555443288020718722L;
+
 	public EntrepriseException() {
 	}
 
