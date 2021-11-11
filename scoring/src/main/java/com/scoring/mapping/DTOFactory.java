@@ -29,6 +29,7 @@ public class DTOFactory {
 		EntrepriseDTO dto = new EntrepriseDTO();
 		dto.setId(entreprise.getId());
 		dto.setRaisonSociale(entreprise.getRaisonSociale());
+		dto.setIntitule(entreprise.getIntitule());
 		dto.setAnnee(entreprise.getAnnee());
 		dto.setCapital(entreprise.getCapital());
 		dto.setSecteur(entreprise.getSecteur());

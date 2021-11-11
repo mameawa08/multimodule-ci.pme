@@ -26,6 +26,7 @@ public class ModelFactory {
 		model.setId(entreprise.getId());
 		model.setRaisonSociale(entreprise.getRaisonSociale());
 		model.setAnnee(entreprise.getAnnee());
+		model.setIntitule(entreprise.getIntitule());
 		model.setCapital(entreprise.getCapital());
 		model.setSecteur(entreprise.getSecteur());
 		model.setDescription(entreprise.getDescription());
