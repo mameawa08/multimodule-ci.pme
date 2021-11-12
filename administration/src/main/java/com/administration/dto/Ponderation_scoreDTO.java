@@ -14,7 +14,7 @@ public class Ponderation_scoreDTO {
 
     private Long id;
 	
-	private String code_score;
+	private String typeScore;
 
     private Long ponderation;
     

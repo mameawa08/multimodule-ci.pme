@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "reponse_par_entreprise")
-public class Reponse_par_entreprise implements Serializable {
+public class ReponseParPME implements Serializable {
 	
 	/**
 	 * 

@@ -1,10 +1,11 @@
 package com.scoring.repositories;
 
-import com.scoring.models.Reponse_par_entreprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.scoring.models.ReponseParPME;
+
 @Repository
-public interface ReponseParPMERepository extends JpaRepository<Reponse_par_entreprise, Long> {
+public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Long> {
 	
 }

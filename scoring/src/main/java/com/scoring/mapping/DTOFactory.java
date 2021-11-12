@@ -10,15 +10,16 @@ import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.ParametreDTO;
 import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.RepondantDTO;
+import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.dto.ReponseQualitativeDTO;
-import com.scoring.dto.Reponse_par_entreprise_DTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Parametre;
 import com.scoring.models.Question;
 import com.scoring.models.Repondant;
+import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
-import com.scoring.models.Reponse_par_entreprise;
+
 
 @Named
 public class DTOFactory {
@@ -153,10 +154,10 @@ public class DTOFactory {
 		return dto;
 	}
 	
-	public Reponse_par_entreprise_DTO createReponseParPME(Reponse_par_entreprise reponse){
+	public ReponseParPMEDTO createReponseParPME(ReponseParPME reponse){
 		if (reponse == null)
 			return null;
-		Reponse_par_entreprise_DTO dto = new Reponse_par_entreprise_DTO();
+		ReponseParPMEDTO dto = new ReponseParPMEDTO();
 		dto.setId(reponse.getId());
 		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
 		dto.setEntrepriseDTO(createEntreprise(reponse.getEntreprise()));
@@ -165,7 +166,7 @@ public class DTOFactory {
 		return dto;
 	}
 
-	public List<Reponse_par_entreprise_DTO> createListReponseParPME(List<Reponse_par_entreprise> reponses){
+	public List<ReponseParPMEDTO> createListReponseParPME(List<ReponseParPME> reponses){
 		if(reponses == null || (reponses != null && reponses.size() == 0))
 			return new ArrayList<>();
 

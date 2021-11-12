@@ -156,7 +156,7 @@ public class ModelFactory {
 			return null;
 		Ponderation_score ponderation = new Ponderation_score();
 		ponderation.setId(ponderationDTO.getId());
-		ponderation.setCode_score(ponderationDTO.getCode_score());
+		ponderation.setTypeScore(ponderationDTO.getTypeScore());
 		ponderation.setPonderation(ponderationDTO.getPonderation());
 		ponderation.setParametre(createParametre(ponderationDTO.getParametreDTO()));
 		ponderation.setActif(ponderationDTO.getActif());

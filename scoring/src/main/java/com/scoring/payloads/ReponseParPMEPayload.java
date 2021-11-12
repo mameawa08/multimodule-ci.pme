@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Reponse_par_Entr_Payload {
+public class ReponseParPMEPayload {
 
 	private Long idQuestion;
 

@@ -36,7 +36,7 @@ public class Ponderation_score implements Serializable {
     private Long id;
 	
 	@Column
-	private String code_score;
+	private String typeScore;
 
     @Column
     private Long ponderation;

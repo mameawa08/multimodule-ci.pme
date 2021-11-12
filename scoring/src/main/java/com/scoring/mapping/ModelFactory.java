@@ -6,15 +6,16 @@ import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.ParametreDTO;
 import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.RepondantDTO;
+import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.dto.ReponseQualitativeDTO;
-import com.scoring.dto.Reponse_par_entreprise_DTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Parametre;
 import com.scoring.models.Question;
 import com.scoring.models.Repondant;
+import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
-import com.scoring.models.Reponse_par_entreprise;
+
 
 @Named
 public class ModelFactory {
@@ -129,10 +130,10 @@ public class ModelFactory {
 		return question;
 	}
 	
-	public Reponse_par_entreprise createReponseParPME(Reponse_par_entreprise_DTO reponseDTO){
+	public ReponseParPME createReponseParPME(ReponseParPMEDTO reponseDTO){
 		if (reponseDTO == null)
 			return null;
-		Reponse_par_entreprise model = new Reponse_par_entreprise();
+		ReponseParPME model = new ReponseParPME();
 		model.setId(reponseDTO.getId());
 		model.setReponse_eligibilite(reponseDTO.isReponse_eligibilite());
 		model.setEntreprise(createEntreprise(reponseDTO.getEntrepriseDTO()));

@@ -236,7 +236,7 @@ public class DTOFactory {
 			return null;
 		Ponderation_scoreDTO dto = new Ponderation_scoreDTO();
 		dto.setId(ponderation.getId());
-		dto.setCode_score(ponderation.getCode_score());
+		dto.setTypeScore(ponderation.getTypeScore());
 		dto.setPonderation(ponderation.getPonderation());
 		dto.setParametreDTO(createParametre(ponderation.getParametre()));
 		dto.setActif(ponderation.getActif());
