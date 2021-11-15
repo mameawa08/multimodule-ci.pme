@@ -51,39 +51,39 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		}
 		else{
 			entreprise = new EntrepriseDTO();
+			entreprise.setActif(true);
 		}
-		if(entreprise.getRaisonSociale() != null && entreprise.getRaisonSociale().equals(""))
+		if(payload.getRaisonSociale() != null && payload.getRaisonSociale().equals(""))
 			throw new EntrepriseException("La raison sociale est obligatoire.");
 
-		if(entreprise.getSecteur() != null && entreprise.getSecteur().equals(""))
+		if(payload.getSecteur() != null && payload.getSecteur().equals(""))
 			throw new EntrepriseException("Le secteur est obligatoire.");
 
-		if(entreprise.getDescription() != null && entreprise.getDescription().equals(""))
+		if(payload.getDescription() != null && payload.getDescription().equals(""))
 			throw new EntrepriseException("La description est obligatoire.");
 
-		if(entreprise.getRegime() != null && entreprise.getRegime().equals(""))
+		if(payload.getRegime() != null && payload.getRegime().equals(""))
 			throw new EntrepriseException("Le regime est obligatoire.");
 
-		if(entreprise.getAdresse() != null && entreprise.getAdresse().equals(""))
+		if(payload.getAdresse() != null && payload.getAdresse().equals(""))
 			throw new EntrepriseException("L'adresse est obligatoire.");
 
-		if(entreprise.getSiteWeb() != null && entreprise.getSiteWeb().equals(""))
+		if(payload.getSiteWeb() != null && payload.getSiteWeb().equals(""))
 			throw new EntrepriseException("Le site web est obligatoire.");
 
-		if(entreprise.getLogo() != null && entreprise.getLogo().equals(""))
+		if(payload.getLogo() != null && payload.getLogo().equals(""))
 			throw new EntrepriseException("Le logo est obligatoire.");
 
-		if(entreprise.getFormeJur() != null && entreprise.getFormeJur().equals(""))
+		if(payload.getFormeJur() != null && payload.getFormeJur().equals(""))
 			throw new EntrepriseException("La forme juridique est obligatoire.");
 
-		if(entreprise.getAnnee() == 0)
+		if(payload.getAnnee() == 0)
 			throw new EntrepriseException("L'annee de creation est obligatoire.");
 
-		if(entreprise.getCapital() != null && entreprise.getCapital().equals(0L))
+		if(payload.getCapital() != null && payload.getCapital().equals(0L))
 			throw new EntrepriseException("Le capital est obligatoire.");
 
 		entreprise = payloadToDTO.createEntreprise(payload);
-		entreprise.setActif(true);
 
 		try {
 			Entreprise model = modelFactory.createEntreprise(entreprise);
