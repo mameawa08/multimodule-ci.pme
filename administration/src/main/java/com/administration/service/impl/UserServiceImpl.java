@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.administration.dto.ProfilDTO;
 import com.administration.dto.UserDTO;
 import com.administration.exception.ProfilException;
@@ -13,14 +17,9 @@ import com.administration.mapping.ModelFactory;
 import com.administration.model.User;
 import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
-import com.administration.repository.ProfilRepository;
 import com.administration.repository.UserRepository;
 import com.administration.service.IProfilService;
 import com.administration.service.IUserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements IUserService{

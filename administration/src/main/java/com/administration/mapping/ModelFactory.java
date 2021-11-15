@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 
 import com.administration.dto.CalibrageDTO;
+import com.administration.dto.FormeJuridiqueDTO;
 import com.administration.dto.HabilitationDTO;
 import com.administration.dto.ParametreDTO;
 import com.administration.dto.Ponderation_scoreDTO;
@@ -14,8 +15,10 @@ import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
+import com.administration.dto.SecteurActiviteDTO;
 import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
+import com.administration.model.FormeJuridique;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
 import com.administration.model.Ponderation_score;
@@ -23,6 +26,7 @@ import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
+import com.administration.model.SecteurActivite;
 import com.administration.model.User;
 
 @Named("modelFactory")
@@ -162,6 +166,29 @@ public class ModelFactory {
 		ponderation.setActif(ponderationDTO.getActif());
 
 		return ponderation;
+	}
+	
+	public FormeJuridique createFormeJuridique(FormeJuridiqueDTO formeJuridiqueDTO){
+		if (formeJuridiqueDTO == null)
+			return null;
+		FormeJuridique formeJuridique = new FormeJuridique();
+		formeJuridique.setId(formeJuridiqueDTO.getId());
+		formeJuridique.setCode(formeJuridiqueDTO.getCode());
+		formeJuridique.setLibelle(formeJuridiqueDTO.getLibelle());
+		formeJuridique.setActif(formeJuridiqueDTO.getActif());
+
+		return formeJuridique;
+	}
+	
+	public SecteurActivite createSecteurActivite(SecteurActiviteDTO secteurActiviteDTO){
+		if (secteurActiviteDTO == null)
+			return null;
+		SecteurActivite secteurActivite = new SecteurActivite();
+		secteurActivite.setId(secteurActiviteDTO.getId());
+		secteurActivite.setLibelle(secteurActiviteDTO.getLibelle());
+		secteurActivite.setActif(secteurActiviteDTO.getActif());
+
+		return secteurActivite;
 	}
 	
 }

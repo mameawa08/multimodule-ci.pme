@@ -40,8 +40,8 @@ public class MailServiceImpl implements IMailService {
 	@Value("${spring.mail.username}")
 	String mailSender;
 	
-	@Value("${signature.mail}")
-	String signature;
+	//@Value("${signature.mail}")
+	//String signature;
 	
 	@Value("${url.server}")
 	String url;
@@ -60,7 +60,7 @@ public class MailServiceImpl implements IMailService {
 	
 	private void sendMail(final MimeMessage message, InternetAddress from, String to, String text, String subject) throws MessagingException, UnsupportedEncodingException {
         MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setFrom(new InternetAddress(mailSender, signature));
+        helper.setFrom(new InternetAddress(mailSender, "cipme.com"));
         helper.setTo(to);
         helper.setText(text, true); // set to html
         helper.setSubject(subject);

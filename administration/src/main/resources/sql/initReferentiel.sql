@@ -39,6 +39,28 @@ INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (1, 0, 0.30,
 --PONDERATION
 INSERT INTO ponderation(id, code_score, ponderation, actif, id_parametre) VALUES (1, 'Score Financier', 20, 1, null);
 
+--FORMES JURIDIQUES
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (1, '', 'Entreprise Individuelle', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (2, 'SURL', 'La Société Unipersonnelle à responsabilité limitée', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (3, 'SARL', 'La Société à Responsabilité Limitée', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (4, 'SA', 'La Société anonyme', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (5, 'SNC', 'La Société en Nom Collectif', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (6, 'SCS', 'La Société en Commandite Simple', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (7, '', 'Le Groupement d'Intérêt Economique', 1);
+
+--SECTEURS ACTIVITE
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (1, 'Agroalimentaire', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (2, 'Informatique / Télécoms', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (3, 'Transports / Logistique', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (4, 'Communication / Multimédia', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (5, 'Banque / Finance', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (6, 'Assurance', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (7, 'BTP / Matériaux de construction', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (8, 'Électronique / Électricité', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (9, 'Industrie pharmaceutique', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (10, 'Textile / Habillement / Chaussure', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (11, 'Elevage', 1);
+INSERT INTO secteur_activite(id, libelle, actif) VALUES (12, 'Machines et équipements / Automobile', 1);
 
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 CREATE SEQUENCE hibernate_sequence

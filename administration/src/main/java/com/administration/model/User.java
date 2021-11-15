@@ -15,6 +15,11 @@ import lombok.Setter;
 public class User implements Serializable {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4525649766282704730L;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 
 import com.administration.dto.CalibrageDTO;
+import com.administration.dto.FormeJuridiqueDTO;
 import com.administration.dto.HabilitationDTO;
 import com.administration.dto.ParametreDTO;
 import com.administration.dto.Ponderation_scoreDTO;
@@ -14,8 +15,10 @@ import com.administration.dto.ProfilDTO;
 import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
+import com.administration.dto.SecteurActiviteDTO;
 import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
+import com.administration.model.FormeJuridique;
 import com.administration.model.Habilitation;
 import com.administration.model.Parametre;
 import com.administration.model.Ponderation_score;
@@ -23,6 +26,7 @@ import com.administration.model.Profil;
 import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
+import com.administration.model.SecteurActivite;
 import com.administration.model.User;
 import com.administration.payload.UserPaylaod;
 
@@ -251,9 +255,44 @@ public class DTOFactory {
 		return ponderations.stream().map(this::createPonderationScore).collect(Collectors.toList());
 
 	}
+	
+	public FormeJuridiqueDTO createFormeJuridique(FormeJuridique formeJuridique){
+		if (formeJuridique == null)
+			return null;
+		FormeJuridiqueDTO dto = new FormeJuridiqueDTO();
+		dto.setId(formeJuridique.getId());
+		dto.setCode(formeJuridique.getCode());
+		dto.setLibelle(formeJuridique.getLibelle());
+		dto.setActif(formeJuridique.getActif());
 
+		return dto;
+	}
+	
+	public List<FormeJuridiqueDTO> createListFormeJuridiques(List<FormeJuridique> formeJuridiques){
+		if(formeJuridiques == null || (formeJuridiques != null && formeJuridiques.size() == 0))
+			return new ArrayList<>();
 
+		return formeJuridiques.stream().map(this::createFormeJuridique).collect(Collectors.toList());
 
+	}
 
+	public SecteurActiviteDTO createSecteurActivite(SecteurActivite secteurActivite){
+		if (secteurActivite == null)
+			return null;
+		SecteurActiviteDTO dto = new SecteurActiviteDTO();
+		dto.setId(secteurActivite.getId());
+		dto.setLibelle(secteurActivite.getLibelle());
+		dto.setActif(secteurActivite.getActif());
+
+		return dto;
+	}
+
+	public List<SecteurActiviteDTO> createListSecteurActivites(List<SecteurActivite> secteurs){
+		if(secteurs == null || (secteurs != null && secteurs.size() == 0))
+			return new ArrayList<>();
+
+		return secteurs.stream().map(this::createSecteurActivite).collect(Collectors.toList());
+
+	}
 	
 }
