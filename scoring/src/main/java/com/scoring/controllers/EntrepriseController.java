@@ -29,7 +29,7 @@ public class EntrepriseController {
 
 	@Autowired
 	private IIndicateurService indicateurService;
-	
+
 	@GetMapping("")
 	public ResponseEntity<?> all() {
 		try {
@@ -59,7 +59,7 @@ public class EntrepriseController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping("")
 	public ResponseEntity<?> create(@RequestBody EntreprisePayload payload) {
 		try {
@@ -89,4 +89,6 @@ public class EntrepriseController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
+
 }

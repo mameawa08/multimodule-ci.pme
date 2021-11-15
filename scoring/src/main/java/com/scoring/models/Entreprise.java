@@ -16,6 +16,7 @@ public class Entreprise {
 	private Long 		id;
 	private String 		raisonSociale;
 	private int 		annee;
+	private String 		intitule;
 	private Long 		capital;
 	private String 		secteur;
 	private String 		description;

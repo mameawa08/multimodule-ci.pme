@@ -1,4 +1,4 @@
-package com.administration.model;
+package com.scoring.models;
 
 import java.io.Serializable;
 
@@ -22,13 +22,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "ponderation")
-public class Ponderation_score implements Serializable {
+@Table(name = "question")
+public class Question implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6089947712411846958L;
+	private static final long serialVersionUID = 9024440466491855084L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,10 +36,10 @@ public class Ponderation_score implements Serializable {
     private Long id;
 	
 	@Column
-	private String typeScore;
+	private String code;
 
     @Column
-    private Long ponderation;
+    private String libelle;
     
     @Column(name = "actif")
 	private int	actif;

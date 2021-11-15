@@ -56,8 +56,8 @@ public class PonderationServiceImpl implements IPonderationService {
 	@Override
 	public Ponderation_scoreDTO createPonderation(PonderationPayload ponderationPayload) throws Exception {
 		
-		if (ponderationPayload.getIdParametre()==null && ponderationPayload.getCode_score()!=null
-				&& ponderationPayload.getCode_score().equals("")) {
+		if (ponderationPayload.getIdParametre()==null && ponderationPayload.getTypeScore()!=null
+				&& ponderationPayload.getTypeScore().equals("")) {
 			throw new Exception("Veuillez choisir un paramètre si vous souhaitez enregistrer un score lié à un paramètre qualitatif !");
 		}
 		if (ponderationPayload.getPonderation()==null) {
@@ -66,7 +66,7 @@ public class PonderationServiceImpl implements IPonderationService {
 		
 		Ponderation_scoreDTO ponderationDTO = new Ponderation_scoreDTO();
 		ponderationDTO.setId(ponderationPayload.getId());
-		ponderationDTO.setCode_score(ponderationPayload.getCode_score());
+		ponderationDTO.setTypeScore(ponderationPayload.getTypeScore());
 		ponderationDTO.setPonderation(ponderationPayload.getPonderation());
 		Parametre parametre = null;
 		if(ponderationPayload.getIdParametre()!=null) 

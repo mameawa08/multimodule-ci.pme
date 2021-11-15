@@ -7,13 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-
 
 /**
  * @author agileway
@@ -22,13 +19,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "ponderation")
-public class Ponderation_score implements Serializable {
-
+@Table(name = "forme_juridique")
+public class FormeJuridique implements Serializable {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6089947712411846958L;
+	private static final long serialVersionUID = -2662576183122632626L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,16 +33,12 @@ public class Ponderation_score implements Serializable {
     private Long id;
 	
 	@Column
-	private String typeScore;
+	private String code;
 
     @Column
-    private Long ponderation;
+    private String libelle;
     
     @Column(name = "actif")
 	private int	actif;
-    
-    @ManyToOne
-  	@JoinColumn(name = "id_parametre", nullable = true)
-    private Parametre  parametre;
 
 }

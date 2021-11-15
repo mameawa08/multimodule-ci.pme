@@ -8,7 +8,7 @@ import lombok.Setter;
 public class PonderationPayload {
 	
 	private Long 			id;
-	private String 			code_score;
+	private String 			typeScore;
 	private Long 			ponderation;
 	private Long 			idParametre;
 }

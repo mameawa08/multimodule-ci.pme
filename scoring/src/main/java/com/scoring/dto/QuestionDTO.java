@@ -1,4 +1,6 @@
-package com.administration.dto;
+package com.scoring.dto;
+
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,16 +12,18 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Ponderation_scoreDTO {
+public class QuestionDTO {
 
     private Long id;
 	
-	private String typeScore;
+	private String code;
 
-    private Long ponderation;
+    private String libelle;
     
 	private int	actif;
     
     private ParametreDTO  parametreDTO;
+    
+    private List<ReponseQualitativeDTO> listReponsesDTO;
 
 }

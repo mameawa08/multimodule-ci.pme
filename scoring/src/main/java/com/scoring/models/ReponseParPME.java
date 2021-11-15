@@ -1,4 +1,4 @@
-package com.administration.model;
+package com.scoring.models;
 
 import java.io.Serializable;
 
@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-
 /**
  * @author agileway
  */
@@ -22,30 +21,34 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "ponderation")
-public class Ponderation_score implements Serializable {
-
+@Table(name = "reponse_par_entreprise")
+public class ReponseParPME implements Serializable {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6089947712411846958L;
+	private static final long serialVersionUID = -4337523470652513371L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
     private Long id;
 	
-	@Column
-	private String typeScore;
-
-    @Column
-    private Long ponderation;
-    
-    @Column(name = "actif")
-	private int	actif;
-    
-    @ManyToOne
-  	@JoinColumn(name = "id_parametre", nullable = true)
-    private Parametre  parametre;
+	@Column(nullable=true)
+	private boolean reponse_eligibilite;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_entreprise")
+	private Entreprise  entreprise;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_question")
+	private Question  question;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_reponse_quali")
+	private ReponseQualitative  reponse_quali;
+	
+	
 
 }

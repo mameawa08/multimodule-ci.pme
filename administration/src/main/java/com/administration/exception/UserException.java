@@ -2,6 +2,11 @@ package com.administration.exception;
 
 public class UserException extends Exception{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 289083893106559568L;
+
 	public UserException(String message){
 		super(message);
 	}
