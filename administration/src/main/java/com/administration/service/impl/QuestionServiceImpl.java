@@ -14,6 +14,7 @@ import com.administration.payload.QuestionPayload;
 import com.administration.repository.ParametreRepository;
 import com.administration.repository.QuestionRepository;
 import com.administration.service.IQuestionService;
+import com.administration.service.IReponseService;
 
 
 
@@ -32,6 +33,9 @@ public class QuestionServiceImpl implements IQuestionService {
 	
 	@Autowired
 	private ModelFactory modelFactory;
+	
+	@Autowired
+	private IReponseService reponseService;
 
 	@Override
 	public List<QuestionDTO> getListeQuestions() {
@@ -65,6 +69,9 @@ public class QuestionServiceImpl implements IQuestionService {
 	public List<QuestionDTO> getListeQuestionsByParametre(Long idParametre) {
 		List<Question> questions = questionRepository.findQuestionByParametre(idParametre);
 		List<QuestionDTO> questionsDto = dtoFactory.createListQuestion(questions);
+		for(QuestionDTO q: questionsDto){
+			q.setListReponsesDTO(reponseService.getListeReponsesByQuestion(q.getId()));
+		}
 		return questionsDto;
 	}
 	

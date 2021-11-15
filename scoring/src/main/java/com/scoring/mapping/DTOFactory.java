@@ -8,14 +8,23 @@ import javax.inject.Named;
 
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.ParametreDTO;
+import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.IndicateurDTO;
 import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RepondantDTO;
+import com.scoring.dto.ReponseParPMEDTO;
+import com.scoring.dto.ReponseQualitativeDTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
+import com.scoring.models.Parametre;
+import com.scoring.models.Question;
 import com.scoring.models.Indicateur;
 import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
+import com.scoring.models.ReponseParPME;
+import com.scoring.models.ReponseQualitative;
+
 
 @Named
 public class DTOFactory {
@@ -26,6 +35,7 @@ public class DTOFactory {
 		EntrepriseDTO dto = new EntrepriseDTO();
 		dto.setId(entreprise.getId());
 		dto.setRaisonSociale(entreprise.getRaisonSociale());
+		dto.setIntitule(entreprise.getIntitule());
 		dto.setAnnee(entreprise.getAnnee());
 		dto.setCapital(entreprise.getCapital());
 		dto.setSecteur(entreprise.getSecteur());
@@ -135,7 +145,7 @@ public class DTOFactory {
 	public List<IndicateurDTO> createListIndicateur(List<Indicateur> indicateurs){
 		if(indicateurs != null && indicateurs.size() == 0)
 			return new ArrayList<>();
-		
+
 		return indicateurs.stream().map(this::createIndicateur).collect(Collectors.toList());
 	}
 
@@ -143,7 +153,7 @@ public class DTOFactory {
 	public PieceJointeDTO createPieceJointe(PieceJointe pieceJointe){
 		if(pieceJointe == null)
 			return null;
-		
+
 		PieceJointeDTO dto = new PieceJointeDTO();
 		dto.setId(pieceJointe.getId());
 		dto.setNomPiece(pieceJointe.getNomPiece());
@@ -157,9 +167,70 @@ public class DTOFactory {
 	public List<PieceJointeDTO> createListPieceJointe(List<PieceJointe> pieceJointes){
 		if(pieceJointes != null && pieceJointes.size() == 0)
 			return new ArrayList<>();
-		
+
 		return pieceJointes.stream().map(this::createPieceJointe).collect(Collectors.toList());
 	}
 
 
+
+	public QuestionDTO createQuestion(Question question){
+		if (question == null)
+			return null;
+		QuestionDTO dto = new QuestionDTO();
+		dto.setId(question.getId());
+		dto.setCode(question.getCode());
+		dto.setLibelle(question.getLibelle());
+		dto.setActif(question.getActif());
+		if(question.getParametre()!=null)
+			dto.setParametreDTO(createParametre(question.getParametre()));
+
+		return dto;
+	}
+
+	public ParametreDTO createParametre(Parametre parametre){
+		if (parametre == null)
+			return null;
+		ParametreDTO dto = new ParametreDTO();
+		dto.setId(parametre.getId());
+		dto.setCode(parametre.getCode());
+		dto.setLibelle(parametre.getLibelle());
+		dto.setNbre_question(parametre.getNbre_question());
+		dto.setActif(parametre.getActif());
+
+		return dto;
+	}
+
+	public ReponseQualitativeDTO createReponseQualitative(ReponseQualitative reponse){
+		if (reponse == null)
+			return null;
+		ReponseQualitativeDTO dto = new ReponseQualitativeDTO();
+		dto.setId(reponse.getId());
+		dto.setCode(reponse.getCode());
+		dto.setLibelle(reponse.getLibelle());
+		dto.setActif(reponse.getActif());
+		dto.setScore(reponse.getScore());
+		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+
+		return dto;
+	}
+
+	public ReponseParPMEDTO createReponseParPME(ReponseParPME reponse){
+		if (reponse == null)
+			return null;
+		ReponseParPMEDTO dto = new ReponseParPMEDTO();
+		dto.setId(reponse.getId());
+		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
+		dto.setEntrepriseDTO(createEntreprise(reponse.getEntreprise()));
+		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+		dto.setReponse_quali_DTO(createReponseQualitative(reponse.getReponse_quali()));
+		return dto;
+	}
+
+	public List<ReponseParPMEDTO> createListReponseParPME(List<ReponseParPME> reponses){
+		if(reponses == null || (reponses != null && reponses.size() == 0))
+			return new ArrayList<>();
+
+		return reponses.stream().map(this::createReponseParPME).collect(Collectors.toList());
+
+	}
 }

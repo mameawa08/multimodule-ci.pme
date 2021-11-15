@@ -10,6 +10,7 @@ public class EntrepriseDTO {
 	private Long 		id;
 	private String raisonSociale;
 	private int 		annee;
+	private String 		intitule;
 	private Long 		capital;
 	private String 		secteur;
 	private String 		description;
