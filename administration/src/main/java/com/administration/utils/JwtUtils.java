@@ -74,7 +74,7 @@ public class JwtUtils {
     //             .compact();
     // }
 
-   /* @Bean
+    @Bean
 	public KeyStore keyStore() {
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -86,15 +86,16 @@ public class JwtUtils {
 		}
 		
 		throw new IllegalArgumentException("Unable to load keystore");
-	}*/
+	}
 
     public String generateJwtToken(String payload, int expiration) throws UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
-//        Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
+        Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
         return Jwts.builder()
                 .setSubject((payload))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration))
-                .signWith(SignatureAlgorithm.ES256, jwtSecret)
+                .signWith(key)
+//                .signWith(SignatureAlgorithm.ES256, jwtSecret)
                 .compact();
     }
 
@@ -104,8 +105,9 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) throws SignatureException, MalformedJwtException, ExpiredJwtException, UnsupportedJwtException, IllegalArgumentException, UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         try {
-//            Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
-            Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(authToken);
+            Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
+//            Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());
@@ -123,12 +125,12 @@ public class JwtUtils {
             logger.error("JWT claims string is empty: {}", e.getMessage());
             throw new IllegalArgumentException("JWT claims string is empty: "+ e.getMessage());
         }
-//        catch (UnrecoverableKeyException e) {
-//            throw new UnrecoverableKeyException(e.getMessage());
-//        } catch (KeyStoreException e) {
-//            throw new KeyStoreException(e.getMessage());
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new NoSuchAlgorithmException(e.getMessage());
-//        }
+        catch (UnrecoverableKeyException e) {
+            throw new UnrecoverableKeyException(e.getMessage());
+        } catch (KeyStoreException e) {
+            throw new KeyStoreException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new NoSuchAlgorithmException(e.getMessage());
+        }
     }
 }
