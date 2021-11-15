@@ -4,9 +4,13 @@ import javax.inject.Named;
 
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RepondantDTO;
 import com.scoring.payloads.DirigeantPayload;
 import com.scoring.payloads.EntreprisePayload;
+import com.scoring.payloads.IndicateurPayload;
+import com.scoring.payloads.PieceJointePayload;
 import com.scoring.payloads.RepondantPayload;
 
 @Named
@@ -68,6 +72,42 @@ public class PayloadToDTO {
 		dto.setFonction(repondant.getFonction());
 		// set entreprise after this method call
 		// dto.setEntreprise(createEntreprise(repondant.getEntreprise()));
+		return dto;
+	}
+
+
+	public IndicateurDTO createIndicateur(IndicateurPayload indicateur){
+		if(indicateur == null)
+			return null;
+		IndicateurDTO dto = new IndicateurDTO();
+		dto.setId(indicateur.getId());
+		dto.setBkActifCirculant(indicateur.getBkActifCirculant());
+		dto.setBtTresorerieActif(indicateur.getBtTresorerieActif());
+		dto.setDpPassifCirculant(indicateur.getDpPassifCirculant());
+		dto.setDtTresoreriePassif(indicateur.getDtTresoreriePassif());
+		dto.setXiResultatNet(indicateur.getXiResultatNet());
+		dto.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
+		dto.setBiCreanceClient(indicateur.getBiCreanceClient());
+		dto.setCaf(indicateur.getCaf());
+		dto.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
+		dto.setDfTotalResources(indicateur.getDfTotalRessources());
+		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
+		dto.setRaAchats(indicateur.getRaAchats());
+		dto.setAnnee(indicateur.getAnnee());
+
+		return dto;
+	}
+
+	public PieceJointeDTO createPieceJointe(PieceJointePayload pieceJointe){
+		if(pieceJointe == null)
+			return null;
+		
+		PieceJointeDTO dto = new PieceJointeDTO();
+		dto.setId(pieceJointe.getId());
+		dto.setNomPiece(pieceJointe.getNomPiece());
+		dto.setDateCreation(pieceJointe.getDateCreation());
+		dto.setContenu(pieceJointe.getContenu());
+
 		return dto;
 	}
 }
