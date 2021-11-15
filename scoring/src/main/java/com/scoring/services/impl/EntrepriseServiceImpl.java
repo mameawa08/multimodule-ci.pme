@@ -9,7 +9,7 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Entreprise;
 import com.scoring.payloads.EntreprisePayload;
-import com.scoring.repositories.EntrepriseRepository;
+import com.scoring.repository.EntrepriseRepository;
 import com.scoring.services.IEntrepriseService;
 
 import org.springframework.beans.factory.annotation.Autowired;

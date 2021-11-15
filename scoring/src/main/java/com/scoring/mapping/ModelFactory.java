@@ -4,9 +4,13 @@ import javax.inject.Named;
 
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RepondantDTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
+import com.scoring.models.Indicateur;
+import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 
 @Named
@@ -79,4 +83,44 @@ public class ModelFactory {
 
 		return model;
 	}
+
+	public Indicateur createIndicateur(IndicateurDTO indicateur){
+		if(indicateur == null)
+			return null;
+		Indicateur model = new Indicateur();
+		model.setId(indicateur.getId());
+		model.setBkActifCirculant(indicateur.getBkActifCirculant());
+		model.setBtTresorerieActif(indicateur.getBtTresorerieActif());
+		model.setDpPassifCirculant(indicateur.getDpPassifCirculant());
+		model.setDtTresoreriePassif(indicateur.getDtTresoreriePassif());
+		model.setXiResultatNet(indicateur.getXiResultatNet());
+		model.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
+		model.setBiCreanceClient(indicateur.getBiCreanceClient());
+		model.setCaf(indicateur.getCaf());
+		model.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
+		model.setDfTotalResources(indicateur.getDfTotalResources());
+		model.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
+		model.setRaAchats(indicateur.getRaAchats());
+		model.setAnnee(indicateur.getAnnee());
+		model.setActif(indicateur.isActif());
+		model.setEntreprise(createEntreprise(indicateur.getEntreprise()));
+
+		return model;
+	}
+
+	public PieceJointe createPieceJointe(PieceJointeDTO pieceJointe){
+		if(pieceJointe == null)
+			return null;
+		
+		PieceJointe model = new PieceJointe();
+		model.setId(pieceJointe.getId());
+		model.setNomPiece(pieceJointe.getNomPiece());
+		model.setDateCreation(pieceJointe.getDateCreation());
+		model.setContenu(pieceJointe.getContenu());
+		model.setActif(pieceJointe.isActif());
+
+		return model;
+	}
+
+	
 }

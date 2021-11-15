@@ -1,4 +1,4 @@
-package com.scoring.repositories;
+package com.scoring.repository;
 
 import com.scoring.models.Dirigeant;
 

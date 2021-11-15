@@ -3,9 +3,11 @@ package com.scoring.controllers;
 import java.util.List;
 
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
 import com.scoring.payloads.EntreprisePayload;
 import com.scoring.services.IEntrepriseService;
 
+import com.scoring.services.IIndicateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class EntrepriseController {
 
 	@Autowired
 	private IEntrepriseService entrepriseService;
+
+	@Autowired
+	private IIndicateurService indicateurService;
 	
 	@GetMapping("")
 	public ResponseEntity<?> all() {
@@ -40,6 +45,16 @@ public class EntrepriseController {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(id);
 			return ResponseEntity.ok(entreprise);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/{id}/indicateurs")
+	public ResponseEntity<?> getIndicateurs(@PathVariable Long id) {
+		try {
+			List<IndicateurDTO> indicateurs = indicateurService.getIndicateursByEntreprise(id);
+			return ResponseEntity.ok(indicateurs);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

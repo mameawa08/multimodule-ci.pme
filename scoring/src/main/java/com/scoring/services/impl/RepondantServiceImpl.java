@@ -12,7 +12,7 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Repondant;
 import com.scoring.payloads.RepondantPayload;
-import com.scoring.repositories.RepondantRepository;
+import com.scoring.repository.RepondantRepository;
 import com.scoring.services.IEntrepriseService;
 import com.scoring.services.IRepondantService;
 

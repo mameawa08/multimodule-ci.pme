@@ -12,7 +12,7 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.payloads.DirigeantPayload;
-import com.scoring.repositories.DirigeantRepository;
+import com.scoring.repository.DirigeantRepository;
 import com.scoring.services.IDirigeantService;
 
 import com.scoring.services.IEntrepriseService;

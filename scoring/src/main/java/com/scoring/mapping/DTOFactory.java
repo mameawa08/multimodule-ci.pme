@@ -8,9 +8,13 @@ import javax.inject.Named;
 
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RepondantDTO;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
+import com.scoring.models.Indicateur;
+import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 
 @Named
@@ -103,4 +107,59 @@ public class DTOFactory {
 
 		return repondants.stream().map(this::createRepondant).collect(Collectors.toList());
 	}
+
+	public IndicateurDTO createIndicateur(Indicateur indicateur){
+		if(indicateur == null)
+			return null;
+		IndicateurDTO dto = new IndicateurDTO();
+		dto.setId(indicateur.getId());
+		dto.setBkActifCirculant(indicateur.getBkActifCirculant());
+		dto.setBtTresorerieActif(indicateur.getBtTresorerieActif());
+		dto.setDpPassifCirculant(indicateur.getDpPassifCirculant());
+		dto.setDtTresoreriePassif(indicateur.getDtTresoreriePassif());
+		dto.setXiResultatNet(indicateur.getXiResultatNet());
+		dto.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
+		dto.setBiCreanceClient(indicateur.getBiCreanceClient());
+		dto.setCaf(indicateur.getCaf());
+		dto.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
+		dto.setDfTotalResources(indicateur.getDfTotalResources());
+		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
+		dto.setRaAchats(indicateur.getRaAchats());
+		dto.setAnnee(indicateur.getAnnee());
+		dto.setActif(indicateur.isActif());
+		dto.setEntreprise(createEntreprise(indicateur.getEntreprise()));
+
+		return dto;
+	}
+
+	public List<IndicateurDTO> createListIndicateur(List<Indicateur> indicateurs){
+		if(indicateurs != null && indicateurs.size() == 0)
+			return new ArrayList<>();
+		
+		return indicateurs.stream().map(this::createIndicateur).collect(Collectors.toList());
+	}
+
+
+	public PieceJointeDTO createPieceJointe(PieceJointe pieceJointe){
+		if(pieceJointe == null)
+			return null;
+		
+		PieceJointeDTO dto = new PieceJointeDTO();
+		dto.setId(pieceJointe.getId());
+		dto.setNomPiece(pieceJointe.getNomPiece());
+		dto.setDateCreation(pieceJointe.getDateCreation());
+		dto.setContenu(pieceJointe.getContenu());
+		dto.setActif(pieceJointe.isActif());
+
+		return dto;
+	}
+
+	public List<PieceJointeDTO> createListPieceJointe(List<PieceJointe> pieceJointes){
+		if(pieceJointes != null && pieceJointes.size() == 0)
+			return new ArrayList<>();
+		
+		return pieceJointes.stream().map(this::createPieceJointe).collect(Collectors.toList());
+	}
+
+
 }
