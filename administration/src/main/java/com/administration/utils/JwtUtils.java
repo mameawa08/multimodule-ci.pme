@@ -1,9 +1,10 @@
 package com.administration.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.security.core.Authentication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 // import sn.mfb.config.entities.UserDetailsImpl;
 
