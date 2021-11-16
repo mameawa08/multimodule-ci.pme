@@ -47,8 +47,8 @@ public class DTOFactory {
 		dto.setEligible(entreprise.isEligible());
 		dto.setActif(entreprise.isActif());
 
-		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
-			dto.setDirigeant(createDirigeant(entreprise.getDirigeant()));
+		/*if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
+			dto.setDirigeant(createDirigeant(entreprise.getDirigeant()));*/
 
 		dto.setFormeJur(entreprise.getFormeJur());
 
