@@ -2,6 +2,7 @@ package com.administration.service.impl;
 
 import java.util.List;
 
+import com.administration.exception.ReferentielException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,18 @@ public class ReferentielServiceImpl implements IReferentielService {
 		List<FormeJuridiqueDTO> formesJursDto = dtoFactory.createListFormeJuridiques(formesJur);
 		return formesJursDto;
 	}
-	
+
+	@Override
+	public SecteurActiviteDTO getSecteurActivite(Long id) throws ReferentielException{
+		SecteurActivite secteur = secteurRepository.findById(id).orElseThrow(() -> new ReferentielException("Secteur activite :: not found."));
+		return dtoFactory.createSecteurActivite(secteur);
+	}
+
+	@Override
+	public FormeJuridiqueDTO getFormeJuridique(Long id) throws ReferentielException {
+		FormeJuridique forme = formeJurRepository.findById(id).orElseThrow(() -> new ReferentielException("Forme juridique :: not found."));
+		return dtoFactory.createFormeJuridique(forme);
+	}
+
 
 }
