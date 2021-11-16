@@ -3,6 +3,8 @@ package com.scoring.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class EntrepriseDTO {
@@ -12,7 +14,7 @@ public class EntrepriseDTO {
 	private int 		annee;
 	private String 		intitule;
 	private Long 		capital;
-	private String 		secteur;
+	private List<SecteurActiviteDTO> secteurs;
 	private String 		description;
 	private String 		regime;
 	private String 		adresse;
@@ -22,5 +24,5 @@ public class EntrepriseDTO {
 	private boolean 	actif;
 
 	private DirigeantDTO dirigeant;
-	private String		 formeJur;
+	private FormeJuridiqueDTO		 formeJur;
 }

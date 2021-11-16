@@ -15,7 +15,12 @@ import com.scoring.payloads.RepondantPayload;
 
 @Named
 public class PayloadToDTO {
-	
+	/**
+	 * Il faut setter les secteurs d'activte et la forme juridique apres l'appel de cet methode.
+	 *
+	 * @param entreprise
+	 * @return
+	 */
 	public EntrepriseDTO createEntreprise(EntreprisePayload entreprise){
 		if(entreprise == null)
 			return null;
@@ -24,7 +29,7 @@ public class PayloadToDTO {
 		dto.setRaisonSociale(entreprise.getRaisonSociale());
 		dto.setAnnee(entreprise.getAnnee());
 		dto.setCapital(entreprise.getCapital());
-		dto.setSecteur(entreprise.getSecteur());
+//		dto.setSecteurs(entreprise.getSecteurs());
 		dto.setDescription(entreprise.getDescription());
 		dto.setRegime(entreprise.getRegime());
 		dto.setAdresse(entreprise.getAdresse());
@@ -32,7 +37,7 @@ public class PayloadToDTO {
 		dto.setLogo(entreprise.getLogo());
 		dto.setEligible(entreprise.isEligible());
 
-		dto.setFormeJur(entreprise.getFormeJur());
+//		dto.setFormeJur(entreprise.getFormeJur());
 
 		return dto;
 	}

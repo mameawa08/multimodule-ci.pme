@@ -17,6 +17,8 @@ import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
 import com.scoring.repository.DirigeantRepository;
 import com.scoring.repository.EntrepriseRepository;
+import com.scoring.repository.DirigeantRepository;
+import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.QuestionRepository;
 import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.services.IMailService;
