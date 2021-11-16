@@ -1,15 +1,8 @@
 package com.scoring.mapping;
 
 import javax.inject.Named;
-import com.scoring.dto.DirigeantDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.ParametreDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.IndicateurDTO;
-import com.scoring.dto.PieceJointeDTO;
-import com.scoring.dto.RepondantDTO;
-import com.scoring.dto.ReponseParPMEDTO;
-import com.scoring.dto.ReponseQualitativeDTO;
+
+import com.scoring.dto.*;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Parametre;
@@ -19,6 +12,9 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Named
@@ -33,7 +29,6 @@ public class ModelFactory {
 		model.setAnnee(entreprise.getAnnee());
 		model.setIntitule(entreprise.getIntitule());
 		model.setCapital(entreprise.getCapital());
-		model.setSecteur(entreprise.getSecteur());
 		model.setDescription(entreprise.getDescription());
 		model.setRegime(entreprise.getRegime());
 		model.setAdresse(entreprise.getAdresse());
@@ -45,7 +40,8 @@ public class ModelFactory {
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			model.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 
-		model.setFormeJur(entreprise.getFormeJur());
+		model.setFormeJur(entreprise.getFormeJur().getId());
+		model.setSecteur(entreprise.getSecteurs().stream().map(SecteurActiviteDTO::getId).collect(Collectors.toList()));
 
 		return model;
 	}
@@ -183,6 +179,7 @@ public class ModelFactory {
 
 		return model;
 	}
+
 
 
 }

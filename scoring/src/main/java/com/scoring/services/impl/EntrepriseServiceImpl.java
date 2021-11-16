@@ -1,9 +1,13 @@
 package com.scoring.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.FormeJuridiqueDTO;
+import com.scoring.dto.SecteurActiviteDTO;
 import com.scoring.exceptions.EntrepriseException;
+import com.scoring.exceptions.ReferentielException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.mapping.PayloadToDTO;
@@ -12,6 +16,7 @@ import com.scoring.payloads.EntreprisePayload;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.services.IEntrepriseService;
 
+import com.scoring.services.IReferentielService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +34,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Autowired
 	private ModelFactory modelFactory;
+
+	@Autowired
+	private IReferentielService referentielService;
 
 
 	@Override
@@ -56,9 +64,6 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getRaisonSociale() != null && payload.getRaisonSociale().equals(""))
 			throw new EntrepriseException("La raison sociale est obligatoire.");
 
-		if(payload.getSecteur() != null && payload.getSecteur().equals(""))
-			throw new EntrepriseException("Le secteur est obligatoire.");
-
 		if(payload.getDescription() != null && payload.getDescription().equals(""))
 			throw new EntrepriseException("La description est obligatoire.");
 
@@ -74,7 +79,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getLogo() != null && payload.getLogo().equals(""))
 			throw new EntrepriseException("Le logo est obligatoire.");
 
-		if(payload.getFormeJur() != null && payload.getFormeJur().equals(""))
+		if(payload.getFormeJur() != 0 )
 			throw new EntrepriseException("La forme juridique est obligatoire.");
 
 		if(payload.getAnnee() == 0)
@@ -83,7 +88,23 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getCapital() != null && payload.getCapital().equals(0L))
 			throw new EntrepriseException("Le capital est obligatoire.");
 
+		if(payload.getSecteur() != null && payload.getSecteur().size() == 0)
+			throw new EntrepriseException("Il faut au minimum un secteurs d'activite.");
+
 		entreprise = payloadToDTO.createEntreprise(payload);
+
+		try {
+			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique((long)payload.getFormeJur());
+			entreprise.setFormeJur(formeJuridique);
+			List<SecteurActiviteDTO> secteurs = new ArrayList<>();
+			for(int secteurId : payload.getSecteur()){
+				SecteurActiviteDTO secteurActivite = referentielService.getSecteurActivite((long)secteurId);
+				secteurs.add(secteurActivite);
+			}
+			entreprise.setSecteurs(secteurs);
+		} catch (ReferentielException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			Entreprise model = modelFactory.createEntreprise(entreprise);

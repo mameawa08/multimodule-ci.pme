@@ -6,15 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
-import com.scoring.dto.DirigeantDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.ParametreDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.IndicateurDTO;
-import com.scoring.dto.PieceJointeDTO;
-import com.scoring.dto.RepondantDTO;
-import com.scoring.dto.ReponseParPMEDTO;
-import com.scoring.dto.ReponseQualitativeDTO;
+import com.scoring.dto.*;
+import com.scoring.exceptions.ReferentielException;
 import com.scoring.models.Dirigeant;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Parametre;
@@ -24,10 +17,15 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.services.IReferentielService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Named
 public class DTOFactory {
+
+	@Autowired
+	private IReferentielService referentielService;
 	
 	public EntrepriseDTO createEntreprise(Entreprise entreprise){
 		if(entreprise == null)
@@ -38,7 +36,6 @@ public class DTOFactory {
 		dto.setIntitule(entreprise.getIntitule());
 		dto.setAnnee(entreprise.getAnnee());
 		dto.setCapital(entreprise.getCapital());
-		dto.setSecteur(entreprise.getSecteur());
 		dto.setDescription(entreprise.getDescription());
 		dto.setRegime(entreprise.getRegime());
 		dto.setAdresse(entreprise.getAdresse());
@@ -50,7 +47,10 @@ public class DTOFactory {
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			dto.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 
-		dto.setFormeJur(entreprise.getFormeJur());
+//		dto.setSecteurs(entreprise.getSecteur());
+		dto.setSecteurs(setSecteurActivite(entreprise.getSecteur()));
+//		dto.setFormeJur(entreprise.getFormeJur());
+		dto.setFormeJur(setFormeJuridique(entreprise.getFormeJur()));
 
 		return dto;
 	}
@@ -232,5 +232,34 @@ public class DTOFactory {
 
 		return reponses.stream().map(this::createReponseParPME).collect(Collectors.toList());
 
+	}
+
+
+	private List<SecteurActiviteDTO> setSecteurActivite(List<Long> secteurs){
+		if (secteurs == null || (secteurs.size() == 0))
+			return new ArrayList<>();
+		List<SecteurActiviteDTO> activites = new ArrayList<>();
+		try {
+			for (Long secteur : secteurs) {
+				SecteurActiviteDTO dto = referentielService.getSecteurActivite(secteur);
+				activites.add(dto);
+			}
+			return  activites;
+		} catch (ReferentielException e) {
+			e.printStackTrace();
+		}
+		return activites;
+	}
+
+	private FormeJuridiqueDTO setFormeJuridique(Long forme){
+		if(forme == 0)
+			return  null;
+		try {
+			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique(forme);
+			return formeJuridique;
+		} catch (ReferentielException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

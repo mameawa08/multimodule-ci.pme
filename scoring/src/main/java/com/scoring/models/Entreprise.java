@@ -5,6 +5,8 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -18,7 +20,7 @@ public class Entreprise {
 	private int 		annee;
 	private String 		intitule;
 	private Long 		capital;
-	private String 		secteur;
+	private List<Long> secteur;
 	private String 		description;
 	private String 		regime;
 	private String 		adresse;
@@ -29,7 +31,7 @@ public class Entreprise {
 
 	@OneToOne(mappedBy = "entreprise")
 	private Dirigeant dirigeant;
-	private String		 formeJur;
+	private Long		 formeJur;
 }
 
 
