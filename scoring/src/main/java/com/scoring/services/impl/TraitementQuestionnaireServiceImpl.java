@@ -15,10 +15,10 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.models.ReponseParPME;
 import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
-import com.scoring.repositories.DirigeantRepository;
-import com.scoring.repositories.EntrepriseRepository;
-import com.scoring.repositories.QuestionRepository;
-import com.scoring.repositories.ReponseParPMERepository;
+import com.scoring.repository.DirigeantRepository;
+import com.scoring.repository.EntrepriseRepository;
+import com.scoring.repository.QuestionRepository;
+import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.services.IMailService;
 import com.scoring.services.ITraitementQuestionnaireService;
 

@@ -46,7 +46,7 @@ INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (3, 'SARL', 'La Soc
 INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (4, 'SA', 'La Société anonyme', 1);
 INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (5, 'SNC', 'La Société en Nom Collectif', 1);
 INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (6, 'SCS', 'La Société en Commandite Simple', 1);
-INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (7, '', 'Le Groupement d'Intérêt Economique', 1);
+INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (7, '', 'Le Groupement d''Intérêt Economique', 1);
 
 --SECTEURS ACTIVITE
 INSERT INTO secteur_activite(id, libelle, actif) VALUES (1, 'Agroalimentaire', 1);
