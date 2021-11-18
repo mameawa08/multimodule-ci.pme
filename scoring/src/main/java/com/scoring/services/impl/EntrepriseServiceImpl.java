@@ -3,6 +3,7 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoring.config.AccessTokenDetails;
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.FormeJuridiqueDTO;
 import com.scoring.dto.SecteurActiviteDTO;
@@ -17,6 +18,7 @@ import com.scoring.repository.EntrepriseRepository;
 import com.scoring.services.IEntrepriseService;
 
 import com.scoring.services.IReferentielService;
+import com.scoring.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	@Autowired
 	private IReferentielService referentielService;
 
+	@Autowired
+	private IUserService userService;
+
 
 	@Override
 	public List<EntrepriseDTO> getEntreprises() throws EntrepriseException{
@@ -54,6 +59,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	@Override
 	public EntrepriseDTO createEntreprise(EntreprisePayload payload) throws EntrepriseException{
 		EntrepriseDTO entreprise = null;
+		AccessTokenDetails user = userService.getConnectedUser();
 		if(payload.getId() != null){
 			entreprise = getEntreprise(payload.getId());
 		}
@@ -73,13 +79,13 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getAdresse() != null && payload.getAdresse().equals(""))
 			throw new EntrepriseException("L'adresse est obligatoire.");
 
-		if(payload.getSiteWeb() != null && payload.getSiteWeb().equals(""))
-			throw new EntrepriseException("Le site web est obligatoire.");
+//		if(payload.getSiteWeb() != null && payload.getSiteWeb().equals(""))
+//			throw new EntrepriseException("Le site web est obligatoire.");
+//
+//		if(payload.getLogo() != null && payload.getLogo().equals(""))
+//			throw new EntrepriseException("Le logo est obligatoire.");
 
-		if(payload.getLogo() != null && payload.getLogo().equals(""))
-			throw new EntrepriseException("Le logo est obligatoire.");
-
-		if(payload.getFormeJur() != 0 )
+		if(payload.getFormeJuridique() == 0 )
 			throw new EntrepriseException("La forme juridique est obligatoire.");
 
 		if(payload.getAnnee() == 0)
@@ -88,16 +94,16 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getCapital() != null && payload.getCapital().equals(0L))
 			throw new EntrepriseException("Le capital est obligatoire.");
 
-		if(payload.getSecteur() != null && payload.getSecteur().size() == 0)
+		if(payload.getSecteurs() != null && payload.getSecteurs().size() == 0)
 			throw new EntrepriseException("Il faut au minimum un secteurs d'activite.");
 
 		entreprise = payloadToDTO.createEntreprise(payload);
-
+		entreprise.setActif(true);
 		try {
-			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique((long)payload.getFormeJur());
+			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique((long)payload.getFormeJuridique());
 			entreprise.setFormeJur(formeJuridique);
 			List<SecteurActiviteDTO> secteurs = new ArrayList<>();
-			for(int secteurId : payload.getSecteur()){
+			for(int secteurId : payload.getSecteurs()){
 				SecteurActiviteDTO secteurActivite = referentielService.getSecteurActivite((long)secteurId);
 				secteurs.add(secteurActivite);
 			}
@@ -110,6 +116,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			Entreprise model = modelFactory.createEntreprise(entreprise);
 			entrepriseRepository.save(model);
 			entreprise.setId(model.getId());
+
+			//Ajouter l'entreprise a l'utilisateur connecte
+			userService.addEntrepriseToUser(user.getUserId(), model.getId());
 		}
 		catch (Exception e){
 			throw new EntrepriseException(e.getMessage(), e);

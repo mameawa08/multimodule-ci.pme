@@ -20,7 +20,10 @@ public class Entreprise {
 	private int 		annee;
 	private String 		intitule;
 	private Long 		capital;
-	private List<Long> secteur;
+
+	@ElementCollection
+	private List<Long> secteurs;
+
 	private String 		description;
 	private String 		regime;
 	private String 		adresse;
@@ -31,7 +34,8 @@ public class Entreprise {
 
 	@OneToOne(mappedBy = "entreprise")
 	private Dirigeant dirigeant;
-	private Long		 formeJur;
+
+	private Long formeJuridique;
 }
 
 
