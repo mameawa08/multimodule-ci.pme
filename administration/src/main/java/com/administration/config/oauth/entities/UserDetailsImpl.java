@@ -35,12 +35,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getMotDePasse();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getIdentifiant();
+        return user.getUsername();
     }
 
     @Override

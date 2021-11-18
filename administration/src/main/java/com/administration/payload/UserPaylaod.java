@@ -11,15 +11,21 @@ public class UserPaylaod {
 
     private String email;
 
-    private String identifiant;
+    private String username;
 
-    private String motDePasse;
+    private String password;
 
-    private String confirmationMotDePasse;
+    private String confirmationPassword;
 
     private String nom;
 
     private String prenom;
+
+    private String mobile;
+
+    private String entrepriseLibelle;
+
+    private String fonction;
 
     private int profil;
 

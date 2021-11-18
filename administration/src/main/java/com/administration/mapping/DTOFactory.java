@@ -85,9 +85,9 @@ public class DTOFactory {
 			return null;
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());
-		dto.setIdentifiant(user.getIdentifiant());
+		dto.setUsername(user.getUsername());
 		dto.setEmail(user.getEmail());
-		dto.setMotDePasse(user.getMotDePasse());
+		dto.setPassword(user.getPassword());
 		dto.setNom(user.getNom());
 		dto.setPrenom(user.getPrenom());
 		dto.setActif(user.getActif());
@@ -97,6 +97,12 @@ public class DTOFactory {
 		dto.setResetPasswordToken(user.getResetPasswordToken());
 		dto.setConfirme(user.getConfirme());
 		dto.setProfil(createProfil(user.getProfil()));
+
+		dto.setConfirmationToken(user.getConfirmationToken());
+		dto.setFonction(user.getFonction());
+		dto.setEntrepriseLibelle(user.getEntrepriseLibelle());
+		dto.setMobile(user.getMobile());
+
 
 		return dto;
 	}
@@ -111,9 +117,9 @@ public class DTOFactory {
 			return null;
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());
-		dto.setIdentifiant(user.getIdentifiant());
+		dto.setUsername(user.getUsername());
 		dto.setEmail(user.getEmail());
-		dto.setMotDePasse(user.getMotDePasse());
+		dto.setPassword(user.getPassword());
 		dto.setNom(user.getNom());
 		dto.setPrenom(user.getPrenom());
 		//Don't forget to set the profil after the call of this methode

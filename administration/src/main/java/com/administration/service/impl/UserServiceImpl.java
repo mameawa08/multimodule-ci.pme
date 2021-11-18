@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.administration.exception.ScoringConnectException;
+import com.administration.service.IMailService;
+import com.administration.service.IScoringConnectService;
+import com.administration.utils.Constante;
+import com.administration.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +45,18 @@ public class UserServiceImpl implements IUserService{
 	@Autowired
 	PasswordEncoder encoder;
 
+	@Autowired
+	private IScoringConnectService scoringConnectService;
+
+	@Autowired
+	private JwtUtils jwtUtils;
+
+	@Autowired
+	private IMailService mailService;
+
+	@Autowired
+	private Environment environment;
+
 	 private final String REGEX_IDENTIFIANT = "^(\\d{6})([a-zA-Z]{1})$";
 
     public final static String REGEX_EMAIL = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
@@ -69,75 +87,21 @@ public class UserServiceImpl implements IUserService{
 			user = getUser(payload.getId());
 		}
 
-		if(payload.getIdentifiant() == null || (payload.getIdentifiant() != null && payload.getIdentifiant().equals("")))
-			throw new UserException("L'identifiant est obligatoire.");
-		
-		if(payload.getEmail() == null || (payload.getEmail() != null && payload.getEmail().equals("")))
-			throw new UserException("L'email est obligatoire.");
-		
+		validatePayload(payload);
 
-		if(payload.getNom() == null || (payload.getNom() != null && payload.getNom().equals("")))
-			throw new UserException("Le nom est obligatoire.");
-		
-		if(payload.getPrenom() == null || (payload.getPrenom() != null && payload.getPrenom().equals("")))
-			throw new UserException("Le prenom est obligatoire.");
-		
 		if(payload.getProfil() == 0 )
 			throw new UserException("Le profil est obligatoire.");
 
-		if(payload.getId() == null){
-			if(payload.getMotDePasse() == null || (payload.getMotDePasse() != null && payload.getMotDePasse().equals("")))
-				throw new UserException("Le mot de passe est obligatoire.");
-
-			if(payload.getConfirmationMotDePasse() == null || (payload.getConfirmationMotDePasse() != null && payload.getConfirmationMotDePasse().equals("")))
-				throw new UserException("La confirmation du mot de passe est obligatoire.");
-
-			if(!payload.getMotDePasse().equals(payload.getConfirmationMotDePasse()))
-				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.");
-
-			// validate password
-
-			if(!validatePassword(payload.getMotDePasse()))
-				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.Le mot de passe doit avoir minimum 8 caractères,"
-						+ " composé de majuscules, de minuscules, de chiffres et de caractères spéciaux");
-
-			UserDTO exist = findUserByEmail(payload.getEmail());
-			if(exist != null)
-				throw new UserException("Cet mail " + payload.getEmail() + " est déjà associé à un compte.");
-		}
-
-		// validate mail
-		if(!Pattern.compile(REGEX_EMAIL).matcher(payload.getEmail()).matches())
-			throw new UserException("Le format de l'email est invalide.");
-
-
 		user = dtoFactory.createUser(payload);
-		if (user.getId() == null) {
-			try {
-				String passwordToEncode = encoder.encode(user.getMotDePasse());
-				user.setMotDePasse(passwordToEncode);
-			} catch (Exception uee) {
-				throw new UserException("Erreur init password ");
-			}
-		}
-
-
-		ProfilDTO profil;
+		user = createUser(user, payload);
 		try {
-			profil = profilService.getProfil((long) payload.getProfil());
-			user.setProfil(profil);
-		} catch (ProfilException e) {
-			throw new UserException("Le profil est obligatoire.");
-		}
-
-		User usr = modelFactory.createUser(user);
-		user.setId(usr.getId());
-		try {
+			User usr = modelFactory.createUser(user);
 			userRepository.save(usr);
+			user.setId(usr.getId());
+			mailService.sendRegistrationMail(user, payload.getPassword());
 		} catch (Exception e) {
 			throw new UserException("User :: Impossible de creer l'utilisateur : "+e.getMessage(), e);
 		}
-
 		return user;
 
 	}
@@ -195,10 +159,10 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException {
 		User user = userRepository.findById(id).orElseThrow(()-> new UserException("User not found."));
-		String oldPassword = user.getMotDePasse();
+		String oldPassword = user.getPassword();
 		String newPassword ;
 
-		if(!encoder.matches(updatePasswordBody.getPassword(), user.getMotDePasse())){
+		if(!encoder.matches(updatePasswordBody.getPassword(), user.getPassword())){
 			throw new UserException("L'ancien mot de passe n'est pas valide.");
 		}
 
@@ -209,12 +173,12 @@ public class UserServiceImpl implements IUserService{
 			if(!validatePassword(updatePasswordBody.getNewPassword())){
 				throw new UserException("Le nouveau mot de passe n'est pas valide.");
 			}
-			if(encoder.matches(updatePasswordBody.getNewPassword(), user.getMotDePasse())){
+			if(encoder.matches(updatePasswordBody.getNewPassword(), user.getPassword())){
 				throw new UserException("L'ancien mot de passe et le nouveau mot de passe sont identiques.");
 			}
 			newPassword = encoder.encode(updatePasswordBody.getNewPassword());
 			user.setMotDePassePrecedent(oldPassword);
-			user.setMotDePasse(newPassword);
+			user.setPassword(newPassword);
 			user.setMdpModifie(1);
 			user.setActif(1);
 			userRepository.save(user);
@@ -222,6 +186,163 @@ public class UserServiceImpl implements IUserService{
 		else{
 			throw new UserException("Le mot de passe est obligatoire.");
 		}
+	}
+
+	@Override
+	public UserDTO register(UserPaylaod paylaod) throws UserException {
+		UserDTO user = null;
+		checkRegistrationRequirement(paylaod);
+		user = dtoFactory.createUser(paylaod);
+
+		user.setMobile(paylaod.getMobile());
+		user.setFonction(paylaod.getFonction());
+		user.setEntrepriseLibelle(paylaod.getEntrepriseLibelle());
+
+		paylaod.setProfil(Constante.ROLE_ENTREPRENEUR);
+//		sent confirmation mail
+		String confirmationUrl = "";
+		try {
+			String token = jwtUtils.generateJwtToken("", 1_800_000);
+			user.setConfirmationToken(token);
+			StringBuilder sb = new StringBuilder();
+			sb.append("http://").append(environment.getProperty("front.host"))
+					.append("/").append(environment.getProperty("front.context")).append("/")
+					.append("account").append("/")
+					.append("confirm")
+					.append("?token=")
+					.append(token);
+			confirmationUrl = sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		user = createUser(user, paylaod);
+		try {
+			User usr = modelFactory.createUser(user);
+			userRepository.save(usr);
+			user.setId(usr.getId());
+			mailService.sendActivationMail(user, confirmationUrl);
+		} catch (Exception e) {
+			throw new UserException("User :: Impossible de creer l'utilisateur : "+e.getMessage(), e);
+		}
+		return user;
+	}
+
+	@Override
+	public UserDTO addEntrepriseToUser(Long id, int entrepriseId) throws UserException{
+		UserDTO userDTO = null;
+		User user = userRepository.findById(id).orElseThrow(() -> new UserException("User :: not found."));
+		try {
+			Long idEntreprise = scoringConnectService.getEntreprise((long) entrepriseId);
+			user.setEntrepriseId(idEntreprise);
+
+			userRepository.save(user);
+			userDTO = dtoFactory.createUser(user);
+		} catch (ScoringConnectException e) {
+			throw new UserException("L'entreprise id "+entrepriseId+" n'existe pas.");
+		}
+		return userDTO;
+	}
+
+	@Override
+	public boolean confirm(String token) throws UserException {
+		User user = userRepository.findByConfirmationToken(token).orElseThrow(() -> new UserException("Confirmation :: user not found."));
+		try {
+			user.setConfirmationToken(null);
+			user.setConfirme(1);
+			 userRepository.save(user);
+		}
+		catch (Exception e){
+			throw new UserException("Confirmation :: "+e.getMessage());
+		}
+		return true;
+	}
+
+	// Private methods
+	private void checkRegistrationRequirement(UserPaylaod payload) throws UserException{
+		validatePayload(payload);
+
+		if((payload.getMobile() != null && payload.getMobile().equals("")))
+			throw new UserException("Le numero de telephone est obligatoire.");
+
+		if(payload.getEntrepriseLibelle() == null || (payload.getEntrepriseLibelle() != null && payload.getEntrepriseLibelle().equals("")))
+			throw new UserException("Le nom de l'entreprise est obligatoire.");
+
+		if(payload.getFonction()  == null || (payload.getFonction()  != null && payload.getFonction() .equals("")))
+			throw new UserException("La fonction occupe dans l'entreprise est obligatoire.");
+
+	}
+
+	private UserDTO createUser(UserDTO user, UserPaylaod payload) throws UserException {
+		if (user.getId() == null) {
+			try {
+				String passwordToEncode = encoder.encode(user.getPassword());
+				user.setPassword(passwordToEncode);
+			} catch (Exception uee) {
+				throw new UserException("Erreur init password ");
+			}
+		}
+
+		ProfilDTO profil;
+		try {
+			profil = profilService.getProfil((long) payload.getProfil());
+			user.setProfil(profil);
+		} catch (ProfilException e) {
+			throw new UserException("Le profil est obligatoire.");
+		}
+
+//		User usr = modelFactory.createUser(user);
+//		try {
+//			userRepository.save(usr);
+//			user.setId(usr.getId());
+//		} catch (Exception e) {
+//			throw new UserException("User :: Impossible de creer l'utilisateur : "+e.getMessage(), e);
+//		}
+
+		return user;
+	}
+
+	private void validatePayload(UserPaylaod payload) throws UserException {
+		UserDTO user;
+		if(payload.getUsername() == null || (payload.getUsername() != null && payload.getUsername().equals("")))
+			throw new UserException("L'username est obligatoire.");
+
+		if(payload.getEmail() == null || (payload.getEmail() != null && payload.getEmail().equals("")))
+			throw new UserException("L'email est obligatoire.");
+
+
+		if(payload.getNom() == null || (payload.getNom() != null && payload.getNom().equals("")))
+			throw new UserException("Le nom est obligatoire.");
+
+		if(payload.getPrenom() == null || (payload.getPrenom() != null && payload.getPrenom().equals("")))
+			throw new UserException("Le prenom est obligatoire.");
+
+
+
+		if(payload.getId() == null){
+			if(payload.getPassword() == null || (payload.getPassword() != null && payload.getPassword().equals("")))
+				throw new UserException("Le mot de passe est obligatoire.");
+
+			if(payload.getConfirmationPassword() == null || (payload.getConfirmationPassword() != null && payload.getConfirmationPassword().equals("")))
+				throw new UserException("La confirmation du mot de passe est obligatoire.");
+
+			if(!payload.getPassword().equals(payload.getConfirmationPassword()))
+				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.");
+
+			// validate password
+
+			if(!validatePassword(payload.getPassword()))
+				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.Le mot de passe doit avoir minimum 8 caractères,"
+						+ " composé de majuscules, de minuscules, de chiffres et de caractères spéciaux");
+
+			UserDTO exist = findUserByEmail(payload.getEmail());
+			if(exist != null)
+				throw new UserException("Cet mail " + payload.getEmail() + " est déjà associé à un compte.");
+		}
+
+		// validate mail
+		if(!Pattern.compile(REGEX_EMAIL).matcher(payload.getEmail()).matches())
+			throw new UserException("Le format de l'email est invalide.");
+
 	}
 
 }

@@ -14,9 +14,9 @@ public class UserDTO {
 
     private String email;
 
-    private String identifiant;
+    private String username;
 
-    private String motDePasse;
+    private String password;
 
     private String nom;
 
@@ -37,5 +37,15 @@ public class UserDTO {
     private int confirme;
 
     private List<String> habilitations;
+
+    private String confirmationToken;
+
+    private String fonction;
+
+    private Long entrepriseId;
+
+    private String entrepriseLibelle;
+
+    private String mobile;
 
 }
