@@ -15,6 +15,8 @@ public interface IUserService {
 	public boolean switchStatus(Long id) throws UserException;
 	public UserDTO findUserByEmail(String email);
 	public boolean validatePassword(String password);
-
-    void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException;
+    public void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException;
+    public UserDTO register(UserPaylaod paylaod) throws UserException;
+	public UserDTO addEntrepriseToUser(Long id, int entrepriseId) throws UserException;
+    public boolean confirm(String token) throws UserException;
 }

@@ -13,7 +13,6 @@ import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -40,8 +39,8 @@ public class ModelFactory {
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			model.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 
-		model.setFormeJur(entreprise.getFormeJur().getId());
-		model.setSecteur(entreprise.getSecteurs().stream().map(SecteurActiviteDTO::getId).collect(Collectors.toList()));
+		model.setFormeJuridique(entreprise.getFormeJur().getId());
+		model.setSecteurs(entreprise.getSecteurs().stream().map(SecteurActiviteDTO::getId).collect(Collectors.toList()));
 
 		return model;
 	}

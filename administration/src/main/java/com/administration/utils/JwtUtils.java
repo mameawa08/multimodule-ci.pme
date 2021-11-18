@@ -90,7 +90,7 @@ public class JwtUtils {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration))
                 //.signWith(key)
-              .signWith(SignatureAlgorithm.ES256, jwtSecret)
+              .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 

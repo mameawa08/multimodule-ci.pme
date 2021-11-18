@@ -18,4 +18,6 @@ public interface IMailService {
     boolean sendRegistrationMail(UserDTO user, String password) throws IOException, TemplateException, MessagingException;
 
     boolean sendUpdateUserMail(UserDTO user) throws IOException, TemplateException, MessagingException;
+
+    boolean sendActivationMail(UserDTO user, String url) throws IOException, TemplateException, MessagingException;
 }

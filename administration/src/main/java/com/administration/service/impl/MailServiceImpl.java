@@ -58,7 +58,7 @@ public class MailServiceImpl implements IMailService {
         MimeMessage message = sender.createMimeMessage();
         Map<String, Object> model = setUserInTemplate(user);
         model.put("url", url);
-        model.put("motdepasse", user.getMotDePasse());
+        model.put("motdepasse", user.getPassword());
         String text = feedTemplate(model, "templates/velocity/mdp_modifier.ftl");
         sendMail(message, from, user.getEmail(), text, "Réinitialisation de votre mot de passe");
 
@@ -88,11 +88,23 @@ public class MailServiceImpl implements IMailService {
         return false;
     }
 
+    @Override
+    public boolean sendActivationMail(UserDTO user, String url) throws IOException, TemplateException, MessagingException {
+        MimeMessage message = sender.createMimeMessage();
+        Map<String, Object> model = setUserInTemplate(user);
+        model.put("url", url);
+        String text = feedTemplate(model, "templates/velocity/activation.ftl");
+        sendMail(message, from, user.getEmail(),text,"Nouveau Mot de Passe");
+        return true;
+    }
+
+    //Private methods
+
     private Map<String, Object> setUserInTemplate( UserDTO user) {
         Map<String, Object> model = new HashMap<>();
         model.put("nomUser", user.getNom());
         model.put("prenomUser", user.getPrenom());
-        model.put("login", user.getIdentifiant());
+        model.put("login", user.getUsername());
 
         return model;
     }

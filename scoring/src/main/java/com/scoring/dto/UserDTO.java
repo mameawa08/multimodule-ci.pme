@@ -1,10 +1,10 @@
-package com.administration.dto;
-
-import java.util.Date;
-import java.util.List;
+package com.scoring.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class UserDTO {
 
     private int actif;
 
-    private ProfilDTO profil;
+//    private ProfilDTO profil;
 
     private int mdpModifie;
 

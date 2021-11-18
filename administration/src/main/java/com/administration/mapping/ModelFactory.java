@@ -139,9 +139,9 @@ public class ModelFactory {
 			return null;
 		User usr = new User();
 		usr.setId(user.getId());
-		usr.setIdentifiant(user.getIdentifiant());
+		usr.setUsername(user.getUsername());
 		usr.setEmail(user.getEmail());
-		usr.setMotDePasse(user.getMotDePasse());
+		usr.setPassword(user.getPassword());
 		usr.setNom(user.getNom());
 		usr.setPrenom(user.getPrenom());
 		usr.setActif(user.getActif());
@@ -151,6 +151,11 @@ public class ModelFactory {
 		usr.setResetPasswordToken(user.getResetPasswordToken());
 		usr.setConfirme(user.getConfirme());
 		usr.setProfil(createProfil(user.getProfil()));
+
+		usr.setConfirmationToken(user.getConfirmationToken());
+		usr.setFonction(user.getFonction());
+		usr.setEntrepriseLibelle(user.getEntrepriseLibelle());
+		usr.setMobile(user.getMobile());
 
 		return usr;
 	}

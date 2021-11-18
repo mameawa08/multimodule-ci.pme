@@ -2,6 +2,7 @@ package com.administration.controller;
 
 import java.util.List;
 
+import com.administration.payload.AddEntreprisePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,4 +90,19 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(uex.getMessage(), false));
 		}
 	}
+
+	@RequestMapping(value = "/{id}/entreprises", method = {RequestMethod.PUT, RequestMethod.PATCH})
+//	@PreAuthorize("hasRole('ADD_USER')")
+//	@Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "Update user password", description = "Update user password by providing the old, new and the new confirmation password", tags = {"User"})
+	public ResponseEntity<?> addEntreprise(@PathVariable("id") Long id, @RequestBody AddEntreprisePayload payload){
+		try {
+			UserDTO user = userService.addEntrepriseToUser(payload.getUserId(), payload.getEntrepriseId());
+			return ResponseEntity.ok(user);
+		}
+		catch (UserException uex){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(uex.getMessage(), false));
+		}
+	}
+
+
 }

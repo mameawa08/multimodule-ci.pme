@@ -15,10 +15,7 @@ import com.administration.dto.UserDTO;
 import com.administration.exception.UserException;
 import com.administration.mapping.DTOFactory;
 import com.administration.model.User;
-import com.administration.payload.CheckTokenBody;
-import com.administration.payload.ForgotBody;
-import com.administration.payload.MessageResponse;
-import com.administration.payload.ResetPasswordBoby;
+import com.administration.payload.*;
 import com.administration.repository.UserRepository;
 import com.administration.service.IMailService;
 import com.administration.service.IUserService;
@@ -66,12 +63,12 @@ public class AuthController {
     // @Operation(summary = "Send reset password mail", description = "Send a link to reset a password", tags = {"auth"})
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotBody forgotBody,  HttpServletRequest request) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         try {
-            User user = userRepository.findByEmailOrIdentifiant(forgotBody.getEmailOrUsername(), forgotBody.getEmailOrUsername())
+            User user = userRepository.findByEmailOrUsername(forgotBody.getEmailOrUsername(), forgotBody.getEmailOrUsername())
                 .orElseThrow(() -> new UserException("User doesn't exist."));
             UserDTO userDTO = dtoFactory.createUser(user);
 
             StringBuilder sb = new StringBuilder();
-            String token = jwtUtils.generateJwtToken(user.getIdentifiant(), 36_000_000);
+            String token = jwtUtils.generateJwtToken(user.getUsername(), 36_000_000);
             user.setResetPasswordToken(token);
             sb.append("http://").append(environment.getProperty("front.host"))
                     .append("/").append(environment.getProperty("front.context")).append("/")
@@ -124,7 +121,7 @@ public class AuthController {
         try {
             User user = userRepository.findByResetPasswordToken(resetPasswordBoby.getToken())
                     .orElseThrow(()-> new UserException("Token not found."));
-            String oldPassword = user.getMotDePasse();
+            String oldPassword = user.getPassword();
             if(resetPasswordBoby.getNewPassword().equals(resetPasswordBoby.getNewPasswordConfirm())){
                 String password = encoder.encode(resetPasswordBoby.getNewPassword());
                 if(encoder.matches(resetPasswordBoby.getNewPassword(), oldPassword)){
@@ -133,7 +130,7 @@ public class AuthController {
                 if(!userServcie.validatePassword(resetPasswordBoby.getNewPassword())){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Le nouveau mot de passe n'est pas valide."));
                 }
-                 user.setMotDePasse(password);
+                 user.setPassword(password);
                  user.setMotDePassePrecedent(oldPassword);
                  user.setMdpModifie(1);
                  user.setDateModificationMdp(new Date());
@@ -156,7 +153,7 @@ public class AuthController {
     // @Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "User infos", description = "Return connected user informations", tags = {"auth"})
     public ResponseEntity<?> me(Principal principal){
         try {
-            User user = userRepository.findByIdentifiant(principal.getName()).orElseThrow(() -> new UserException("User not found."));
+            User user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UserException("User not found."));
 
             UserDTO userDTO = dtoFactory.createUser(user);
 
@@ -164,15 +161,37 @@ public class AuthController {
                 "INNER JOIN habilitation_par_profil hp ON h.id = hp.habilitation_id " +
                 "INNER JOIN profils r ON r.profil_id = hp.role_id " +
                 "INNER JOIN users u ON u.profil_id = r.profil_id " +
-                "WHERE u.identifiant = ?";
+                "WHERE u.username = ?";
 
-            List<String> habilitations = jdbcTemplate.queryForList(sql, new String[]{user.getIdentifiant()}, String.class);
+            List<String> habilitations = jdbcTemplate.queryForList(sql, new String[]{user.getUsername()}, String.class);
 
             userDTO.setHabilitations(habilitations);
 
             return ResponseEntity.ok(userDTO);
         } catch (UserException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(e.getMessage(), false));
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity register(@RequestBody UserPaylaod paylaod){
+	    try {
+	        UserDTO user = userServcie.register(paylaod);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        }
+	    catch (UserException e){
+	        return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/users/confirm")
+    public ResponseEntity confirm(@RequestParam String token){
+	    try{
+	        boolean rs = userServcie.confirm(token);
+	        return ResponseEntity.ok(rs);
+        }
+	    catch (UserException e){
+	        return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

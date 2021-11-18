@@ -28,11 +28,11 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "identifiant")
-    private String identifiant;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "mot_de_passe")
-    private String motDePasse;
+    private String password;
 
     @Column(name = "nom")
     private String nom;
@@ -59,7 +59,21 @@ public class User implements Serializable {
     @Column(columnDefinition = "TEXT default NULL")
     private String resetPasswordToken;
 
-    @Column
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int confirme;
 
+    @Column(columnDefinition = "TEXT DEFAULT NULL")
+    private String confirmationToken;
+
+    @Column
+    private String fonction;
+
+    @Column
+    private Long entrepriseId;
+
+    @Column
+    private String entrepriseLibelle;
+
+    @Column
+    private String mobile;
 }

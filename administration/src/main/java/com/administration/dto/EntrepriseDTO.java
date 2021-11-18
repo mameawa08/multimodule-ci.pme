@@ -1,6 +1,4 @@
-package com.scoring.models;
-
-import javax.persistence.*;
+package com.administration.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,19 +7,14 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "entreprise")
-public class Entreprise {
+public class EntrepriseDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long 		id;
-	private String 		raisonSociale;
+	private String raisonSociale;
 	private int 		annee;
 	private String 		intitule;
 	private Long 		capital;
-	@ElementCollection
-	private List<Long> secteurs;
+	private List<SecteurActiviteDTO> secteurs;
 	private String 		description;
 	private String 		regime;
 	private String 		adresse;
@@ -30,10 +23,5 @@ public class Entreprise {
 	private boolean 	eligible;
 	private boolean 	actif;
 
-	@OneToOne(mappedBy = "entreprise")
-	private Dirigeant dirigeant;
-
-	private Long formeJuridique;
+	private FormeJuridiqueDTO		 formeJur;
 }
-
-
