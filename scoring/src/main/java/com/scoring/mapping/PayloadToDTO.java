@@ -37,7 +37,7 @@ public class PayloadToDTO {
 		dto.setLogo(entreprise.getLogo());
 		dto.setEligible(entreprise.isEligible());
 
-//		dto.setFormeJur(entreprise.getFormeJur());
+//		dto.setFormeJuridique(entreprise.getFormeJuridique());
 
 		return dto;
 	}

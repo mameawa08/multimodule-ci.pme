@@ -44,10 +44,10 @@ public class DTOFactory {
 		dto.setEligible(entreprise.isEligible());
 		dto.setActif(entreprise.isActif());
 
-//		dto.setSecteurs(entreprise.getSecteur());
-		dto.setSecteurs(setSecteurActivite(entreprise.getSecteur()));
-//		dto.setFormeJur(entreprise.getFormeJur());
-		dto.setFormeJur(setFormeJuridique(entreprise.getFormeJur()));
+//		dto.setSecteurs(entreprise.getSecteurs());
+		dto.setSecteurs(setSecteurActivite(entreprise.getSecteurs()));
+//		dto.setFormeJuridique(entreprise.getFormeJuridique());
+		dto.setFormeJur(setFormeJuridique(entreprise.getFormeJuridique()));
 
 		return dto;
 	}

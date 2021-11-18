@@ -13,13 +13,13 @@ public class EntreprisePayload {
 	private String 			raisonSociale;
 	private int 			annee;
 	private Long 			capital;
-	private List<Integer> 	secteur;
+	private List<Integer> 	secteurs;
 	private String 			description;
 	private String 			regime;
 	private String 			adresse;
 	private String 			siteWeb;
 	private String 			logo;
 	private boolean 		eligible;
-	private int 			formeJur;
+	private int 			formeJuridique;
 
 }

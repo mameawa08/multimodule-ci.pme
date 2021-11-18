@@ -202,7 +202,7 @@ public class UserServiceImpl implements IUserService{
 //		sent confirmation mail
 		String confirmationUrl = "";
 		try {
-			String token = jwtUtils.generateJwtToken("", 1_800_000);
+			String token = jwtUtils.generateJwtToken(user.getUsername(), 1_800_000);
 			user.setConfirmationToken(token);
 			StringBuilder sb = new StringBuilder();
 			sb.append("http://").append(environment.getProperty("front.host"))
@@ -247,9 +247,11 @@ public class UserServiceImpl implements IUserService{
 	public boolean confirm(String token) throws UserException {
 		User user = userRepository.findByConfirmationToken(token).orElseThrow(() -> new UserException("Confirmation :: user not found."));
 		try {
-			user.setConfirmationToken(null);
-			user.setConfirme(1);
-			 userRepository.save(user);
+		    if(jwtUtils.validateJwtToken(token) && jwtUtils.getUserNameFromJwtToken(token).equals(user.getUsername())){
+			    user.setConfirmationToken(null);
+			    user.setConfirme(1);
+			    userRepository.save(user);
+            }
 		}
 		catch (Exception e){
 			throw new UserException("Confirmation :: "+e.getMessage());
