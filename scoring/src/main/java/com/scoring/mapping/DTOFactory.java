@@ -249,7 +249,7 @@ public class DTOFactory {
 	}
 
 	private FormeJuridiqueDTO setFormeJuridique(Long forme){
-		if(forme == 0)
+		if(forme==null || forme == 0)
 			return  null;
 		try {
 			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique(forme);

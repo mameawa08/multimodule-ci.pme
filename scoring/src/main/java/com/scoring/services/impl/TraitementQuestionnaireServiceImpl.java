@@ -12,11 +12,10 @@ import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.Entreprise;
 import com.scoring.models.ReponseParPME;
 import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
-import com.scoring.repository.DirigeantRepository;
-import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.DirigeantRepository;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.QuestionRepository;
@@ -70,9 +69,13 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			listReponseParPME.add(reponse_par_PME);
 		}
 		if(sendMail==false){
+			entrepriseDTO.setEligible(false);
 			DirigeantDTO dirigeantDTO = dtoFactory.createDirigeant(dirigeantRepository.findDirigeantByEntreprise(entrepriseDTO.getId()));
 			iMailService.sendNotification(dirigeantDTO);
-		}
+		}else
+			entrepriseDTO.setEligible(true);
+		Entreprise entreprise = modelFactory.createEntreprise(entrepriseDTO);
+		entreprise = entrepriseRepository.save(entreprise);
 		if(listReponseParPME.size()==questionnaireEliPayload.getListReponse().size())
 			return true;
 		else

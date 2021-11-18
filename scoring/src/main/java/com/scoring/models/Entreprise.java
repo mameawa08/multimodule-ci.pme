@@ -20,6 +20,7 @@ public class Entreprise {
 	private int 		annee;
 	private String 		intitule;
 	private Long 		capital;
+	@ElementCollection
 	private List<Long> secteur;
 	private String 		description;
 	private String 		regime;
