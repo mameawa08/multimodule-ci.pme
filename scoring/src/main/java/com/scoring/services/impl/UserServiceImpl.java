@@ -37,12 +37,7 @@ public class UserServiceImpl implements IUserService {
         payload.setEntrepriseId(entrepriseId.intValue());
         payload.setUserId(userId);
 
-        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer "+principal.getTokenValue());
-
-//        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+        HttpHeaders headers = getHttpHeaders();
 
         HttpEntity<AddEntreprisePayload> request = new HttpEntity<>(payload, headers);
 
@@ -51,6 +46,14 @@ public class UserServiceImpl implements IUserService {
             return  resp.getBody();
         else
             throw new UserException("Erreur lors de l'ajout de l'entreprise.");
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("authorization", "Bearer "+principal.getTokenValue());
+        return headers;
     }
 
 

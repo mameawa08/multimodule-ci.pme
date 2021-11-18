@@ -29,10 +29,7 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
     public Long getEntreprise(Long id) throws ScoringConnectException{
         String url = baseUrl+"/scoring/api/entreprises/"+id;
 
-        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer "+principal.getTokenValue());
+        HttpHeaders headers = getHttpHeaders();
 
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
@@ -43,5 +40,13 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
         else{
             return resp.getBody().getId();
         }
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("authorization", "Bearer "+principal.getTokenValue());
+        return headers;
     }
 }
