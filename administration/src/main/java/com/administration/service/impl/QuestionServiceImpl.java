@@ -62,6 +62,9 @@ public class QuestionServiceImpl implements IQuestionService {
 	public List<QuestionDTO> getListeQuestionsQualitative() {
 		List<Question> questions = questionRepository.findQuestionQualitative();
 		List<QuestionDTO> questionsDto = dtoFactory.createListQuestion(questions);
+		for(QuestionDTO q: questionsDto){
+			q.setListReponsesDTO(reponseService.getListeReponsesByQuestion(q.getId()));
+		}
 		return questionsDto;
 	}
 	
