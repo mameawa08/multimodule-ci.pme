@@ -146,5 +146,11 @@ public class IndicateurServiceImpl implements IIndicateurService {
 			throw new IndicateurException(e.getMessage(), e);
 		}
 	}
+	
+	@Override
+	public IndicateurDTO getLastIndicateur(Long idEntreprise) throws IndicateurException{
+		IndicateurDTO indicateurDTO = dtoFactory.createIndicateur(indicateurRepository.findLastIndicateurByEntreprise(idEntreprise));
+		return indicateurDTO;
+	}
 
 }

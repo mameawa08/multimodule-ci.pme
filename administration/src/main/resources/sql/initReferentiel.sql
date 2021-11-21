@@ -461,14 +461,14 @@ INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (39, 6, 10, 
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (40, 10, 0, 5, 1, 8);
 
 --PONDERATION
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 1, 'Score financier/Solvabilité', '30', 1, null);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 2, 'Gestion des projets', '10', 1, 1);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 3, 'Marketing et gestion commerciale', '10', 1, 2);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 4, 'Innovation et qualité', '10', 1, 3);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 5, 'Gestion des ressources humaines', '10', 1, 4);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 6, 'Capacité Managériale', '10', 1, 5);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 7, 'Comptabilité et finance', '10', 1, 6);
-INSERT INTO ponderation (id, typeScore, ponderation, actif, id_parametre) VALUES ( 8, 'Production et capacité technique', '10', 1, 7);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 1, 'Score financier/Solvabilité', '30', 1, null);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 2, 'Gestion des projets', '10', 1, 1);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 3, 'Marketing et gestion commerciale', '10', 1, 2);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 4, 'Innovation et qualité', '10', 1, 3);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 5, 'Gestion des ressources humaines', '10', 1, 4);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 6, 'Capacité Managériale', '10', 1, 5);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 7, 'Comptabilité et finance', '10', 1, 6);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 8, 'Production et capacité technique', '10', 1, 7);
 
 --FORMES JURIDIQUES
 INSERT INTO forme_juridique(id, code, libelle, actif) VALUES (1, '', 'Entreprise Individuelle', 1);
