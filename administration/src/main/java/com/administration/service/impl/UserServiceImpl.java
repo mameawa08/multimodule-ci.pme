@@ -86,13 +86,16 @@ public class UserServiceImpl implements IUserService{
 		if(payload.getId() != null){
 			user = getUser(payload.getId());
 		}
+		else {
+			user = new UserDTO();
+		}
 
 		validatePayload(payload);
 
 		if(payload.getProfil() == 0 )
 			throw new UserException("Le profil est obligatoire.");
 
-		user = dtoFactory.createUser(payload);
+		user = dtoFactory.createUser(payload, user);
 		user = createUser(user, payload);
 		try {
 			User usr = modelFactory.createUser(user);
