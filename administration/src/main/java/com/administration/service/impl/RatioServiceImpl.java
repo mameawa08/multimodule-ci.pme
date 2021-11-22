@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.administration.dto.RatioDTO;
+import com.administration.exception.RatioException;
 import com.administration.mapping.DTOFactory;
 import com.administration.mapping.ModelFactory;
 import com.administration.model.Ratio;
 import com.administration.payload.RatioPayload;
 import com.administration.repository.RatioRepository;
 import com.administration.service.IRatioService;
+
 
 
 @Service("ratioService")
@@ -43,6 +45,13 @@ public class RatioServiceImpl implements IRatioService {
 	@Override
 	public RatioDTO getRatioByCode(String code) {
 		Ratio ratio = ratioRepository.findRatioByCode(code);
+		RatioDTO ratioDto = dtoFactory.createRatio(ratio);
+		return ratioDto;
+	}
+	
+	@Override
+	public RatioDTO getRatioById(Long id) throws RatioException {
+		Ratio ratio = ratioRepository.findById(id).orElseThrow(() -> new RatioException("Ratio :: "+id+" not found."));
 		RatioDTO ratioDto = dtoFactory.createRatio(ratio);
 		return ratioDto;
 	}

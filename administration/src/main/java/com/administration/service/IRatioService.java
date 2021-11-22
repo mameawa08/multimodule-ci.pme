@@ -3,6 +3,7 @@ package com.administration.service;
 import java.util.List;
 
 import com.administration.dto.RatioDTO;
+import com.administration.exception.RatioException;
 import com.administration.payload.RatioPayload;
 
 
@@ -17,6 +18,8 @@ public interface IRatioService {
 	RatioDTO createRatio(RatioPayload ratioPayload) throws Exception;
 
 	boolean deleteRatio(Long idRatio) throws Exception;
+
+	RatioDTO getRatioById(Long id) throws RatioException;
 
 	
 

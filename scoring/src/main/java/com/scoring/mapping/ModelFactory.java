@@ -12,6 +12,7 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ScoresParPME;
 import com.scoring.models.ValeurRatio;
 
 import java.util.stream.Collectors;
@@ -195,6 +196,16 @@ public class ModelFactory {
 		return valeurRatio;
 	}
 
-
+	public ScoresParPME createScoreParPME(ScoresParPMEDTO scoreDTO){
+		if (scoreDTO == null)
+			return null;
+		ScoresParPME score = new ScoresParPME();
+		score.setId(scoreDTO.getId());
+		score.setScore_final(scoreDTO.getScore_final());
+		score.setScore_financier(scoreDTO.getScore_financier());
+		score.setEntreprise(createEntreprise(scoreDTO.getEntrepriseDTO()));
+		
+		return score;
+	}
 
 }
