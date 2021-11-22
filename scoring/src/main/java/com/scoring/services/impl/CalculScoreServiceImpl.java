@@ -3,6 +3,7 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoring.exceptions.CalculScoreException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -175,6 +176,11 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		scoreDTO.setScore_financier(score_financier/totalPond);
 		scoreAndratios.setScoreDTO(scoreDTO);
 		return scoreAndratios;
+	}
+
+	public List calculScoreParametreQualitatif(Long id) throws CalculScoreException {
+
+		return null;
 	}
 	
 	

@@ -3,17 +3,7 @@ package com.scoring.mapping;
 import javax.inject.Named;
 
 import com.scoring.dto.*;
-import com.scoring.models.Dirigeant;
-import com.scoring.models.Entreprise;
-import com.scoring.models.Parametre;
-import com.scoring.models.Question;
-import com.scoring.models.Indicateur;
-import com.scoring.models.PieceJointe;
-import com.scoring.models.Repondant;
-import com.scoring.models.ReponseParPME;
-import com.scoring.models.ReponseQualitative;
-import com.scoring.models.ScoresParPME;
-import com.scoring.models.ValeurRatio;
+import com.scoring.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,6 +205,20 @@ public class ModelFactory {
 		score.setEntreprise(createEntreprise(scoreDTO.getEntrepriseDTO()));
 
 		return score;
+	}
+
+
+	public ScoreEntrepriseParParametre createScoreEntrepriseParParametre(ScoreEntrepriseParParametreDTO score){
+		if (score == null)
+			return null;
+
+		ScoreEntrepriseParParametre model = new ScoreEntrepriseParParametre();
+		model.setId(score.getId());
+		model.setEntreprise(createEntreprise(score.getEntreprise()));
+		model.setParametre(createParametre(score.getParametre()));
+		model.setScore(score.getScore());
+
+		return model;
 	}
 
 }
