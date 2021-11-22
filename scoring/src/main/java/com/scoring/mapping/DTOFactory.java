@@ -132,6 +132,8 @@ public class DTOFactory {
 		dto.setDfTotalResources(indicateur.getDfTotalResources());
 		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
 		dto.setRaAchats(indicateur.getRaAchats());
+		dto.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
+		dto.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
 		dto.setAnnee(indicateur.getAnnee());
 		dto.setActif(indicateur.isActif());
 		dto.setEntreprise(createEntreprise(indicateur.getEntreprise()));

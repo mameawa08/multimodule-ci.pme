@@ -15,8 +15,8 @@ public interface IndicateurRepository extends JpaRepository<Indicateur, Long> {
 
     public List<Indicateur> findByEntreprise(Entreprise entreprise);
     
-    @Query("SELECT DISTINCT i FROM Indicateur i WHERE i.actif = 1 AND i.entreprise IS NOT NULL AND i.entreprise.id=:idEntreprise "
-    		+ "AND i.annee=MAX(i.annee) ORDER BY i.id ASC")
+    @Query("SELECT DISTINCT i FROM Indicateur i WHERE i.annee= "
+    		+ "(SELECT MAX(i2.annee) FROM Indicateur i2 WHERE i2.entreprise.id=:idEntreprise AND i2.entreprise.id=i.entreprise.id)")
 	Indicateur findLastIndicateurByEntreprise(@Param("idEntreprise") Long idEntreprise);
 	
 }

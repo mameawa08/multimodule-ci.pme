@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -33,12 +35,13 @@ public class ValeurRatio implements Serializable {
     private Long id;
 	
 	@Column
-	private Long valeur;
+	private double valeur;
 
     @Column
     private int classe;
-    
-    @Column
+
+	@ManyToOne
+	@JoinColumn(name = "id_entreprise")
     private Entreprise entreprise;
     
     @Column

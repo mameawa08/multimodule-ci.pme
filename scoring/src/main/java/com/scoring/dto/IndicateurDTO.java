@@ -23,5 +23,7 @@ public class IndicateurDTO {
 	private int annee;
 	private EntrepriseDTO entreprise;
 	private boolean actif;
+	private double xdExcedentBrutExploit;
+	private double rmChargesFinancieres;
 		
 }

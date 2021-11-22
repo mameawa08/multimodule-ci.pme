@@ -13,7 +13,7 @@ public class ValeurRatioDTO {
 
     private Long id;
 	
-	private Long valeur;
+	private double valeur;
 
     private int classe;
     

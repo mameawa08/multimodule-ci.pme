@@ -11,20 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.scoring.dto.DirigeantDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.FormeJuridiqueDTO;
 import com.scoring.dto.IndicateurDTO;
-import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.RatioDTO;
-import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.dto.ValeurRatioDTO;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
-import com.scoring.models.Entreprise;
-import com.scoring.models.ReponseParPME;
-import com.scoring.payloads.QuestionnaireEliPayload;
-import com.scoring.payloads.ReponseParPMEPayload;
 import com.scoring.repository.DirigeantRepository;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.QuestionRepository;
@@ -32,7 +23,6 @@ import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IMailService;
-import com.scoring.services.ITraitementQuestionnaireService;
 
 
 @Service
@@ -83,6 +73,56 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		ResponseEntity<List<RatioDTO>> resp = 
 				rt.exchange(appUrl+"/ratios", HttpMethod.GET, null, new ParameterizedTypeReference<List<RatioDTO>>() {});
 	    return resp.getBody();
+	}
+	
+	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
+		double somme1, somme2, value;
+		somme1 = indicateurDTO.getBkActifCirculant()+indicateurDTO.getBtTresorerieActif();
+		somme2=indicateurDTO.getDpPassifCirculant()+indicateurDTO.getDtTresoreriePassif();
+		value=somme1/somme2;
+		return value;
+	}
+	
+	public double getRatio2(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getXiResultatNet()/indicateurDTO.getCaCapitauxPropres();
+		return value;
+	}
+
+	public double getRatio3(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getXiResultatNet()/indicateurDTO.getCaf();
+		return value;
+	}
+	
+	public double getRatio4(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getCaCapitauxPropres()/indicateurDTO.getDfTotalResources();
+		return value;
+	}
+	
+	public double getRatio5(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getBiCreanceClient()*360/indicateurDTO.getXbChiffresDaffaires()*1.18;
+		return value;
+	}
+	
+	public double getRatio6(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getDjDettesFournisseurs()*360/indicateurDTO.getRaAchats()*1.18;
+		return value;
+	}
+	
+	public double getRatio7(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getXdExcedentBrutExploit()/indicateurDTO.getCaCapitauxPropres();
+		return value;
+	}
+	
+	public double getRatio8(IndicateurDTO indicateurDTO) throws Exception {
+		double value;
+		value=indicateurDTO.getRmChargesFinancieres()/indicateurDTO.getXdExcedentBrutExploit();
+		return value;
 	}
 
 }

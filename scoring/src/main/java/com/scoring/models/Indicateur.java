@@ -34,6 +34,8 @@ public class Indicateur {
 	private double raAchats;
 	private int annee;
 	private boolean actif;
+	private double xdExcedentBrutExploit;
+	private double rmChargesFinancieres;
 
 	@ManyToOne
 	@JoinColumn(name = "entreprise_id")

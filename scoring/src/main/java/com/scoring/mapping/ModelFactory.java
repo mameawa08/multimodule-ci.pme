@@ -158,6 +158,8 @@ public class ModelFactory {
 		model.setDfTotalResources(indicateur.getDfTotalResources());
 		model.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
 		model.setRaAchats(indicateur.getRaAchats());
+		model.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
+		model.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
 		model.setAnnee(indicateur.getAnnee());
 		model.setActif(indicateur.isActif());
 		model.setEntreprise(createEntreprise(indicateur.getEntreprise()));

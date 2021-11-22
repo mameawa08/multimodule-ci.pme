@@ -6,7 +6,8 @@ import com.scoring.dto.ValeurRatioDTO;
 
 public interface ICalculScoreService {
 
-	List<ValeurRatioDTO> calculRatios() throws Exception;
+
+	List<ValeurRatioDTO> calculRatios(Long idEntreprise) throws Exception;
 
 	
 	
