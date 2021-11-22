@@ -20,6 +20,8 @@ public class IndicateurPayload {
 	private double dfTotalRessources;
 	private double djDettesFournisseurs;
 	private double raAchats;
+	private double xdExcedentBrutExploit;
+	private double rmChargesFinancieres;
 	private int annee;
 	private int entreprise;
 }

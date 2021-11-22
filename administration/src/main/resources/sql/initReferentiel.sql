@@ -1,11 +1,15 @@
+--THEMES
+INSERT INTO theme(id, code, libelle) VALUES (1, 'D', 'Conformité fiscale et sociale');
+INSERT INTO theme(id, code, libelle) VALUES (2, 'E', 'Statut de l’entreprise');
+
 --QUESTIONNAIRE ELIGIBILITE
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (1, 'A', 'La société a-t-elle sa résidence fiscale en côte d''ivoire?', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (2, 'B', 'L''entreprise a au moins deux années d''existence par rapport à la date de début d''activité?', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (3, 'C', 'L''entreprise respecte le critère : « n’avoir pas déposé de déclaration de cessation de paiement sur les 3 derniers mois', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (5, 'D1', 'L''entreprise est à jour du règlement de ses obligations fiscales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses impôts négocié avec l’administration fiscale.', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (6, 'D2', 'L''entreprise est à jour du règlement de ses obligations sociales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses charges sociales négocié avec l’administration sociale.', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (8, 'E1', 'L''entreprise a enregistré un chiffre d’affaires annuel maximum d’un milliard (1.000.000.000) de F.CFA, sur au moins deux des trois derniers exercices', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (9, 'E2', 'L''entreprise a enregistré : l’entreprise est au système normal de comptabilité', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (1, 'A', 'La société a-t-elle sa résidence fiscale en côte d''ivoire?', 1, null, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (2, 'B', 'L''entreprise a au moins deux années d''existence par rapport à la date de début d''activité?', 1, null, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (3, 'C', 'L''entreprise respecte le critère : « n’avoir pas déposé de déclaration de cessation de paiement sur les 3 derniers mois', 1, null, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (5, 'D1', 'L''entreprise est à jour du règlement de ses obligations fiscales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses impôts négocié avec l’administration fiscale.', 1, null, 1);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (6, 'D2', 'L''entreprise est à jour du règlement de ses obligations sociales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses charges sociales négocié avec l’administration sociale.', 1, null, 1);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (8, 'E1', 'L''entreprise a enregistré un chiffre d’affaires annuel maximum d’un milliard (1.000.000.000) de F.CFA, sur au moins deux des trois derniers exercices', 1, null, 2);
+INSERT INTO question(id, code, libelle, actif, id_parametre, id_theme) VALUES (9, 'E2', 'L''entreprise a enregistré : l’entreprise est au système normal de comptabilité', 1, null, 2);
 
 --PARAMETRE
 INSERT INTO parametre(id, code, libelle, nbre_question, actif) VALUES (1, 'P1', 'Gestion des Projets', 8, 1);

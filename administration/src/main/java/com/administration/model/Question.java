@@ -47,5 +47,9 @@ public class Question implements Serializable {
     @ManyToOne
   	@JoinColumn(name = "id_parametre", nullable = true)
     private Parametre  parametre;
+    
+    @ManyToOne
+  	@JoinColumn(name = "id_theme", nullable = true)
+    private Theme  theme;
 
 }

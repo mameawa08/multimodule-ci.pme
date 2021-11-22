@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.scoring.dto.CalibrageDTO;
 import com.scoring.dto.EntrepriseDTO;
@@ -21,13 +20,10 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.models.ScoresParPME;
 import com.scoring.models.ValeurRatio;
 import com.scoring.repository.EntrepriseRepository;
-import com.scoring.repository.QuestionRepository;
-import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.repository.ScoreParPMERepository;
 import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IIndicateurService;
-import com.scoring.services.IMailService;
 import com.scoring.services.IReferentielService;
 
 
@@ -36,12 +32,6 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Autowired
 	private EntrepriseRepository entrepriseRepository;
-	
-	@Autowired
-	private QuestionRepository questionRepository;
-	
-	@Autowired
-	private ReponseParPMERepository reponseParPMERepository;
 	
 	@Autowired
 	private ValeurRatioRepository valeurRatioRepository;
@@ -56,9 +46,6 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	private ModelFactory modelFactory;
 	
 	@Autowired
-	private IMailService iMailService;
-	
-	@Autowired
 	private IIndicateurService indicateurService;
 	
 	@Autowired
@@ -66,12 +53,6 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	
 	@Value("${app.administration.url}")
     private String appUrl;
-	
-	private RestTemplate rt;
-	
-	public CalculScoreServiceImpl() {
-		this.rt = new RestTemplate();
-	}
 	 
 	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
 		double somme1, somme2, value;

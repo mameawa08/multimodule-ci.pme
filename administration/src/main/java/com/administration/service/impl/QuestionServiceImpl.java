@@ -79,6 +79,13 @@ public class QuestionServiceImpl implements IQuestionService {
 	}
 	
 	@Override
+	public QuestionDTO getQuestionsById(Long id) throws Exception {
+		Question question = questionRepository.findById(id).orElseThrow(() -> new Exception("Not found."));
+		QuestionDTO questionDto = dtoFactory.createQuestion(question);
+		return questionDto;
+	}
+	
+	@Override
 	public QuestionDTO createQuestion(QuestionPayload questionPayload) throws Exception {
 		int nbre;
 		if (questionPayload.getLibelle() == null || questionPayload.getLibelle().equals("")) {

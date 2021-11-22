@@ -63,6 +63,12 @@ public class QuestionController {
        return ResponseEntity.ok(questionListes);
 	}
 	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<QuestionDTO> getQuestionsById(@PathVariable Long id) throws Exception {
+       QuestionDTO question = questionService.getQuestionsById(id);
+       return ResponseEntity.ok(question);
+	}
+	
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createQuestion(@RequestBody QuestionPayload questionPayload) {

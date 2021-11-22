@@ -41,13 +41,11 @@ public class ReponseParPME implements Serializable {
 	@JoinColumn(name = "id_entreprise")
 	private Entreprise  entreprise;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_question")
-	private Question  question;
+	@Column(name = "id_question")
+	private Long  idQuestion;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_reponse_quali")
-	private ReponseQualitative  reponse_quali;
+	@Column(name = "id_reponse_quali")
+	private Long  id_reponse_quali;
 	
 	
 

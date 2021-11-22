@@ -13,4 +13,5 @@ public interface IDirigeantService {
 	public DirigeantDTO getDirigeant(Long id) throws DirigeantException;
 	public DirigeantDTO createDirigeant(DirigeantPayload payload) throws DirigeantException;
 	public boolean switchStatus(Long id) throws DirigeantException;
+	DirigeantDTO getDirigeantByEntreprise(Long idEntreprise) throws DirigeantException;
 }

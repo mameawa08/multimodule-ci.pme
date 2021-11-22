@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
@@ -18,7 +17,6 @@ import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
 import com.scoring.repository.DirigeantRepository;
 import com.scoring.repository.EntrepriseRepository;
-import com.scoring.repository.QuestionRepository;
 import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.services.IMailService;
 import com.scoring.services.ITraitementQuestionnaireService;
@@ -28,9 +26,6 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 	@Autowired
 	private EntrepriseRepository entrepriseRepository;
-	
-	@Autowired
-	private QuestionRepository questionRepository;
 	
 	@Autowired
 	private ReponseParPMERepository reponseParPMERepository;
@@ -46,6 +41,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	
 	@Autowired
 	private IMailService iMailService;
+
 	
 	@Override
 	public boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception {
@@ -55,10 +51,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		for(ReponseParPMEPayload rep :questionnaireEliPayload.getListReponse()){
 			ReponseParPMEDTO reponseDTO = new ReponseParPMEDTO();
 			reponseDTO.setReponse_eligibilite(rep.isReponse());
-			QuestionDTO questionDTO = null;
 			if(rep.getIdQuestion()!=null)
-				questionDTO = dtoFactory.createQuestion(questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new Exception("Not found.")));
-			reponseDTO.setQuestionDTO(questionDTO);
+				reponseDTO.setIdQuestion(rep.getIdQuestion());
 			if(questionnaireEliPayload.getIdEntreprise()!=null)
 				entrepriseDTO = dtoFactory.createEntreprise(entrepriseRepository.findById(questionnaireEliPayload.getIdEntreprise()).orElseThrow(() -> new Exception("Not found.")));
 			reponseDTO.setEntrepriseDTO(entrepriseDTO);
@@ -74,6 +68,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			iMailService.sendNotification(dirigeantDTO);
 		}else
 			entrepriseDTO.setEligible(true);
+		entrepriseDTO.setRepEli(true);
 		Entreprise entreprise = modelFactory.createEntreprise(entrepriseDTO);
 		entreprise = entrepriseRepository.save(entreprise);
 		if(listReponseParPME.size()==questionnaireEliPayload.getListReponse().size())
@@ -83,6 +78,11 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	}
 
 
-	
+	@Override
+	public List<ReponseParPMEDTO> getListeRepQuestEli(Long idEntreprise) throws Exception {
+		List<ReponseParPME> listReponses = reponseParPMERepository.findRepQuestEliByEntreprise(idEntreprise);
+		List<ReponseParPMEDTO> listReponsesDTO = dtoFactory.createListReponseParPME(listReponses);
+		return listReponsesDTO;
+	}
 
 }

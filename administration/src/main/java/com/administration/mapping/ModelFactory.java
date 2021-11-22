@@ -16,6 +16,7 @@ import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
 import com.administration.dto.SecteurActiviteDTO;
+import com.administration.dto.ThemeDTO;
 import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.FormeJuridique;
@@ -27,7 +28,9 @@ import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
 import com.administration.model.SecteurActivite;
+import com.administration.model.Theme;
 import com.administration.model.User;
+
 
 @Named("modelFactory")
 public class ModelFactory {
@@ -194,6 +197,17 @@ public class ModelFactory {
 		secteurActivite.setActif(secteurActiviteDTO.getActif());
 
 		return secteurActivite;
+	}
+	
+	public Theme createTheme(ThemeDTO themeDTO){
+		if (themeDTO == null)
+			return null;
+		Theme theme = new Theme();
+		theme.setId(themeDTO.getId());
+		theme.setCode(themeDTO.getCode());
+		theme.setLibelle(themeDTO.getLibelle());
+		
+		return theme;
 	}
 	
 }

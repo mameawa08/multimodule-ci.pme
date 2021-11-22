@@ -34,6 +34,16 @@ public class DirigeantController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@GetMapping("/entreprise/{idEntreprise}")
+	public ResponseEntity<?> getDirigeantByEntreprise(@PathVariable Long idEntreprise) {
+		try {
+			DirigeantDTO dirigeant = dirigeantService.getDirigeantByEntreprise(idEntreprise);
+			return ResponseEntity.ok(dirigeant);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {

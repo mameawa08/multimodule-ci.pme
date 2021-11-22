@@ -2,6 +2,7 @@ package com.scoring.services.impl;
 
 import com.scoring.dto.CalibrageDTO;
 import com.scoring.dto.FormeJuridiqueDTO;
+import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.RatioDTO;
 import com.scoring.dto.SecteurActiviteDTO;
 import com.scoring.exceptions.ReferentielException;
@@ -60,4 +61,11 @@ public class ReferentielServiceImpl implements IReferentielService {
 				rt.exchange(baseUrl+"/ratios/"+idRatio, HttpMethod.GET, null, RatioDTO.class);
 		return resp.getBody();
 	}
+    
+    @Override
+   	public QuestionDTO getQuestionById(Long idQuestion) throws Exception {
+   		ResponseEntity<QuestionDTO> resp = 
+   				rt.exchange(baseUrl+"/questions/"+idQuestion, HttpMethod.GET, null, QuestionDTO.class);
+   		return resp.getBody();
+   	}
 }
