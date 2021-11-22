@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "scores_par pme")
+@Table(name = "scores_par_pme")
 public class ScoresParPME implements Serializable {
 	
 	/**

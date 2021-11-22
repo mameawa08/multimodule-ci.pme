@@ -1,16 +1,11 @@
 --QUESTIONNAIRE ELIGIBILITE
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (1, 'QE1', 'La société a-t-elle sa résidence fiscale en côte d''ivoire?', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (2, 'QE2', 'L''entreprise a au moins deux années d''existence par rapport à la date de début d''activité?', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (3, 'QE3', 'L''entreprise respecte le critère : « n’avoir pas déposé de déclaration de cessation de paiement sur les 3 derniers mois', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (4, 'QE4', 'Conformité fiscale et sociale', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (5, 'QE5', 'L''entreprise est à jour du règlement de ses obligations fiscales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses impôts négocié avec l’administration fiscale.', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (6, 'QE6', 'L''entreprise est à jour du règlement de ses obligations sociales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses charges sociales négocié avec l’administration sociale.', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (7, 'QE7', 'Statut de l’entreprise', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (8, 'QE8', 'L''entreprise a enregistré un chiffre d’affaires annuel maximum d’un milliard (1.000.000.000) de F.CFA, sur au moins deux des trois derniers exercices', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (9, 'QE9', 'L''entreprise a enregistré : l’entreprise est au système normal de comptabilité', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (10, 'QE10', 'Micro : un chiffre d’affaires annuel inférieur à trente millions (30 000 000) FCFA sur les exercices N-1 et N-2 et effectif < 10', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (11, 'QE11', 'Petite : un chiffre d’affaires moyen annuel compris entre 30 000 001 FCFA et 150 000 000 FCFA sur les exercices N-1 et N-2 Nb employés < 50 employés', 1, null);
-INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (12, 'QE12', 'Moyenne : un chiffre d’affaires moyen annuel compris entre 150 000 001 FCFA et 1 milliard sur les exercices N-1 et N-2  nb employés < 200 ', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (1, 'A', 'La société a-t-elle sa résidence fiscale en côte d''ivoire?', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (2, 'B', 'L''entreprise a au moins deux années d''existence par rapport à la date de début d''activité?', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (3, 'C', 'L''entreprise respecte le critère : « n’avoir pas déposé de déclaration de cessation de paiement sur les 3 derniers mois', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (5, 'D1', 'L''entreprise est à jour du règlement de ses obligations fiscales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses impôts négocié avec l’administration fiscale.', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (6, 'D2', 'L''entreprise est à jour du règlement de ses obligations sociales sur le dernier exercice ou bénéficie d’un moratoire du paiement de ses charges sociales négocié avec l’administration sociale.', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (8, 'E1', 'L''entreprise a enregistré un chiffre d’affaires annuel maximum d’un milliard (1.000.000.000) de F.CFA, sur au moins deux des trois derniers exercices', 1, null);
+INSERT INTO question(id, code, libelle, actif, id_parametre) VALUES (9, 'E2', 'L''entreprise a enregistré : l’entreprise est au système normal de comptabilité', 1, null);
 
 --PARAMETRE
 INSERT INTO parametre(id, code, libelle, nbre_question, actif) VALUES (1, 'P1', 'Gestion des Projets', 8, 1);

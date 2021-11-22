@@ -1,5 +1,6 @@
 package com.scoring.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,7 +35,9 @@ public class Indicateur {
 	private double raAchats;
 	private int annee;
 	private boolean actif;
+	@Column(name = "xd_excedent_brut", nullable=true)
 	private double xdExcedentBrutExploit;
+	@Column(name = "rm_charges_financieres", nullable=true)
 	private double rmChargesFinancieres;
 
 	@ManyToOne

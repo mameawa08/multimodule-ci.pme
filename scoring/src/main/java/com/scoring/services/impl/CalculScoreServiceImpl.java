@@ -18,10 +18,12 @@ import com.scoring.dto.ValeurRatioDTO;
 import com.scoring.exceptions.IndicateurException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.ScoresParPME;
 import com.scoring.models.ValeurRatio;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.QuestionRepository;
 import com.scoring.repository.ReponseParPMERepository;
+import com.scoring.repository.ScoreParPMERepository;
 import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IIndicateurService;
@@ -43,6 +45,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	
 	@Autowired
 	private ValeurRatioRepository valeurRatioRepository;
+	
+	@Autowired
+	private ScoreParPMERepository ScoreParPMERepository;
 
 	@Autowired
 	private DTOFactory dtoFactory;
@@ -173,6 +178,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			totalPond = totalPond + ratioDTO.getPonderation();
 		}
 		scoreDTO.setScore_financier(score_financier/totalPond);
+		ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
+		score = ScoreParPMERepository.save(score);
 		scoreAndratios.setScoreDTO(scoreDTO);
 		return scoreAndratios;
 	}
