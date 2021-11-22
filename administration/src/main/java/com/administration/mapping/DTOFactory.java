@@ -103,6 +103,8 @@ public class DTOFactory {
 		dto.setEntrepriseLibelle(user.getEntrepriseLibelle());
 		dto.setMobile(user.getMobile());
 
+		dto.setEntrepriseId(user.getEntrepriseId());
+
 
 		return dto;
 	}

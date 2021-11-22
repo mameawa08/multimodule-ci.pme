@@ -3,23 +3,24 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoring.dto.*;
+import com.scoring.exceptions.EntrepriseException;
+import com.scoring.exceptions.TraitementQuestionnaireException;
+import com.scoring.models.Question;
+import com.scoring.models.ReponseQualitative;
+import com.scoring.payloads.QuestionnaireQualitatifPayload;
+import com.scoring.payloads.ReponseQualitativePayload;
+import com.scoring.repository.*;
+import com.scoring.services.IEntrepriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.scoring.dto.DirigeantDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.models.Entreprise;
 import com.scoring.models.ReponseParPME;
 import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
-import com.scoring.repository.DirigeantRepository;
-import com.scoring.repository.EntrepriseRepository;
-import com.scoring.repository.QuestionRepository;
-import com.scoring.repository.ReponseParPMERepository;
 import com.scoring.services.IMailService;
 import com.scoring.services.ITraitementQuestionnaireService;
 
@@ -46,7 +47,13 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	
 	@Autowired
 	private IMailService iMailService;
-	
+
+	@Autowired
+	private IEntrepriseService entrepriseService;
+
+	@Autowired
+	private ReponseQualitativeRepository reponseQualitativeRepository;
+
 	@Override
 	public boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception {
 		List<ReponseParPME> listReponseParPME = new ArrayList<ReponseParPME>();
@@ -82,6 +89,46 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			return false;
 	}
 
+
+	@Override
+	public boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException {
+		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
+		List<ReponseParPME> reponses = new ArrayList<>();
+		try {
+			EntrepriseDTO entrepriseDTO = entrepriseService.getEntreprise(payload.getIdEntreprise());
+
+			List<ReponseQualitativePayload> reps = payload.getListReponse();
+
+			if (reps != null && reps.size() > 0){
+				for (ReponseQualitativePayload rep : reps) {
+//					Get question
+					Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: question "+rep.getIdQuestion()+" not found."));
+					QuestionDTO questionDTO = dtoFactory.createQuestion(question);
+
+//					Get Reponse qualitative
+					ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(rep.getReponse()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: reponse "+rep.getReponse()+" not found."));
+					ReponseQualitativeDTO reponseQualitativeDTO = dtoFactory.createReponseQualitative(reponseQualitative);
+
+//					New reponse par pme dto
+					ReponseParPMEDTO reponseParPMEDTO = new ReponseParPMEDTO();
+					reponseParPMEDTO.setEntrepriseDTO(entrepriseDTO);
+					reponseParPMEDTO.setQuestionDTO(questionDTO);
+					reponseParPMEDTO.setReponse_quali_DTO(reponseQualitativeDTO);
+
+					reponseParPMEDTOs.add(reponseParPMEDTO);
+				}
+
+				reponses = modelFactory.createListReponseParPME(reponseParPMEDTOs);
+
+				reponseParPMERepository.saveAll(reponses);
+			}
+
+		} catch (Exception e) {
+			throw new TraitementQuestionnaireException("Traitement questionnaire ::"+e.getMessage());
+		}
+
+		return true;
+	}
 
 	
 

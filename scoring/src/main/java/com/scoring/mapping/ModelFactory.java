@@ -3,18 +3,10 @@ package com.scoring.mapping;
 import javax.inject.Named;
 
 import com.scoring.dto.*;
-import com.scoring.models.Dirigeant;
-import com.scoring.models.Entreprise;
-import com.scoring.models.Parametre;
-import com.scoring.models.Question;
-import com.scoring.models.Indicateur;
-import com.scoring.models.PieceJointe;
-import com.scoring.models.Repondant;
-import com.scoring.models.ReponseParPME;
-import com.scoring.models.ReponseQualitative;
-import com.scoring.models.ScoresParPME;
-import com.scoring.models.ValeurRatio;
+import com.scoring.models.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -182,7 +174,7 @@ public class ModelFactory {
 
 		return model;
 	}
-	
+
 	public ValeurRatio createValeurRatio(ValeurRatioDTO valeurRatioDTO){
 		if (valeurRatioDTO == null)
 			return null;
@@ -192,8 +184,15 @@ public class ModelFactory {
 		valeurRatio.setValeur(valeurRatioDTO.getValeur());
 		valeurRatio.setClasse(valeurRatioDTO.getClasse());
 		valeurRatio.setEntreprise(createEntreprise(valeurRatioDTO.getEntrepriseDTO()));
-		
+
 		return valeurRatio;
+	}
+
+	public List<ReponseParPME> createListReponseParPME(List<ReponseParPMEDTO> reponseParPMEDTOs) {
+		if (reponseParPMEDTOs == null || reponseParPMEDTOs.size() == 0)
+			return new ArrayList<>();
+
+		return reponseParPMEDTOs.stream().map(this::createReponseParPME).collect(Collectors.toList());
 	}
 
 	public ScoresParPME createScoreParPME(ScoresParPMEDTO scoreDTO){
@@ -204,8 +203,22 @@ public class ModelFactory {
 		score.setScore_final(scoreDTO.getScore_final());
 		score.setScore_financier(scoreDTO.getScore_financier());
 		score.setEntreprise(createEntreprise(scoreDTO.getEntrepriseDTO()));
-		
+
 		return score;
+	}
+
+
+	public ScoreEntrepriseParParametre createScoreEntrepriseParParametre(ScoreEntrepriseParParametreDTO score){
+		if (score == null)
+			return null;
+
+		ScoreEntrepriseParParametre model = new ScoreEntrepriseParParametre();
+		model.setId(score.getId());
+		model.setEntreprise(createEntreprise(score.getEntreprise()));
+		model.setParametre(createParametre(score.getParametre()));
+		model.setScore(score.getScore());
+
+		return model;
 	}
 
 }

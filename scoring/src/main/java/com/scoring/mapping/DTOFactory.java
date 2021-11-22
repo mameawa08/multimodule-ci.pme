@@ -8,17 +8,7 @@ import javax.inject.Named;
 
 import com.scoring.dto.*;
 import com.scoring.exceptions.ReferentielException;
-import com.scoring.models.Dirigeant;
-import com.scoring.models.Entreprise;
-import com.scoring.models.Parametre;
-import com.scoring.models.Question;
-import com.scoring.models.Indicateur;
-import com.scoring.models.PieceJointe;
-import com.scoring.models.Repondant;
-import com.scoring.models.ReponseParPME;
-import com.scoring.models.ReponseQualitative;
-import com.scoring.models.ScoresParPME;
-import com.scoring.models.ValeurRatio;
+import com.scoring.models.*;
 import com.scoring.services.IReferentielService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -302,6 +292,25 @@ public class DTOFactory {
 			return new ArrayList<>();
 
 		return listScores.stream().map(this::createScoreParPME).collect(Collectors.toList());
+	}
 
+	public ScoreEntrepriseParParametreDTO createScoreEntrepriseParParametre(ScoreEntrepriseParParametre score){
+		if (score == null)
+			return null;
+
+		ScoreEntrepriseParParametreDTO dto = new ScoreEntrepriseParParametreDTO();
+		dto.setId(score.getId());
+		dto.setEntreprise(createEntreprise(score.getEntreprise()));
+		dto.setParametre(createParametre(score.getParametre()));
+		dto.setScore(score.getScore());
+
+		return dto;
+	}
+
+	public List<ScoreEntrepriseParParametreDTO> createListScoreEntrepriseParParametre(List<ScoreEntrepriseParParametre> scores) {
+		if (scores == null || scores.size() == 0)
+			return new ArrayList<>();
+
+		return scores.stream().map(this::createScoreEntrepriseParParametre).collect(Collectors.toList());
 	}
 }
