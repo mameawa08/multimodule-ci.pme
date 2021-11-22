@@ -94,6 +94,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>scoring</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

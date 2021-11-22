@@ -127,6 +127,20 @@ public class DTOFactory {
 		return dto;
 	}
 
+	public UserDTO createUser(UserPaylaod user, UserDTO userDTO){
+		if (user == null)
+			return userDTO;
+		userDTO.setId(user.getId());
+		userDTO.setUsername(user.getUsername());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setPassword(user.getPassword());
+		userDTO.setNom(user.getNom());
+		userDTO.setPrenom(user.getPrenom());
+		//Don't forget to set the profil after the call of this methode
+
+		return userDTO;
+	}
+
 	public ParametreDTO createParametre(Parametre parametre){
 		if (parametre == null)
 			return null;
