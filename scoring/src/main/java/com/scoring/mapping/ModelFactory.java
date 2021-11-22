@@ -12,6 +12,8 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +185,18 @@ public class ModelFactory {
 		return model;
 	}
 
+	public ValeurRatio createValeurRatio(ValeurRatioDTO valeurRatioDTO){
+		if (valeurRatioDTO == null)
+			return null;
+		ValeurRatio valeurRatio = new ValeurRatio();
+		valeurRatio.setId(valeurRatioDTO.getId());
+		valeurRatio.setIdRatio(valeurRatioDTO.getIdRatio());
+		valeurRatio.setValeur(valeurRatioDTO.getValeur());
+		valeurRatio.setClasse(valeurRatioDTO.getClasse());
+		valeurRatio.setEntreprise(createEntreprise(valeurRatioDTO.getEntrepriseDTO()));
+
+		return valeurRatio;
+	}
 
 	public List<ReponseParPME> createListReponseParPME(List<ReponseParPMEDTO> reponseParPMEDTOs) {
 		if (reponseParPMEDTOs == null || reponseParPMEDTOs.size() == 0)
@@ -190,4 +204,17 @@ public class ModelFactory {
 
 		return reponseParPMEDTOs.stream().map(this::createReponseParPME).collect(Collectors.toList());
 	}
+
+	public ScoresParPME createScoreParPME(ScoresParPMEDTO scoreDTO){
+		if (scoreDTO == null)
+			return null;
+		ScoresParPME score = new ScoresParPME();
+		score.setId(scoreDTO.getId());
+		score.setScore_final(scoreDTO.getScore_final());
+		score.setScore_financier(scoreDTO.getScore_financier());
+		score.setEntreprise(createEntreprise(scoreDTO.getEntrepriseDTO()));
+
+		return score;
+	}
+
 }

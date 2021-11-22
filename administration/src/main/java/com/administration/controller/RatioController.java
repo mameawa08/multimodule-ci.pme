@@ -51,6 +51,12 @@ public class RatioController {
 	       return ResponseEntity.ok(ratio);
 	}
 	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<RatioDTO> getRatioById(@PathVariable Long id) throws Exception {
+	       RatioDTO ratio = ratioService.getRatioById(id);
+	       return ResponseEntity.ok(ratio);
+	}
+	
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createRatio(@RequestBody RatioPayload ratioPayload) {

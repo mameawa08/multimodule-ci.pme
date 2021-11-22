@@ -17,6 +17,8 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
 import com.scoring.services.IReferentielService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -260,5 +262,46 @@ public class DTOFactory {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ValeurRatioDTO createValeurRatio(ValeurRatio valeurRatio){
+		if (valeurRatio == null)
+			return null;
+		ValeurRatioDTO dto = new ValeurRatioDTO();
+		dto.setId(valeurRatio.getId());
+		dto.setIdRatio(valeurRatio.getIdRatio());
+		dto.setValeur(valeurRatio.getValeur());
+		dto.setClasse(valeurRatio.getClasse());
+		dto.setEntrepriseDTO(createEntreprise(valeurRatio.getEntreprise()));
+		
+		return dto;
+	}
+	
+	public List<ValeurRatioDTO> createListValeurRatio(List<ValeurRatio> listValeur){
+		if(listValeur == null || (listValeur != null && listValeur.size() == 0))
+			return new ArrayList<>();
+
+		return listValeur.stream().map(this::createValeurRatio).collect(Collectors.toList());
+
+	}
+	
+	public ScoresParPMEDTO createScoreParPME(ScoresParPME score){
+		if (score == null)
+			return null;
+		ScoresParPMEDTO dto = new ScoresParPMEDTO();
+		dto.setId(score.getId());
+		dto.setScore_final(score.getScore_final());
+		dto.setScore_financier(score.getScore_financier());
+		dto.setEntrepriseDTO(createEntreprise(score.getEntreprise()));
+		
+		return dto;
+	}
+	
+	public List<ScoresParPMEDTO> createListScoreParPME(List<ScoresParPME> listScores){
+		if(listScores == null || (listScores != null && listScores.size() == 0))
+			return new ArrayList<>();
+
+		return listScores.stream().map(this::createScoreParPME).collect(Collectors.toList());
+
 	}
 }
