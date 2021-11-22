@@ -13,6 +13,8 @@ import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -182,5 +184,10 @@ public class ModelFactory {
 	}
 
 
+	public List<ReponseParPME> createListReponseParPME(List<ReponseParPMEDTO> reponseParPMEDTOs) {
+		if (reponseParPMEDTOs == null || reponseParPMEDTOs.size() == 0)
+			return new ArrayList<>();
 
+		return reponseParPMEDTOs.stream().map(this::createReponseParPME).collect(Collectors.toList());
+	}
 }
