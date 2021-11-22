@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <property name="LOGS" value="/opt/apps/cipme/administartion/logs" />
+
+    <!-- always a good activate OnConsoleStatusListener -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/access_log.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS}/archived/access_log/access_log.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <!-- <pattern>combined</pattern> -->
+            <pattern>%h %l %u %t "%r" %s %b %T</pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="FILE" />
+</configuration>
