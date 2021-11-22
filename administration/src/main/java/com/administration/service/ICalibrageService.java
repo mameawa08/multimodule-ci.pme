@@ -18,6 +18,8 @@ public interface ICalibrageService {
 
 	boolean deleteCalibrage(Long idCalibrage) throws Exception;
 
+	CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, double valeurRatio);
+
 	
 
 }

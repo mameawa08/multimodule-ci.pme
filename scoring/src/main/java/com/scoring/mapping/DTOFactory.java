@@ -17,6 +17,7 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ValeurRatio;
 import com.scoring.services.IReferentielService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -260,5 +261,26 @@ public class DTOFactory {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ValeurRatioDTO createValeurRatio(ValeurRatio valeurRatio){
+		if (valeurRatio == null)
+			return null;
+		ValeurRatioDTO dto = new ValeurRatioDTO();
+		dto.setId(valeurRatio.getId());
+		dto.setIdRatio(valeurRatio.getIdRatio());
+		dto.setValeur(valeurRatio.getValeur());
+		dto.setClasse(valeurRatio.getClasse());
+		dto.setEntrepriseDTO(createEntreprise(valeurRatio.getEntreprise()));
+		
+		return dto;
+	}
+	
+	public List<ValeurRatioDTO> createListValeurRatio(List<ValeurRatio> listValeur){
+		if(listValeur == null || (listValeur != null && listValeur.size() == 0))
+			return new ArrayList<>();
+
+		return listValeur.stream().map(this::createValeurRatio).collect(Collectors.toList());
+
 	}
 }

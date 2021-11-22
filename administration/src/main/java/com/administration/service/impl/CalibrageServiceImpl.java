@@ -55,6 +55,13 @@ public class CalibrageServiceImpl implements ICalibrageService {
 	}
 	
 	@Override
+	public CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, double valeurRatio) {
+		Calibrage calibrage = calibrageRepository.findCalibrageByRatioAndValeurCalcule(idRatio, valeurRatio);
+		CalibrageDTO calibrageDto = dtoFactory.createCalibrage(calibrage);
+		return calibrageDto;
+	}
+	
+	@Override
 	public CalibrageDTO createCalibrage(CalibragePayload calibragePayload) throws Exception {
 		
 		if (calibragePayload.getClasse() == 0 ) {

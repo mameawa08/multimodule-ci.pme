@@ -12,6 +12,7 @@ import com.scoring.models.PieceJointe;
 import com.scoring.models.Repondant;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ValeurRatio;
 
 import java.util.stream.Collectors;
 
@@ -179,6 +180,19 @@ public class ModelFactory {
 		model.setActif(pieceJointe.isActif());
 
 		return model;
+	}
+	
+	public ValeurRatio createValeurRatio(ValeurRatioDTO valeurRatioDTO){
+		if (valeurRatioDTO == null)
+			return null;
+		ValeurRatio valeurRatio = new ValeurRatio();
+		valeurRatio.setId(valeurRatioDTO.getId());
+		valeurRatio.setIdRatio(valeurRatioDTO.getIdRatio());
+		valeurRatio.setValeur(valeurRatioDTO.getValeur());
+		valeurRatio.setClasse(valeurRatioDTO.getClasse());
+		valeurRatio.setEntreprise(createEntreprise(valeurRatioDTO.getEntrepriseDTO()));
+		
+		return valeurRatio;
 	}
 
 

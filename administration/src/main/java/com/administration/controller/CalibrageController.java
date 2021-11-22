@@ -51,6 +51,12 @@ public class CalibrageController {
 	       return ResponseEntity.ok(calibragesListes);
 	}
 	
+	@GetMapping(value = "/ratio/{idRatio}/{valeurRatio}")
+	public ResponseEntity<CalibrageDTO> getCalibrageByRatioAndValeurCalcule(@PathVariable Long idRatio, @PathVariable double valeurRatio) throws Exception {
+	       CalibrageDTO calibrage = calibrageService.getCalibragesByRatioAndValeurCalcule(idRatio, valeurRatio);
+	       return ResponseEntity.ok(calibrage);
+	}
+	
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createCalibrage(@RequestBody CalibragePayload calibragePayload) {
