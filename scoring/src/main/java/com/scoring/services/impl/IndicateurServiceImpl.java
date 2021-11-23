@@ -122,6 +122,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
+			indicateur.setEntreprise(entreprise);
 
 			Indicateur model = modelFactory.createIndicateur(indicateur);
 

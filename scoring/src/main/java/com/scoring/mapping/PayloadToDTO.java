@@ -135,6 +135,10 @@ public class PayloadToDTO {
 		dto.setRaAchats(indicateur.getRaAchats());
 		dto.setAnnee(indicateur.getAnnee());
 
+		dto.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
+		dto.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
+
+
 		return dto;
 	}
 }
