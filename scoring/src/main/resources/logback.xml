@@ -29,7 +29,7 @@
         <appender-ref ref="RollingFile" />
     </root>
 
-    <logger name="sn.mfb" level="INFO" />
+    <logger name="com.scoring" level="INFO" />
     <logger name="org.springframework" level="WARN" />
     <logger name="org.springframework.security" level="WARN">
         <appender-ref ref="STDOUT" />
