@@ -118,10 +118,11 @@ public class IndicateurServiceImpl implements IIndicateurService {
 		if(payload.getEntreprise() == 0)
 			throw new IndicateurException("L'entreprise est obligatoire");
 
-		indicateur = payloadToDTO.createIndicateur(payload);
+		indicateur = payloadToDTO.createIndicateur(payload, indicateur);
 
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
+			indicateur.setEntreprise(entreprise);
 
 			Indicateur model = modelFactory.createIndicateur(indicateur);
 

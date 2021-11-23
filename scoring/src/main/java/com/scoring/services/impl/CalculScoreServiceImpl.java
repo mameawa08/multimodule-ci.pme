@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scoring.exceptions.CalculScoreException;
+import com.scoring.models.ReponseParPME;
+import com.scoring.repository.ReponseParPMERepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,10 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	
 	@Value("${app.administration.url}")
     private String appUrl;
-	 
+
+	@Autowired
+	private ReponseParPMERepository reponseParPMERepository;
+
 	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
 		double somme1, somme2, value;
 		somme1 = indicateurDTO.getBkActifCirculant()+indicateurDTO.getBtTresorerieActif();
@@ -177,7 +182,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	public List calculScoreParametreQualitatif(Long id) throws CalculScoreException {
-
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findAll();
 		return null;
 	}
 	
