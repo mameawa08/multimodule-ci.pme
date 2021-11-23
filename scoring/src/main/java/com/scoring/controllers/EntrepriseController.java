@@ -60,6 +60,16 @@ public class EntrepriseController {
 		}
 	}
 
+	@GetMapping("/{id}/indicateurs/{annee}")
+	public ResponseEntity<?> getIndicateurByAnnee(@PathVariable Long id, @PathVariable int annee) {
+		try {
+			IndicateurDTO indicateur = indicateurService.getIndicateursByEntrepriseAndAnnee(id, annee);
+			return ResponseEntity.ok(indicateur);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 	@PostMapping("")
 	public ResponseEntity<?> create(@RequestBody EntreprisePayload payload) {
 		try {

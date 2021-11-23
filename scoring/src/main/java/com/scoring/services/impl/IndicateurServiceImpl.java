@@ -129,6 +129,12 @@ public class IndicateurServiceImpl implements IIndicateurService {
 			indicateurRepository.save(model);
 			indicateur.setId(model.getId());
 
+			if(!entreprise.isIndicateurAjoute()){
+				entreprise.setIndicateurAjoute(true);
+				Entreprise entreprise1  = modelFactory.createEntreprise(entreprise);
+				entrepriseRepository.save(entreprise1);
+			}
+
 		} catch (EntrepriseException e) {
 			throw new IndicateurException("Indicateur :: L'entreprise, id "+payload.getEntreprise()+" not found.");
 		}
@@ -152,6 +158,13 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	public IndicateurDTO getLastIndicateur(Long idEntreprise) throws IndicateurException{
 		IndicateurDTO indicateurDTO = dtoFactory.createIndicateur(indicateurRepository.findLastIndicateurByEntreprise(idEntreprise));
 		return indicateurDTO;
+	}
+
+	@Override
+	public IndicateurDTO getIndicateursByEntrepriseAndAnnee(Long id, int annee) throws IndicateurException {
+		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" not found."));
+		Indicateur indicateur = indicateurRepository.findByEntrepriseAndAnnee(entreprise, annee).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" pour annee "+annee+" not found."));
+		return dtoFactory.createIndicateur(indicateur);
 	}
 
 }

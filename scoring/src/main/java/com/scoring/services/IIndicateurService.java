@@ -14,4 +14,6 @@ public interface IIndicateurService {
 	public IndicateurDTO createIndicateur(IndicateurPayload payload) throws IndicateurException;
 	public boolean switchStatus(Long id) throws IndicateurException;
 	IndicateurDTO getLastIndicateur(Long idEntreprise) throws IndicateurException;
+
+    IndicateurDTO getIndicateursByEntrepriseAndAnnee(Long id, int annee) throws IndicateurException;
 }

@@ -44,6 +44,7 @@ public class DTOFactory {
 		dto.setActif(entreprise.isActif());
 		dto.setRepEli(entreprise.isRepEli());
 		dto.setRepQuali(entreprise.isRepQuali());
+		dto.setIndicateurAjoute(entreprise.isIndicateurAjoute());
 //		dto.setSecteurs(entreprise.getSecteurs());
 		dto.setSecteurs(setSecteurActivite(entreprise.getSecteurs()));
 //		dto.setFormeJuridique(entreprise.getFormeJuridique());
