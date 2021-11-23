@@ -115,4 +115,26 @@ public class PayloadToDTO {
 
 		return dto;
 	}
+
+	public IndicateurDTO createIndicateur(IndicateurPayload indicateur, IndicateurDTO indicateurDTO){
+		if(indicateur == null)
+			return null;
+		IndicateurDTO dto = indicateurDTO;
+		dto.setId(indicateur.getId());
+		dto.setBkActifCirculant(indicateur.getBkActifCirculant());
+		dto.setBtTresorerieActif(indicateur.getBtTresorerieActif());
+		dto.setDpPassifCirculant(indicateur.getDpPassifCirculant());
+		dto.setDtTresoreriePassif(indicateur.getDtTresoreriePassif());
+		dto.setXiResultatNet(indicateur.getXiResultatNet());
+		dto.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
+		dto.setBiCreanceClient(indicateur.getBiCreanceClient());
+		dto.setCaf(indicateur.getCaf());
+		dto.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
+		dto.setDfTotalResources(indicateur.getDfTotalRessources());
+		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
+		dto.setRaAchats(indicateur.getRaAchats());
+		dto.setAnnee(indicateur.getAnnee());
+
+		return dto;
+	}
 }
