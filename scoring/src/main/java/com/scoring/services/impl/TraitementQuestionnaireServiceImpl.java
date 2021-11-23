@@ -18,7 +18,9 @@ import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.models.Entreprise;
+import com.scoring.models.Question;
 import com.scoring.models.ReponseParPME;
+import com.scoring.models.ReponseQualitative;
 import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
 import com.scoring.repository.DirigeantRepository;
@@ -38,6 +40,9 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	
 	@Autowired
 	private DirigeantRepository dirigeantRepository;
+	
+	@Autowired
+	private QuestionRepository questionRepository;
 
 	@Autowired
 	private DTOFactory dtoFactory;
@@ -117,8 +122,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 //					New reponse par pme dto
 					ReponseParPMEDTO reponseParPMEDTO = new ReponseParPMEDTO();
 					reponseParPMEDTO.setEntrepriseDTO(entrepriseDTO);
-					reponseParPMEDTO.setQuestionDTO(questionDTO);
-					reponseParPMEDTO.setReponse_quali_DTO(reponseQualitativeDTO);
+					reponseParPMEDTO.setIdQuestion(questionDTO.getId());
+					reponseParPMEDTO.setId_reponse_quali(reponseQualitativeDTO.getId());
 
 					reponseParPMEDTOs.add(reponseParPMEDTO);
 				}

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Named;
-
 import com.scoring.dto.*;
 import com.scoring.exceptions.ReferentielException;
 import com.scoring.models.Dirigeant;
@@ -280,5 +279,45 @@ public class DTOFactory {
 		return scores.stream().map(this::createScoreEntrepriseParParametre).collect(Collectors.toList());
 	}
 	
+	public ParametreDTO createParametre(Parametre parametre){
+		if (parametre == null)
+			return null;
+		ParametreDTO dto = new ParametreDTO();
+		dto.setId(parametre.getId());
+		dto.setCode(parametre.getCode());
+		dto.setLibelle(parametre.getLibelle());
+		dto.setNbre_question(parametre.getNbre_question());
+		dto.setActif(parametre.getActif());
+
+		return dto;
+	}
+
+	public QuestionDTO createQuestion(Question question){
+		if (question == null)
+			return null;
+		QuestionDTO dto = new QuestionDTO();
+		dto.setId(question.getId());
+		dto.setCode(question.getCode());
+		dto.setLibelle(question.getLibelle());
+		dto.setActif(question.getActif());
+		if(question.getParametre()!=null)
+			dto.setParametreDTO(createParametre(question.getParametre()));
+
+		return dto;
+	}
+
+	public ReponseQualitativeDTO createReponseQualitative(ReponseQualitative reponse){
+		if (reponse == null)
+			return null;
+		ReponseQualitativeDTO dto = new ReponseQualitativeDTO();
+		dto.setId(reponse.getId());
+		dto.setCode(reponse.getCode());
+		dto.setLibelle(reponse.getLibelle());
+		dto.setActif(reponse.getActif());
+		dto.setScore(reponse.getScore());
+		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+
+		return dto;
+	}
 	
 }

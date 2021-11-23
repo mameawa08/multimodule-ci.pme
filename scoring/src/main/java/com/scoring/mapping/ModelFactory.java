@@ -189,5 +189,18 @@ public class ModelFactory {
 
 		return model;
 	}
+	
+	public Parametre createParametre(ParametreDTO parametreDTO){
+		if (parametreDTO == null) 
+			return null;
+		Parametre parametre = new Parametre();
+		parametre.setId(parametreDTO.getId());
+		parametre.setCode(parametreDTO.getCode());
+		parametre.setLibelle(parametreDTO.getLibelle());
+		parametre.setNbre_question(parametreDTO.getNbre_question());
+		parametre.setActif(parametreDTO.getActif());
+
+		return parametre;
+	}
 
 }
