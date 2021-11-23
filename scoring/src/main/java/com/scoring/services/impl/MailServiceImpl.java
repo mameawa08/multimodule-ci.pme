@@ -54,7 +54,7 @@ public class MailServiceImpl implements IMailService {
 		Map<String, Object> model = new HashMap();
 		model.put("url", url);
 		model.put("date", formatDateNormal(new Date()));
-		String text = feedTemplate(model, "velocity/notification.ftl");
+		String text = feedTemplate(model, "templates/velocity/notification.ftl");
 	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getIntitule());
 	}
 	
