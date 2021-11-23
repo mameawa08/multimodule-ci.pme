@@ -3,8 +3,15 @@ package com.scoring.mapping;
 import javax.inject.Named;
 
 import com.scoring.dto.*;
+import com.scoring.models.Dirigeant;
+import com.scoring.models.Entreprise;
+import com.scoring.models.Indicateur;
+import com.scoring.models.PieceJointe;
+import com.scoring.models.Repondant;
+import com.scoring.models.ReponseParPME;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
 import com.scoring.models.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +36,8 @@ public class ModelFactory {
 		model.setLogo(entreprise.getLogo());
 		model.setEligible(entreprise.isEligible());
 		model.setActif(entreprise.isActif());
-
+		model.setRepEli(entreprise.isRepEli());
+		model.setRepQuali(entreprise.isRepQuali());
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			model.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 
@@ -82,47 +90,6 @@ public class ModelFactory {
 		return model;
 	}
 
-	public ReponseQualitative createReponseQualitative(ReponseQualitativeDTO reponseDTO){
-		if (reponseDTO == null)
-			return null;
-		ReponseQualitative reponse = new ReponseQualitative();
-		reponse.setId(reponseDTO.getId());
-		reponse.setCode(reponseDTO.getCode());
-		reponse.setLibelle(reponseDTO.getLibelle());
-		reponse.setActif(reponseDTO.getActif());
-		reponse.setScore(reponseDTO.getScore());
-		reponse.setQuestion(createQuestion(reponseDTO.getQuestionDTO()));
-
-		return reponse;
-	}
-
-	public Parametre createParametre(ParametreDTO parametreDTO){
-		if (parametreDTO == null)
-			return null;
-		Parametre parametre = new Parametre();
-		parametre.setId(parametreDTO.getId());
-		parametre.setCode(parametreDTO.getCode());
-		parametre.setLibelle(parametreDTO.getLibelle());
-		parametre.setNbre_question(parametreDTO.getNbre_question());
-		parametre.setActif(parametreDTO.getActif());
-
-		return parametre;
-	}
-
-	public Question createQuestion(QuestionDTO questionDTO){
-		if (questionDTO == null)
-			return null;
-		Question question = new Question();
-		question.setId(questionDTO.getId());
-		question.setCode(questionDTO.getCode());
-		question.setLibelle(questionDTO.getLibelle());
-		question.setActif(questionDTO.getActif());
-		if(questionDTO.getParametreDTO()!=null)
-			question.setParametre(createParametre(questionDTO.getParametreDTO()));
-
-		return question;
-	}
-
 	public ReponseParPME createReponseParPME(ReponseParPMEDTO reponseDTO){
 		if (reponseDTO == null)
 			return null;
@@ -130,8 +97,8 @@ public class ModelFactory {
 		model.setId(reponseDTO.getId());
 		model.setReponse_eligibilite(reponseDTO.isReponse_eligibilite());
 		model.setEntreprise(createEntreprise(reponseDTO.getEntrepriseDTO()));
-		model.setQuestion(createQuestion(reponseDTO.getQuestionDTO()));
-		model.setReponse_quali(createReponseQualitative(reponseDTO.getReponse_quali_DTO()));
+		model.setIdQuestion(reponseDTO.getIdQuestion());
+		model.setId_reponse_quali(reponseDTO.getId_reponse_quali());
 		return model;
 	}
 
@@ -206,6 +173,8 @@ public class ModelFactory {
 
 		return score;
 	}
+	
+	
 
 
 	public ScoreEntrepriseParParametre createScoreEntrepriseParParametre(ScoreEntrepriseParParametreDTO score){

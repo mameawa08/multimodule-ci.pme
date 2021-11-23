@@ -51,6 +51,12 @@ public class DirigeantServiceImpl implements IDirigeantService {
 		Dirigeant dirigeant = dirigeantRepository.findById(id).orElseThrow(() -> new DirigeantException("Dirigeant :: "+id+" not found."));
 		return dtoFactory.createDirigeant(dirigeant);
 	}
+	
+	@Override
+	public DirigeantDTO getDirigeantByEntreprise(Long idEntreprise) throws DirigeantException{
+		Dirigeant dirigeant = dirigeantRepository.findDirigeantByEntreprise(idEntreprise);
+		return dtoFactory.createDirigeant(dirigeant);
+	}
 
 	@Override
 	public DirigeantDTO createDirigeant(DirigeantPayload payload) throws DirigeantException{

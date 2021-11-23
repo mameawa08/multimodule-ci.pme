@@ -5,7 +5,6 @@ import com.scoring.exceptions.ScoreEntrepriseParParametreException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.models.Entreprise;
-import com.scoring.models.Parametre;
 import com.scoring.models.ScoreEntrepriseParParametre;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.ParametreRepository;

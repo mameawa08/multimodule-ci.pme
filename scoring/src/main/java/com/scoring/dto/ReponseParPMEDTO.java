@@ -17,9 +17,9 @@ public class ReponseParPMEDTO {
 	
 	private EntrepriseDTO  entrepriseDTO;
 	
-	private QuestionDTO  questionDTO;
+	private Long  idQuestion;
 	
-	private ReponseQualitativeDTO  reponse_quali_DTO;
+	private Long  id_reponse_quali;
 	
 	
 

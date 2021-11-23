@@ -1,4 +1,4 @@
-package com.scoring.models;
+package com.administration.model;
 
 import java.io.Serializable;
 
@@ -19,13 +19,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "parametre")
-public class Parametre implements Serializable {
-	
+@Table(name = "theme")
+public class Theme implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -525426356710597301L;
+	private static final long serialVersionUID = 7765811165048834656L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,10 +38,5 @@ public class Parametre implements Serializable {
     @Column
     private String libelle;
     
-    @Column
-    private int nbre_question;
-    
-    @Column(name = "actif")
-	private int	actif;
 
 }

@@ -8,6 +8,14 @@ import javax.inject.Named;
 
 import com.scoring.dto.*;
 import com.scoring.exceptions.ReferentielException;
+import com.scoring.models.Dirigeant;
+import com.scoring.models.Entreprise;
+import com.scoring.models.Indicateur;
+import com.scoring.models.PieceJointe;
+import com.scoring.models.Repondant;
+import com.scoring.models.ReponseParPME;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
 import com.scoring.models.*;
 import com.scoring.services.IReferentielService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +43,8 @@ public class DTOFactory {
 		dto.setLogo(entreprise.getLogo());
 		dto.setEligible(entreprise.isEligible());
 		dto.setActif(entreprise.isActif());
-
+		dto.setRepEli(entreprise.isRepEli());
+		dto.setRepQuali(entreprise.isRepQuali());
 //		dto.setSecteurs(entreprise.getSecteurs());
 		dto.setSecteurs(setSecteurActivite(entreprise.getSecteurs()));
 //		dto.setFormeJuridique(entreprise.getFormeJuridique());
@@ -162,49 +171,6 @@ public class DTOFactory {
 		return pieceJointes.stream().map(this::createPieceJointe).collect(Collectors.toList());
 	}
 
-
-
-	public QuestionDTO createQuestion(Question question){
-		if (question == null)
-			return null;
-		QuestionDTO dto = new QuestionDTO();
-		dto.setId(question.getId());
-		dto.setCode(question.getCode());
-		dto.setLibelle(question.getLibelle());
-		dto.setActif(question.getActif());
-		if(question.getParametre()!=null)
-			dto.setParametreDTO(createParametre(question.getParametre()));
-
-		return dto;
-	}
-
-	public ParametreDTO createParametre(Parametre parametre){
-		if (parametre == null)
-			return null;
-		ParametreDTO dto = new ParametreDTO();
-		dto.setId(parametre.getId());
-		dto.setCode(parametre.getCode());
-		dto.setLibelle(parametre.getLibelle());
-		dto.setNbre_question(parametre.getNbre_question());
-		dto.setActif(parametre.getActif());
-
-		return dto;
-	}
-
-	public ReponseQualitativeDTO createReponseQualitative(ReponseQualitative reponse){
-		if (reponse == null)
-			return null;
-		ReponseQualitativeDTO dto = new ReponseQualitativeDTO();
-		dto.setId(reponse.getId());
-		dto.setCode(reponse.getCode());
-		dto.setLibelle(reponse.getLibelle());
-		dto.setActif(reponse.getActif());
-		dto.setScore(reponse.getScore());
-		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
-
-		return dto;
-	}
-
 	public ReponseParPMEDTO createReponseParPME(ReponseParPME reponse){
 		if (reponse == null)
 			return null;
@@ -212,8 +178,8 @@ public class DTOFactory {
 		dto.setId(reponse.getId());
 		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
 		dto.setEntrepriseDTO(createEntreprise(reponse.getEntreprise()));
-		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
-		dto.setReponse_quali_DTO(createReponseQualitative(reponse.getReponse_quali()));
+		dto.setIdQuestion(reponse.getIdQuestion());
+		dto.setId_reponse_quali(reponse.getId_reponse_quali());
 		return dto;
 	}
 
@@ -313,4 +279,6 @@ public class DTOFactory {
 
 		return scores.stream().map(this::createScoreEntrepriseParParametre).collect(Collectors.toList());
 	}
+	
+	
 }

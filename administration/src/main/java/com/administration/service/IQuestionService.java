@@ -21,6 +21,8 @@ public interface IQuestionService {
 
 	boolean deleteQuestion(Long idQuestion) throws Exception;
 
+	QuestionDTO getQuestionsById(Long id) throws Exception;
+
 	
 
 }

@@ -16,6 +16,7 @@ import com.administration.dto.QuestionDTO;
 import com.administration.dto.RatioDTO;
 import com.administration.dto.ReponseQualitativeDTO;
 import com.administration.dto.SecteurActiviteDTO;
+import com.administration.dto.ThemeDTO;
 import com.administration.dto.UserDTO;
 import com.administration.model.Calibrage;
 import com.administration.model.FormeJuridique;
@@ -27,8 +28,10 @@ import com.administration.model.Question;
 import com.administration.model.Ratio;
 import com.administration.model.ReponseQualitative;
 import com.administration.model.SecteurActivite;
+import com.administration.model.Theme;
 import com.administration.model.User;
 import com.administration.payload.UserPaylaod;
+
 
 @Named("dtoFactory")
 public class DTOFactory {
@@ -314,6 +317,25 @@ public class DTOFactory {
 			return new ArrayList<>();
 
 		return secteurs.stream().map(this::createSecteurActivite).collect(Collectors.toList());
+
+	}
+	
+	public ThemeDTO createTheme(Theme theme){
+		if (theme == null)
+			return null;
+		ThemeDTO dto = new ThemeDTO();
+		dto.setId(theme.getId());
+		dto.setCode(theme.getCode());
+		dto.setLibelle(theme.getLibelle());
+		
+		return dto;
+	}
+	
+	public List<ThemeDTO> createListTheme(List<Theme> listTheme){
+		if(listTheme == null || (listTheme != null && listTheme.size() == 0))
+			return new ArrayList<>();
+
+		return listTheme.stream().map(this::createTheme).collect(Collectors.toList());
 
 	}
 	
