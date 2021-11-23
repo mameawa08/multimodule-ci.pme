@@ -34,7 +34,7 @@ public class TraitementQuestionnaireController {
 	}
 	
 	
-	@GetMapping("/liste-reponses")
+	@GetMapping("/liste-reponses/{idEntreprise}")
 	public ResponseEntity<?> getListeReponseQuestEli(@PathVariable Long idEntreprise) {
 		try {
 			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeRepQuestEli(idEntreprise);

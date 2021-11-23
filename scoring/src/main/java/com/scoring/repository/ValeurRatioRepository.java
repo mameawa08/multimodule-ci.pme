@@ -12,6 +12,6 @@ import com.scoring.models.ValeurRatio;
 @Repository
 public interface ValeurRatioRepository extends JpaRepository<ValeurRatio, Long> {
 
-	@Query("SELECT DISTINCT v FROM ValeurRatio v WHERE v.entreprise IS NOT NULL AND d.entreprise.id=:idEntreprise")
+	@Query("SELECT DISTINCT v FROM ValeurRatio v WHERE v.entreprise IS NOT NULL AND v.entreprise.id=:idEntreprise")
 	List<ValeurRatio> findValeurRatioByEntreprise(@Param("idEntreprise") Long idEntreprise);
 }

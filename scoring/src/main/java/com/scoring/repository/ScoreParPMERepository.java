@@ -10,7 +10,7 @@ import com.scoring.models.ScoresParPME;
 @Repository
 public interface ScoreParPMERepository extends JpaRepository<ScoresParPME, Long> {
 
-	@Query("SELECT DISTINCT s FROM ScoresParPME s WHERE s.entreprise IS NOT NULL AND d.entreprise.id=:idEntreprise")
+	@Query("SELECT DISTINCT s FROM ScoresParPME s WHERE s.entreprise IS NOT NULL AND s.entreprise.id=:idEntreprise")
 	ScoresParPME findScoreByEntreprise(@Param("idEntreprise") Long idEntreprise);
     
 }

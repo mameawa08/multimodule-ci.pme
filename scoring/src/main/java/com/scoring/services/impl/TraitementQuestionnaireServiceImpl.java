@@ -3,18 +3,15 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.scoring.dto.*;
-import com.scoring.exceptions.EntrepriseException;
-import com.scoring.exceptions.TraitementQuestionnaireException;
-import com.scoring.payloads.QuestionnaireQualitatifPayload;
-import com.scoring.payloads.ReponseQualitativePayload;
-import com.scoring.repository.*;
-import com.scoring.services.IEntrepriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.scoring.dto.DirigeantDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.ReponseParPMEDTO;
+import com.scoring.dto.ReponseQualitativeDTO;
+import com.scoring.exceptions.TraitementQuestionnaireException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.models.Entreprise;
@@ -22,10 +19,15 @@ import com.scoring.models.Question;
 import com.scoring.models.ReponseParPME;
 import com.scoring.models.ReponseQualitative;
 import com.scoring.payloads.QuestionnaireEliPayload;
+import com.scoring.payloads.QuestionnaireQualitatifPayload;
 import com.scoring.payloads.ReponseParPMEPayload;
+import com.scoring.payloads.ReponseQualitativePayload;
 import com.scoring.repository.DirigeantRepository;
 import com.scoring.repository.EntrepriseRepository;
+import com.scoring.repository.QuestionRepository;
 import com.scoring.repository.ReponseParPMERepository;
+import com.scoring.repository.ReponseQualitativeRepository;
+import com.scoring.services.IEntrepriseService;
 import com.scoring.services.IMailService;
 import com.scoring.services.ITraitementQuestionnaireService;
 
