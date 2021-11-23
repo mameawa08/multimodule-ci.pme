@@ -2,6 +2,7 @@ package com.scoring.repository;
 
 import java.util.List;
 
+import com.scoring.models.Entreprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Lo
 	@Query("SELECT DISTINCT r FROM ReponseParPME r WHERE r.entreprise IS NOT NULL AND r.entreprise.id=:idEntreprise "
 			+ "AND r.id_reponse_quali IS NULL ORDER BY r.id ASC")
 	List<ReponseParPME> findRepQuestEliByEntreprise(@Param("idEntreprise") Long idEntreprise);
+
+	List<ReponseParPME> findByEntreprise(Entreprise entreprise);
 }

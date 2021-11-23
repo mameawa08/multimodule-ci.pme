@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scoring.exceptions.CalculScoreException;
+import com.scoring.models.Entreprise;
 import com.scoring.models.ReponseParPME;
 import com.scoring.repository.ReponseParPMERepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +183,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	public List calculScoreParametreQualitatif(Long id) throws CalculScoreException {
-		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findAll();
+		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findByEntreprise(entreprise);
+
 		return null;
 	}
 	
