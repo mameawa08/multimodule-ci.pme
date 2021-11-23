@@ -134,6 +134,11 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 				reponses = modelFactory.createListReponseParPME(reponseParPMEDTOs);
 
 				reponseParPMERepository.saveAll(reponses);
+
+				entrepriseDTO.setRepQuali(true);
+				Entreprise entreprise = modelFactory.createEntreprise(entrepriseDTO);
+
+				entrepriseRepository.save(entreprise);
 			}
 
 		} catch (Exception e) {

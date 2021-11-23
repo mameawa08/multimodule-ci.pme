@@ -38,6 +38,7 @@ public class ModelFactory {
 		model.setActif(entreprise.isActif());
 		model.setRepEli(entreprise.isRepEli());
 		model.setRepQuali(entreprise.isRepQuali());
+		model.setIndicateurAjoute(entreprise.isIndicateurAjoute());
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			model.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 

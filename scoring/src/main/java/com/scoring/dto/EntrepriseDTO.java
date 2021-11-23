@@ -24,6 +24,7 @@ public class EntrepriseDTO {
 	private boolean 	actif;
 	private boolean 	repEli;
 	private boolean 	repQuali;
+	private boolean 	indicateurAjoute;
 
 	private DirigeantDTO dirigeant;
 	private FormeJuridiqueDTO		 formeJur;

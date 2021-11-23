@@ -129,6 +129,12 @@ public class IndicateurServiceImpl implements IIndicateurService {
 			indicateurRepository.save(model);
 			indicateur.setId(model.getId());
 
+			if(!entreprise.isIndicateurAjoute()){
+				entreprise.setIndicateurAjoute(true);
+				Entreprise entreprise1  = modelFactory.createEntreprise(entreprise);
+				entrepriseRepository.save(entreprise1);
+			}
+
 		} catch (EntrepriseException e) {
 			throw new IndicateurException("Indicateur :: L'entreprise, id "+payload.getEntreprise()+" not found.");
 		}
