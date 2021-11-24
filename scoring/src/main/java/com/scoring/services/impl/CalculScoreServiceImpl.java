@@ -1,31 +1,23 @@
 package com.scoring.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.scoring.dto.*;
 import com.scoring.exceptions.CalculScoreException;
-import com.scoring.models.Entreprise;
-import com.scoring.models.ReponseParPME;
-import com.scoring.repository.ReponseParPMERepository;
+import com.scoring.exceptions.ScoreEntrepriseParParametreException;
+import com.scoring.models.*;
+import com.scoring.repository.*;
+import com.scoring.services.IScoreEntrepriseParParametreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.scoring.dto.CalibrageDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.IndicateurDTO;
-import com.scoring.dto.RatioDTO;
-import com.scoring.dto.ScoresAndRatioDTO;
-import com.scoring.dto.ScoresParPMEDTO;
-import com.scoring.dto.ValeurRatioDTO;
 import com.scoring.exceptions.IndicateurException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
-import com.scoring.models.ScoresParPME;
-import com.scoring.models.ValeurRatio;
-import com.scoring.repository.EntrepriseRepository;
-import com.scoring.repository.ScoreParPMERepository;
-import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IReferentielService;
@@ -60,6 +52,18 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Autowired
 	private ReponseParPMERepository reponseParPMERepository;
+
+	@Autowired
+	private QuestionRepository questionRepository;
+
+	@Autowired
+	private ReponseQualitativeRepository reponseQualitativeRepository;
+
+	@Autowired
+	private ParametreRepository parametreRepository;
+
+	@Autowired
+	private IScoreEntrepriseParParametreService scoreEntrepriseParParametreService;
 
 	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
 		double somme1, somme2, value;
@@ -181,12 +185,50 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		return scoreAndratios;
 	}
 
-	public List calculScoreParametreQualitatif(Long id) throws CalculScoreException {
+	@Override
+	public List<ScoreEntrepriseParParametreDTO> calculScoreParametreQualitatif(Long id) throws CalculScoreException {
 		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
 		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findByEntreprise(entreprise);
 
-		return null;
+		Map<Long, Integer> maps = calculTotalScoreForEachParametre(reponseParPMEs);
+		List<ScoreEntrepriseParParametreDTO> scores = new ArrayList<>();
+
+		for (Map.Entry<Long, Integer> map : maps.entrySet()){
+			ScoreEntrepriseParParametreDTO score = new ScoreEntrepriseParParametreDTO();
+
+			Parametre parametre = parametreRepository.findById(map.getKey()).orElseThrow(() -> new CalculScoreException("Calcul de score :: parametre "+map.getKey()+" not found."));
+
+			try {
+				score.setScore(map.getValue());
+				score.setParametre(dtoFactory.createParametre(parametre));
+				score.setEntreprise(dtoFactory.createEntreprise(entreprise));
+
+				score = scoreEntrepriseParParametreService.saveScore(score);
+				scores.add(score);
+
+			} catch (ScoreEntrepriseParParametreException e) {
+				throw new CalculScoreException(e.getMessage(), e);
+			}
+		}
+		return scores;
 	}
-	
+
+	private Map<Long, Integer> calculTotalScoreForEachParametre(List<ReponseParPME> reponses) throws CalculScoreException{
+		Map<Long, Integer> maps = new HashMap<>();
+		List<Parametre> parametres = parametreRepository.findAll();
+		for (Parametre parametre : parametres) {
+			List<Integer> scores = new ArrayList<>();
+			int total = 0;
+			for (ReponseParPME reponse : reponses){
+				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
+				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
+				if (parametre.getCode().equals(question.getParametre().getCode())){
+					total += reponseQualitative.getScore();
+				}
+			}
+			maps.put(parametre.getId(), total);
+		}
+		return maps;
+	}
 	
 }

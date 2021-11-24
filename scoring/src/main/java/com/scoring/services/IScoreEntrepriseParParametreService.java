@@ -9,4 +9,6 @@ public interface IScoreEntrepriseParParametreService {
 
     public List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long entrepriseId) throws ScoreEntrepriseParParametreException;
     public ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametre(Long entrepriseId, Long parametreId) throws ScoreEntrepriseParParametreException;
+
+    ScoreEntrepriseParParametreDTO saveScore(ScoreEntrepriseParParametreDTO score) throws ScoreEntrepriseParParametreException;
 }
