@@ -12,9 +12,11 @@ import com.scoring.repository.ParametreRepository;
 import com.scoring.repository.ScoreEntrepriseParParametreRepository;
 import com.scoring.services.IScoreEntrepriseParParametreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseParParametreService {
 
     @Autowired
@@ -49,6 +51,7 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
         return dtoFactory.createScoreEntrepriseParParametre(score);
     }
 
+    @Override
     public ScoreEntrepriseParParametreDTO saveScore(ScoreEntrepriseParParametreDTO score) throws ScoreEntrepriseParParametreException{
         if (score.getEntreprise() == null || (score.getEntreprise() != null && score.getEntreprise().getId() == null))
             throw new ScoreEntrepriseParParametreException("L'entreprise est obligatoire.");
@@ -59,7 +62,8 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
         //contraintes sur le score
 
         ScoreEntrepriseParParametre model = modelFactory.createScoreEntrepriseParParametre(score);
-
-        return null;
+        scoreEntrepriseParParametreRepository.save(model);
+        score.setId(model.getId());
+        return score;
     }
 }
