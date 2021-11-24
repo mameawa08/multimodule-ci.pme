@@ -20,6 +20,8 @@ public class QuestionDTO {
 
     private String libelle;
     
+    private String libelleTheme;
+    
 	private int	actif;
     
     private ParametreDTO  parametreDTO;

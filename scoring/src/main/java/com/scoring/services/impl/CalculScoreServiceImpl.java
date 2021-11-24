@@ -89,13 +89,13 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		
 	public double getRatio5(IndicateurDTO indicateurDTO) throws Exception {
 		double value;
-		value=indicateurDTO.getBiCreanceClient()*360/indicateurDTO.getXbChiffresDaffaires()*1.18;
+		value=(indicateurDTO.getBiCreanceClient()*360)/(indicateurDTO.getXbChiffresDaffaires()*1.18);
 		return value;
 	}
 		
 	public double getRatio6(IndicateurDTO indicateurDTO) throws Exception {
 		double value;
-		value=indicateurDTO.getDjDettesFournisseurs()*360/indicateurDTO.getRaAchats()*1.18;
+		value=(indicateurDTO.getDjDettesFournisseurs()*360)/(indicateurDTO.getRaAchats()*1.18);
 		return value;
 	}
 		
@@ -128,7 +128,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			for(int i=1; i<=8;i++){
 				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
 				valeurRatioDTO.setEntrepriseDTO(entrepriseDTO);
-				valeurRatioDTO.setIdRatio(listRatioDTO.get(i).getId());
+				valeurRatioDTO.setIdRatio(listRatioDTO.get(i-1).getId());
 				if(i==1)
 					valeurRatioDTO.setValeur(getRatio1(lastIndicateur));
 				else if(i==2)
@@ -146,12 +146,11 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				else if(i==8)
 					valeurRatioDTO.setValeur(getRatio8(lastIndicateur));
 				CalibrageDTO calibrageDTO = referentielService.getCalibrageByRatioAndValeurCalcule(valeurRatioDTO.getIdRatio(), valeurRatioDTO.getValeur());
-				valeurRatioDTO.setClasse(calibrageDTO.getClasse());
-				if(valeurRatioDTO.getClasse()!=0){
-					ValeurRatio valeurRatio = modelFactory.createValeurRatio(valeurRatioDTO);
-					valeurRatio = valeurRatioRepository.save(valeurRatio);
-					listValeurRatio.add(valeurRatioDTO);
-				}
+				if(calibrageDTO!=null) 
+					valeurRatioDTO.setClasse(calibrageDTO.getClasse());
+				ValeurRatio valeurRatio = modelFactory.createValeurRatio(valeurRatioDTO);
+				valeurRatio = valeurRatioRepository.save(valeurRatio);
+				listValeurRatio.add(valeurRatioDTO);
 			}
 		}
 		return listValeurRatio;
