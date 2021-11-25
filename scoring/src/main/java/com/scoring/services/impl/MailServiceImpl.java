@@ -60,7 +60,7 @@ public class MailServiceImpl implements IMailService {
 	
 	private void sendMail(final MimeMessage message, InternetAddress from, String to, String text, String subject) throws MessagingException, UnsupportedEncodingException {
         MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setFrom(new InternetAddress(mailSender, "cipme.com"));
+        helper.setFrom(new InternetAddress(mailSender, "cipme.ci"));
         helper.setTo(to);
         helper.setText(text, true); // set to html
         helper.setSubject(subject);
