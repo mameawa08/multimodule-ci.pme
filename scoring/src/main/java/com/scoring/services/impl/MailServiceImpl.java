@@ -55,7 +55,7 @@ public class MailServiceImpl implements IMailService {
 		model.put("url", url);
 		model.put("date", formatDateNormal(new Date()));
 		String text = feedTemplate(model, "templates/velocity/notification.ftl");
-	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getIntitule());
+	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getRaisonSociale());
 	}
 	
 	private void sendMail(final MimeMessage message, InternetAddress from, String to, String text, String subject) throws MessagingException, UnsupportedEncodingException {
