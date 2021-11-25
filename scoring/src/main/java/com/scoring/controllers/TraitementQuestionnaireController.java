@@ -41,11 +41,21 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
-	@RequestMapping(value = "/qualitatif", method = {RequestMethod.PUT, RequestMethod.PATCH})
+	@RequestMapping(value = "/qualitatif", method = {RequestMethod.POST})
 	public ResponseEntity<?> traitementQualitatif(@RequestBody QuestionnaireQualitatifPayload questionnaireEliPayload) {
 		try {
 			boolean traite = traitementQuestionnaireService.validateQuestionnaireQualitif(questionnaireEliPayload);
 			return ResponseEntity.ok(traite);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/liste-reponses/{idEntreprise}/qualitatif")
+	public ResponseEntity<?> getListeReponseQuestionQualitatif(@PathVariable Long idEntreprise) {
+		try {
+			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeReponseQuestionQUalitatif(idEntreprise);
+			return ResponseEntity.ok(listeReponses);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

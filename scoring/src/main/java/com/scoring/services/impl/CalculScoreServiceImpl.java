@@ -194,12 +194,19 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		List<ScoreEntrepriseParParametreDTO> scores = new ArrayList<>();
 
 		for (Map.Entry<Long, Integer> map : maps.entrySet()){
-			ScoreEntrepriseParParametreDTO score = new ScoreEntrepriseParParametreDTO();
+			ScoreEntrepriseParParametreDTO score;
 
 			Parametre parametre = parametreRepository.findById(map.getKey()).orElseThrow(() -> new CalculScoreException("Calcul de score :: parametre "+map.getKey()+" not found."));
 
 			try {
-				score.setScore(map.getValue());
+
+				score = scoreEntrepriseParParametreService.getScoreEntrepriseParParametreOrNull(entreprise.getId(), parametre.getId());
+				if (score == null){
+					score = new ScoreEntrepriseParParametreDTO();
+				}
+
+				double value = map.getValue()/ parametre.getNbre_question();
+				score.setScore(value);
 				score.setParametre(dtoFactory.createParametre(parametre));
 				score.setEntreprise(dtoFactory.createEntreprise(entreprise));
 
@@ -211,6 +218,16 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			}
 		}
 		return scores;
+	}
+
+	@Override
+	public List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long id) throws CalculScoreException{
+		try {
+			List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(id);
+			return scores;
+		} catch (ScoreEntrepriseParParametreException e) {
+			throw new CalculScoreException("Calcul score :: "+e.getMessage());
+		}
 	}
 
 	private Map<Long, Integer> calculTotalScoreForEachParametre(List<ReponseParPME> reponses) throws CalculScoreException{

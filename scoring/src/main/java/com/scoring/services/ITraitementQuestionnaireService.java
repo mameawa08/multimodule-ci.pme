@@ -14,4 +14,5 @@ public interface ITraitementQuestionnaireService {
 	List<ReponseParPMEDTO> getListeRepQuestEli(Long idEntreprise) throws Exception;
     boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException;
 
+    List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idEntreprise) throws TraitementQuestionnaireException;
 }

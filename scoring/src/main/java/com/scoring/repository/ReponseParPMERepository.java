@@ -1,8 +1,10 @@
 package com.scoring.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.scoring.models.Entreprise;
+import com.scoring.models.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,9 @@ public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Lo
 	List<ReponseParPME> findRepQuestEliByEntreprise(@Param("idEntreprise") Long idEntreprise);
 
 	List<ReponseParPME> findByEntreprise(Entreprise entreprise);
+
+    Optional<ReponseParPME> findByEntrepriseAndIdQuestion(Entreprise entreprise, Long question);
+
+    @Query("SELECT r FROM ReponseParPME r WHERE r.entreprise.id = :entreprise AND r.id_reponse_quali IS NOT NULL")
+    List<ReponseParPME> findReponseParPMEQualitatifByEntreprise(Long entreprise);
 }

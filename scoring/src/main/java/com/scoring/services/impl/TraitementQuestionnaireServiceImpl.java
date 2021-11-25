@@ -3,6 +3,7 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoring.services.ICalculScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,9 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	@Autowired
 	private ReponseQualitativeRepository reponseQualitativeRepository;
 
+	@Autowired
+	private ICalculScoreService calculScoreService;
+
 	@Override
 	public boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception {
 		List<ReponseParPME> listReponseParPME = new ArrayList<ReponseParPME>();
@@ -108,7 +112,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
 		List<ReponseParPME> reponses = new ArrayList<>();
 		try {
-			EntrepriseDTO entrepriseDTO = entrepriseService.getEntreprise(payload.getIdEntreprise());
+			Entreprise entreprise = entrepriseRepository.findById(payload.getIdEntreprise()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+payload.getIdEntreprise()+" not found."));;
+			EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(entreprise);
 
 			List<ReponseQualitativePayload> reps = payload.getListReponse();
 
@@ -122,8 +127,14 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 					ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(rep.getReponse()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: reponse "+rep.getReponse()+" not found."));
 					ReponseQualitativeDTO reponseQualitativeDTO = dtoFactory.createReponseQualitative(reponseQualitative);
 
+//					Existing reponse par pme
+					ReponseParPMEDTO reponseParPMEDTO;
+					ReponseParPME reponseParPME = reponseParPMERepository.findByEntrepriseAndIdQuestion(entreprise, question.getId()).orElse(null);
+					reponseParPMEDTO = dtoFactory.createReponseParPME(reponseParPME);
 //					New reponse par pme dto
-					ReponseParPMEDTO reponseParPMEDTO = new ReponseParPMEDTO();
+					if(reponseParPME == null)
+						reponseParPMEDTO = new ReponseParPMEDTO();
+
 					reponseParPMEDTO.setEntrepriseDTO(entrepriseDTO);
 					reponseParPMEDTO.setIdQuestion(questionDTO.getId());
 					reponseParPMEDTO.setId_reponse_quali(reponseQualitativeDTO.getId());
@@ -135,10 +146,11 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 				reponseParPMERepository.saveAll(reponses);
 
-				entrepriseDTO.setRepQuali(true);
-				Entreprise entreprise = modelFactory.createEntreprise(entrepriseDTO);
+				entreprise.setRepQuali(true);
 
 				entrepriseRepository.save(entreprise);
+
+				calculScoreService.calculScoreParametreQualitatif(entreprise.getId());
 			}
 
 		} catch (Exception e) {
@@ -148,6 +160,12 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		return true;
 	}
 
-	
+	@Override
+	public List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idEntreprise) throws TraitementQuestionnaireException {
+		Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+idEntreprise+" not found."));;
+		List<ReponseParPME> reponses = reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId());
+		return dtoFactory.createListReponseParPME(reponses);
+	}
+
 
 }
