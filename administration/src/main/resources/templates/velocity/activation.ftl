@@ -9,7 +9,7 @@
 
 
    <br/>
-   <p>Votre nom d'utilisateur est : <strong>${login}</strong></p>
+   <p style="margin-left: 2%;">Votre nom d'utilisateur est : <strong>${login}</strong></p>
    <p style="margin-left: 2%; margin-right: 2%;"> Vous pouvez cliquer sur le lien suivant pour  <a href="${url}">activer</a> votre compte.</p>
    <br/>
 
@@ -22,8 +22,8 @@
  
    </div>
    <center>
-Ceci est un email généré automatiquement, veuillez ne pas y répondre svp. <br/
-Le ministére des finances et du budget<br/>
+Ceci est un email généré automatiquement, veuillez ne pas y répondre svp. <br/>
+
 </center>
 <br/>
 </body>
