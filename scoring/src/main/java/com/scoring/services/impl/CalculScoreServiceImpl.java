@@ -188,7 +188,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	@Override
 	public List<ScoreEntrepriseParParametreDTO> calculScoreParametreQualitatif(Long id) throws CalculScoreException {
 		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
-		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findByEntreprise(entreprise);
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId());
 
 		Map<Long, Integer> maps = calculTotalScoreForEachParametre(reponseParPMEs);
 		List<ScoreEntrepriseParParametreDTO> scores = new ArrayList<>();

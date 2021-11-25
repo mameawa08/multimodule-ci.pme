@@ -40,7 +40,7 @@ public class MailServiceImpl implements IMailService {
 
     @PostConstruct
     public void init() throws UnsupportedEncodingException {
-        from = new InternetAddress("awi@awaconsulting.com", "mfb.com");
+        from = new InternetAddress("awi@awaconsulting.com", "cipme.ci");
     }
 
     @Override
@@ -94,7 +94,7 @@ public class MailServiceImpl implements IMailService {
         Map<String, Object> model = setUserInTemplate(user);
         model.put("url", url);
         String text = feedTemplate(model, "templates/velocity/activation.ftl");
-        sendMail(message, from, user.getEmail(),text,"Nouveau Mot de Passe");
+        sendMail(message, from, user.getEmail(),text,"Activation du compte");
         return true;
     }
 
