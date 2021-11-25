@@ -199,7 +199,7 @@ public class UserServiceImpl implements IUserService{
 
 		user.setMobile(paylaod.getMobile());
 		user.setFonction(paylaod.getFonction());
-		user.setEntrepriseLibelle(paylaod.getEntrepriseLibelle());
+//		user.setEntrepriseLibelle(paylaod.getEntrepriseLibelle());
 
 		paylaod.setProfil(Constante.ROLE_ENTREPRENEUR);
 //		sent confirmation mail
@@ -269,8 +269,8 @@ public class UserServiceImpl implements IUserService{
 		if((payload.getMobile() != null && payload.getMobile().equals("")))
 			throw new UserException("Le numero de telephone est obligatoire.");
 
-		if(payload.getEntrepriseLibelle() == null || (payload.getEntrepriseLibelle() != null && payload.getEntrepriseLibelle().equals("")))
-			throw new UserException("Le nom de l'entreprise est obligatoire.");
+//		if(payload.getEntrepriseLibelle() == null || (payload.getEntrepriseLibelle() != null && payload.getEntrepriseLibelle().equals("")))
+//			throw new UserException("Le nom de l'entreprise est obligatoire.");
 
 		if(payload.getFonction()  == null || (payload.getFonction()  != null && payload.getFonction() .equals("")))
 			throw new UserException("La fonction occupe dans l'entreprise est obligatoire.");
