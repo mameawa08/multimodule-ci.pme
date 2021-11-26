@@ -5,7 +5,7 @@
 <br/>
 
 <br/><br/><br/><br/><br/>
-<center><h3><pre style="font-size: 16px;">Bonjour, ${prenomUser} ${nomUser}</pre> Le ministére des finances et du budget vous invite &agrave; vous connecter sur l'application<br/> E-courrier.</h3></center>
+<center><h3><pre style="font-size: 16px;">Bonjour, ${prenomUser} ${nomUser}</pre> </h3></center>
 
 
 <br/>
