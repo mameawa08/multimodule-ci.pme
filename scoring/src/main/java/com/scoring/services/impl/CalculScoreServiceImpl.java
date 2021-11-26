@@ -1,5 +1,6 @@
 package com.scoring.services.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -134,21 +135,21 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				valeurRatioDTO.setEntrepriseDTO(entrepriseDTO);
 				valeurRatioDTO.setIdRatio(listRatioDTO.get(i-1).getId());
 				if(i==1)
-					valeurRatioDTO.setValeur(getRatio1(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio1(lastIndicateur)));
 				else if(i==2)
-					valeurRatioDTO.setValeur(getRatio2(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio2(lastIndicateur)));
 				else if(i==3)
-					valeurRatioDTO.setValeur(getRatio3(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio3(lastIndicateur)));
 				else if(i==4)
-					valeurRatioDTO.setValeur(getRatio4(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio4(lastIndicateur)));
 				else if(i==5)
-					valeurRatioDTO.setValeur(getRatio5(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio5(lastIndicateur)));
 				else if(i==6)
-					valeurRatioDTO.setValeur(getRatio6(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio6(lastIndicateur)));
 				else if(i==7)
-					valeurRatioDTO.setValeur(getRatio7(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio7(lastIndicateur)));
 				else if(i==8)
-					valeurRatioDTO.setValeur(getRatio8(lastIndicateur));
+					valeurRatioDTO.setValeur(new BigDecimal(getRatio8(lastIndicateur)));
 				CalibrageDTO calibrageDTO = referentielService.getCalibrageByRatioAndValeurCalcule(valeurRatioDTO.getIdRatio(), valeurRatioDTO.getValeur());
 				if(calibrageDTO!=null) 
 					valeurRatioDTO.setClasse(calibrageDTO.getClasse());
@@ -174,7 +175,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			Long totalPond=0L;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
-				score_financier = score_financier + (valeur.getValeur()*valeur.getClasse()*ratioDTO.getPonderation());
+				score_financier = score_financier + (valeur.getValeur().doubleValue()*valeur.getClasse()*ratioDTO.getPonderation());
 				totalPond = totalPond + ratioDTO.getPonderation();
 			}
 			scoreDTO.setScore_financier(score_financier/totalPond);

@@ -1,6 +1,7 @@
 package com.administration.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,11 +35,11 @@ public class Calibrage implements Serializable {
 	@Column(name="id")
     private Long id;
 	
-	@Column
-	private double min;
+	@Column(precision = 20, scale = 3)
+	private BigDecimal min;
 
-    @Column
-    private double max;
+    @Column(precision = 20, scale = 3)
+    private BigDecimal max;
     
     @Column
     private int classe;

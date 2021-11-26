@@ -1,5 +1,6 @@
 package com.scoring.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.scoring.dto.CalibrageDTO;
@@ -17,7 +18,7 @@ public interface IReferentielService {
 
 	List<RatioDTO> getlisteRatios() throws Exception;
 
-	CalibrageDTO getCalibrageByRatioAndValeurCalcule(Long idRatio, double valeurRatio) throws Exception;
+	CalibrageDTO getCalibrageByRatioAndValeurCalcule(Long idRatio, BigDecimal valeurRatio) throws Exception;
 
 	RatioDTO getRatioById(Long idRatio) throws Exception;
 

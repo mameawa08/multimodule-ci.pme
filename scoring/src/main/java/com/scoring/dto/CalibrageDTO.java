@@ -1,5 +1,7 @@
 package com.scoring.dto;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +15,9 @@ public class CalibrageDTO {
 
     private Long id;
 	
-	private double min;
+	private BigDecimal min;
 
-    private double max;
+    private BigDecimal max;
     
     private int classe;
     

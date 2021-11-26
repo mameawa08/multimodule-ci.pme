@@ -1,5 +1,6 @@
 package com.administration.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.administration.dto.CalibrageDTO;
@@ -18,7 +19,7 @@ public interface ICalibrageService {
 
 	boolean deleteCalibrage(Long idCalibrage) throws Exception;
 
-	CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, double valeurRatio);
+	CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, BigDecimal valeurRatio);
 
 	
 

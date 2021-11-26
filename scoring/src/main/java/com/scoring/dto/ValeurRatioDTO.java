@@ -1,5 +1,7 @@
 package com.scoring.dto;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +15,7 @@ public class ValeurRatioDTO {
 
     private Long id;
 	
-	private double valeur;
+	private BigDecimal valeur;
 
     private int classe;
     

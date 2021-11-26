@@ -8,6 +8,7 @@ import com.scoring.dto.SecteurActiviteDTO;
 import com.scoring.exceptions.ReferentielException;
 import com.scoring.services.IReferentielService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class ReferentielServiceImpl implements IReferentielService {
 	}
 		
     @Override
-	public CalibrageDTO getCalibrageByRatioAndValeurCalcule(Long idRatio, double valeurRatio) throws Exception {
+	public CalibrageDTO getCalibrageByRatioAndValeurCalcule(Long idRatio, BigDecimal valeurRatio) throws Exception {
 		ResponseEntity<CalibrageDTO> resp = 
 				rt.exchange(baseUrl+"/calibrages/ratio/"+idRatio+"/"+valeurRatio, HttpMethod.GET, null, CalibrageDTO.class);
 		return resp.getBody();

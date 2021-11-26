@@ -1,6 +1,7 @@
 package com.scoring.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,8 +35,8 @@ public class ValeurRatio implements Serializable {
 	@Column(name="id")
     private Long id;
 	
-	@Column
-	private double valeur;
+	@Column(precision = 20, scale = 3)
+	private BigDecimal valeur;
 
     @Column
     private int classe;

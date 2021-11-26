@@ -1,5 +1,6 @@
 package com.administration.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class CalibrageController {
 	}
 	
 	@GetMapping(value = "/ratio/{idRatio}/{valeurRatio}")
-	public ResponseEntity<CalibrageDTO> getCalibrageByRatioAndValeurCalcule(@PathVariable Long idRatio, @PathVariable double valeurRatio) throws Exception {
+	public ResponseEntity<CalibrageDTO> getCalibrageByRatioAndValeurCalcule(@PathVariable Long idRatio, @PathVariable BigDecimal valeurRatio) throws Exception {
 	       CalibrageDTO calibrage = calibrageService.getCalibragesByRatioAndValeurCalcule(idRatio, valeurRatio);
 	       return ResponseEntity.ok(calibrage);
 	}

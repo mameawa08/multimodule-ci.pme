@@ -1,5 +1,6 @@
 package com.administration.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class CalibrageServiceImpl implements ICalibrageService {
 	}
 	
 	@Override
-	public CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, double valeurRatio) {
+	public CalibrageDTO getCalibragesByRatioAndValeurCalcule(Long idRatio, BigDecimal valeurRatio) {
 		Calibrage calibrage = calibrageRepository.findCalibrageByRatioAndValeurCalcule(idRatio, valeurRatio);
 		CalibrageDTO calibrageDto = dtoFactory.createCalibrage(calibrage);
 		return calibrageDto;

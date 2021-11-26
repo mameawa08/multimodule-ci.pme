@@ -1,5 +1,7 @@
 package com.administration.payload;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +10,8 @@ import lombok.Setter;
 public class CalibragePayload {
 	
 	private Long 			id;
-	private double 			min;
-	private double 			max;
+	private BigDecimal 		min;
+	private BigDecimal 		max;
 	private int 			classe;
 	private Long 			idRatio;
 }
