@@ -129,6 +129,8 @@ public class ModelFactory {
 		model.setTmTransfertCharges(indicateur.getTmTransfertCharges());
 		model.setRqParticipations(indicateur.getRqParticipations());
 		model.setRsImpot(indicateur.getRsImpot());
+		model.setEndettement_struct(indicateur.getEndettement_struct());
+		model.setProduit_financier(indicateur.getProduit_financier());
 		model.setAnnee(indicateur.getAnnee());
 		model.setActif(indicateur.isActif());
 		model.setEntreprise(createEntreprise(indicateur.getEntreprise()));

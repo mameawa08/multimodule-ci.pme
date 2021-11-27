@@ -93,7 +93,6 @@ public class PayloadToDTO {
 		dto.setXiResultatNet(indicateur.getXiResultatNet());
 		dto.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
 		dto.setBiCreanceClient(indicateur.getBiCreanceClient());
-		dto.setCaf(indicateur.getCaf());
 		dto.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
 		dto.setDfTotalResources(indicateur.getDfTotalRessources());
 		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
@@ -128,7 +127,6 @@ public class PayloadToDTO {
 		dto.setXiResultatNet(indicateur.getXiResultatNet());
 		dto.setXbChiffresDaffaires(indicateur.getXbChiffresDaffaires());
 		dto.setBiCreanceClient(indicateur.getBiCreanceClient());
-		dto.setCaf(indicateur.getCaf());
 		dto.setCaCapitauxPropres(indicateur.getCaCapitauxPropres());
 		dto.setDfTotalResources(indicateur.getDfTotalRessources());
 		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());

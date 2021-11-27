@@ -143,7 +143,12 @@ public class IndicateurServiceImpl implements IIndicateurService {
 			throw new IndicateurException("L'entreprise est obligatoire");
 
 		indicateur = payloadToDTO.createIndicateur(payload, indicateur);
-
+		indicateur.setEndettement_struct(indicateur.getDaEmpruntsDettes()
+				+indicateur.getDbDettesAcquisitions());
+		indicateur.setProduit_financier(indicateur.getTkRevenusFinanciers()
+				+indicateur.getTlReprisesDepreciations()+indicateur.getTmTransfertCharges());
+		indicateur.setCaf(indicateur.getXdExcedentBrutExploit()+indicateur.getProduit_financier()
+				+indicateur.getRmChargesFinancieres()+indicateur.getRqParticipations()+indicateur.getRsImpot());
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
 			indicateur.setEntreprise(entreprise);

@@ -53,6 +53,10 @@ public class Indicateur {
 	private double rqParticipations;
 	@Column(name = "rs_impot", nullable=true)
 	private double rsImpot;
+	@Column(name = "ef022_endettement_struct", nullable=true)
+	private double endettement_struct;
+	@Column(name = "aa071_produit_finan", nullable=true)
+	private double produit_financier;
 
 	@ManyToOne
 	@JoinColumn(name = "entreprise_id")

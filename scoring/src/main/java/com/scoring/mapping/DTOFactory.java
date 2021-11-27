@@ -142,6 +142,8 @@ public class DTOFactory {
 		dto.setTmTransfertCharges(indicateur.getTmTransfertCharges());
 		dto.setRqParticipations(indicateur.getRqParticipations());
 		dto.setRsImpot(indicateur.getRsImpot());
+		dto.setEndettement_struct(indicateur.getEndettement_struct());
+		dto.setProduit_financier(indicateur.getProduit_financier());
 		dto.setAnnee(indicateur.getAnnee());
 		dto.setActif(indicateur.isActif());
 		dto.setEntreprise(createEntreprise(indicateur.getEntreprise()));

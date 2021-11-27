@@ -15,7 +15,6 @@ public class IndicateurPayload {
 	private double xiResultatNet;
 	private double xbChiffresDaffaires;
 	private double biCreanceClient;
-	private double caf;
 	private double caCapitauxPropres;
 	private double dfTotalRessources;
 	private double djDettesFournisseurs;

@@ -1,5 +1,7 @@
 package com.scoring.dto;
 
+import javax.persistence.Column;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,5 +34,7 @@ public class IndicateurDTO {
 	private double tmTransfertCharges;
 	private double rqParticipations;
 	private double rsImpot;
+	private double endettement_struct;
+	private double produit_financier;
 		
 }
