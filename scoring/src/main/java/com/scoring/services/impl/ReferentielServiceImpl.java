@@ -1,10 +1,6 @@
 package com.scoring.services.impl;
 
-import com.scoring.dto.CalibrageDTO;
-import com.scoring.dto.FormeJuridiqueDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.RatioDTO;
-import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.dto.*;
 import com.scoring.exceptions.ReferentielException;
 import com.scoring.services.IReferentielService;
 
@@ -13,8 +9,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,4 +69,23 @@ public class ReferentielServiceImpl implements IReferentielService {
    				rt.exchange(baseUrl+"/questions/"+idQuestion, HttpMethod.GET, null, QuestionDTO.class);
    		return resp.getBody();
    	}
+
+
+   	@Override
+   	public List<PonderationDTO> getPonderations() throws ReferentielException{
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<List<PonderationDTO>> resp = rt.exchange(baseUrl + "/ponderations", HttpMethod.GET, entity, new ParameterizedTypeReference<List<PonderationDTO>>() {});
+        return resp.getBody();
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("authorization", "Bearer "+principal.getTokenValue());
+        return headers;
+    }
 }

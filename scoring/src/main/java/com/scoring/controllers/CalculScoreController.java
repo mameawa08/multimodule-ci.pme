@@ -1,6 +1,9 @@
 package com.scoring.controllers;
 
 import com.scoring.dto.ScoreEntrepriseParParametreDTO;
+import com.scoring.dto.ScoresParPMEDTO;
+import com.scoring.exceptions.CalculScoreException;
+import com.scoring.models.ScoresParPME;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +50,16 @@ public class CalculScoreController {
 			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(idEntreprise);
 			return ResponseEntity.ok(scores);
 		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/final/{id}")
+	public ResponseEntity<?> getScoreFinal(@PathVariable Long id){
+		try {
+			ScoresParPMEDTO scoresParPMEDTO = calculScoreService.getScoreFinal(id);
+			return ResponseEntity.ok(scoresParPMEDTO);
+		} catch (CalculScoreException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
