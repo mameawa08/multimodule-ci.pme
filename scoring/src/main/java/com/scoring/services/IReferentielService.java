@@ -2,11 +2,7 @@ package com.scoring.services;
 
 import java.util.List;
 
-import com.scoring.dto.CalibrageDTO;
-import com.scoring.dto.FormeJuridiqueDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.RatioDTO;
-import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.dto.*;
 import com.scoring.exceptions.ReferentielException;
 
 public interface IReferentielService {
@@ -22,4 +18,6 @@ public interface IReferentielService {
 	RatioDTO getRatioById(Long idRatio) throws Exception;
 
 	QuestionDTO getQuestionById(Long idQuestion) throws Exception;
+
+    List<PonderationDTO> getPonderations() throws ReferentielException;
 }

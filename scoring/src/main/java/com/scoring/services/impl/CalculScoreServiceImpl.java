@@ -230,6 +230,46 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		}
 	}
 
+	@Override
+	public ScoresParPMEDTO calculScoreFinale(Long id) throws CalculScoreException{
+        Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+        try {
+            List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(id);
+            List<PonderationDTO> ponderations = referentielService.getPonderations();
+            ScoresParPME scoresParPME = scoreParPMERepository.findByEntreprise(entreprise).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."));
+
+            double value = 0;
+            for(ScoreEntrepriseParParametreDTO score : scores){
+                for(PonderationDTO ponderation : ponderations){
+                    if (ponderation.getParametreDTO() != null && score.getParametre().getId() == ponderation.getParametreDTO().getId()){
+                        value += (score.getScore() * ponderation.getPonderation());
+                    }
+                    if(ponderation.getParametreDTO() == null){
+                        value += scoresParPME.getScore_financier() * ponderation.getPonderation();
+                    }
+                }
+            }
+            value = value / 100;
+
+            scoresParPME.setScore_final(value);
+            scoreParPMERepository.save(scoresParPME);
+
+            ScoresParPMEDTO scoresParPMEDTO = dtoFactory.createScoreParPME(scoresParPME);
+            return scoresParPMEDTO;
+
+        } catch (Exception e) {
+            throw new CalculScoreException("Calcul score ::"+ e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ScoresParPMEDTO getScoreFinal(Long id) throws CalculScoreException{
+        Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+        ScoresParPME scoresParPME = scoreParPMERepository.findByEntreprise(entreprise).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."));
+        return dtoFactory.createScoreParPME(scoresParPME);
+    }
+
+    //private methods
 	private Map<Long, Integer> calculTotalScoreForEachParametre(List<ReponseParPME> reponses) throws CalculScoreException{
 		Map<Long, Integer> maps = new HashMap<>();
 		List<Parametre> parametres = parametreRepository.findAll();
@@ -247,5 +287,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		}
 		return maps;
 	}
-	
+
+
+
 }

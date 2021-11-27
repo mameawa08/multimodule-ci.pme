@@ -151,6 +151,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 				entrepriseRepository.save(entreprise);
 
 				calculScoreService.calculScoreParametreQualitatif(entreprise.getId());
+
+				calculScoreService.calculScoreFinale(entreprise.getId());
 			}
 
 		} catch (Exception e) {

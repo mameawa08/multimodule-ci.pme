@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.scoring.dto.ScoreEntrepriseParParametreDTO;
 import com.scoring.dto.ScoresAndRatioDTO;
+import com.scoring.dto.ScoresParPMEDTO;
 import com.scoring.dto.ValeurRatioDTO;
 import com.scoring.exceptions.CalculScoreException;
 
@@ -18,4 +19,8 @@ public interface ICalculScoreService {
     List<ScoreEntrepriseParParametreDTO> calculScoreParametreQualitatif(Long id) throws CalculScoreException;
 
 	List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long id) throws CalculScoreException;
+
+    ScoresParPMEDTO calculScoreFinale(Long id) throws CalculScoreException;
+
+	ScoresParPMEDTO getScoreFinal(Long id) throws CalculScoreException;
 }
