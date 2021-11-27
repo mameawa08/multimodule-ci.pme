@@ -22,5 +22,9 @@ public class ValeurRatioDTO {
     private EntrepriseDTO entrepriseDTO;
    
 	private Long idRatio;
+	
+	private String nomRatio;
+	
+	private String codeRatio;
 
 }

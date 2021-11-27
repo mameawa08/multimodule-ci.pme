@@ -82,7 +82,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	public double getRatio3(IndicateurDTO indicateurDTO) throws Exception {
 		double value;
-		value=indicateurDTO.getXiResultatNet()/indicateurDTO.getCaf();
+		value=indicateurDTO.getEndettement_struct()/indicateurDTO.getCaf();
 		return value;
 	}
 		
@@ -134,6 +134,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
 				valeurRatioDTO.setEntrepriseDTO(entrepriseDTO);
 				valeurRatioDTO.setIdRatio(listRatioDTO.get(i-1).getId());
+				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatioDTO.getIdRatio());
+				valeurRatioDTO.setNomRatio(ratioDTO.getLibelle());
+				valeurRatioDTO.setCodeRatio(ratioDTO.getCode());
 				if(i==1)
 					valeurRatioDTO.setValeur(new BigDecimal(getRatio1(lastIndicateur)));
 				else if(i==2)
@@ -175,7 +178,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			Long totalPond=0L;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
-				score_financier = score_financier + (valeur.getValeur().doubleValue()*valeur.getClasse()*ratioDTO.getPonderation());
+				score_financier = score_financier + (valeur.getClasse()*ratioDTO.getPonderation());
 				totalPond = totalPond + ratioDTO.getPonderation();
 			}
 			scoreDTO.setScore_financier(score_financier/totalPond);
