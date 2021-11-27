@@ -135,6 +135,13 @@ public class DTOFactory {
 		dto.setRaAchats(indicateur.getRaAchats());
 		dto.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
 		dto.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
+		dto.setDaEmpruntsDettes(indicateur.getDaEmpruntsDettes());
+		dto.setDbDettesAcquisitions(indicateur.getDbDettesAcquisitions());
+		dto.setTkRevenusFinanciers(indicateur.getTkRevenusFinanciers());
+		dto.setTlReprisesDepreciations(indicateur.getTlReprisesDepreciations());
+		dto.setTmTransfertCharges(indicateur.getTmTransfertCharges());
+		dto.setRqParticipations(indicateur.getRqParticipations());
+		dto.setRsImpot(indicateur.getRsImpot());
 		dto.setAnnee(indicateur.getAnnee());
 		dto.setActif(indicateur.isActif());
 		dto.setEntreprise(createEntreprise(indicateur.getEntreprise()));

@@ -97,9 +97,6 @@ public class IndicateurServiceImpl implements IIndicateurService {
 		if (payload.getBiCreanceClient() == 0)
 			throw new IndicateurException("La creance client est obligatoire.");
 
-		if (payload.getCaf() == 0)
-			throw new IndicateurException("CAF est obligatoire.");
-
 		if (payload.getCaCapitauxPropres() == 0)
 			throw new IndicateurException("Le capital propre est obligatoire.");
 
@@ -111,6 +108,33 @@ public class IndicateurServiceImpl implements IIndicateurService {
 
 		if (payload.getRaAchats() == 0)
 			throw new IndicateurException("L'achat est obligatoire.");
+		
+		if (payload.getXdExcedentBrutExploit() == 0)
+			throw new IndicateurException("L'excédent brut est obligatoire.");
+		
+		if (payload.getRmChargesFinancieres() == 0)
+			throw new IndicateurException("Les charges financières sont obligatoires.");
+		
+		if (payload.getDaEmpruntsDettes() == 0)
+			throw new IndicateurException("Les emprunts et dettes financières sont obligatoires.");
+		
+		if (payload.getDbDettesAcquisitions() == 0)
+			throw new IndicateurException("Les dettes et acquisitions sont obligatoires.");
+		
+		if (payload.getTkRevenusFinanciers() == 0)
+			throw new IndicateurException("Les revenus financiers sont obligatoires.");
+		
+		if (payload.getTlReprisesDepreciations() == 0)
+			throw new IndicateurException("Les reprises de provisions et dépréciations sont obligatoires.");
+		
+		if (payload.getTmTransfertCharges() == 0)
+			throw new IndicateurException("Les transferts de charges financières sont obligatoires.");
+		
+		if (payload.getRqParticipations() == 0)
+			throw new IndicateurException("Les participations des travailleurs sont obligatoires.");
+		
+		if (payload.getRsImpot() == 0)
+			throw new IndicateurException("L'impôt sur le résultat est obligatoire.");
 
 		if(payload.getAnnee() != 0 && (payload.getAnnee() < (year - 5) || payload.getAnnee() > year))
 			throw new IndicateurException("L'indicateur doit au moins etre des 5 dernieres annees.");

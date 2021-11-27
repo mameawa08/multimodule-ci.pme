@@ -39,6 +39,20 @@ public class Indicateur {
 	private double xdExcedentBrutExploit;
 	@Column(name = "rm_charges_financieres", nullable=true)
 	private double rmChargesFinancieres;
+	@Column(name = "da_emprunts_dettes", nullable=true)
+	private double daEmpruntsDettes;
+	@Column(name = "db_dettes_acquisitions", nullable=true)
+	private double dbDettesAcquisitions;
+	@Column(name = "tk_revenus_financiers", nullable=true)
+	private double tkRevenusFinanciers;
+	@Column(name = "tl_reprises_depreciations", nullable=true)
+	private double tlReprisesDepreciations;
+	@Column(name = "tm_transfert_charges", nullable=true)
+	private double tmTransfertCharges;
+	@Column(name = "rq_participations", nullable=true)
+	private double rqParticipations;
+	@Column(name = "rs_impot", nullable=true)
+	private double rsImpot;
 
 	@ManyToOne
 	@JoinColumn(name = "entreprise_id")

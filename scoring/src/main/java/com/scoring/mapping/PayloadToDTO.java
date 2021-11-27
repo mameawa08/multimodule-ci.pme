@@ -133,11 +133,19 @@ public class PayloadToDTO {
 		dto.setDfTotalResources(indicateur.getDfTotalRessources());
 		dto.setDjDettesFournisseurs(indicateur.getDjDettesFournisseurs());
 		dto.setRaAchats(indicateur.getRaAchats());
-		dto.setAnnee(indicateur.getAnnee());
-
 		dto.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
 		dto.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
+		dto.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
+		dto.setDaEmpruntsDettes(indicateur.getDaEmpruntsDettes());
+		dto.setDbDettesAcquisitions(indicateur.getDbDettesAcquisitions());
+		dto.setTkRevenusFinanciers(indicateur.getTkRevenusFinanciers());
+		dto.setTlReprisesDepreciations(indicateur.getTlReprisesDepreciations());
+		dto.setTmTransfertCharges(indicateur.getTmTransfertCharges());
+		dto.setRqParticipations(indicateur.getRqParticipations());
+		dto.setRsImpot(indicateur.getRsImpot());
+		dto.setAnnee(indicateur.getAnnee());
 
+		
 
 		return dto;
 	}

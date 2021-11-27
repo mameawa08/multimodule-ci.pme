@@ -22,6 +22,13 @@ public class IndicateurPayload {
 	private double raAchats;
 	private double xdExcedentBrutExploit;
 	private double rmChargesFinancieres;
+	private double daEmpruntsDettes;
+	private double dbDettesAcquisitions;
+	private double tkRevenusFinanciers;
+	private double tlReprisesDepreciations;
+	private double tmTransfertCharges;
+	private double rqParticipations;
+	private double rsImpot;
 	private int annee;
 	private int entreprise;
 }

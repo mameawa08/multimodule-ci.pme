@@ -122,6 +122,13 @@ public class ModelFactory {
 		model.setRaAchats(indicateur.getRaAchats());
 		model.setXdExcedentBrutExploit(indicateur.getXdExcedentBrutExploit());
 		model.setRmChargesFinancieres(indicateur.getRmChargesFinancieres());
+		model.setDaEmpruntsDettes(indicateur.getDaEmpruntsDettes());
+		model.setDbDettesAcquisitions(indicateur.getDbDettesAcquisitions());
+		model.setTkRevenusFinanciers(indicateur.getTkRevenusFinanciers());
+		model.setTlReprisesDepreciations(indicateur.getTlReprisesDepreciations());
+		model.setTmTransfertCharges(indicateur.getTmTransfertCharges());
+		model.setRqParticipations(indicateur.getRqParticipations());
+		model.setRsImpot(indicateur.getRsImpot());
 		model.setAnnee(indicateur.getAnnee());
 		model.setActif(indicateur.isActif());
 		model.setEntreprise(createEntreprise(indicateur.getEntreprise()));
