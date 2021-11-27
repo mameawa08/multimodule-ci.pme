@@ -175,13 +175,11 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		else{
 			scoreDTO.setEntrepriseDTO(dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found."))));
 			double score_financier=0.0;
-			Long totalPond=0L;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
-				score_financier = score_financier + (valeur.getClasse()*ratioDTO.getPonderation());
-				totalPond = totalPond + ratioDTO.getPonderation();
+				score_financier = score_financier + (valeur.getClasse()*(ratioDTO.getPonderation()/100));
 			}
-			scoreDTO.setScore_financier(score_financier/totalPond);
+			scoreDTO.setScore_financier(score_financier);
 			ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
 			score = scoreParPMERepository.save(score);
 		}
