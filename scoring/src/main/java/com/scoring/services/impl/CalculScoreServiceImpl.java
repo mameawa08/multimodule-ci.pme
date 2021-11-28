@@ -208,7 +208,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 					score = new ScoreEntrepriseParParametreDTO();
 				}
 
-				double value = map.getValue()/ parametre.getNbre_question();
+				double value = (double) map.getValue() / parametre.getNbre_question();
 				score.setScore(value);
 				score.setParametre(dtoFactory.createParametre(parametre));
 				score.setEntreprise(dtoFactory.createEntreprise(entreprise));
