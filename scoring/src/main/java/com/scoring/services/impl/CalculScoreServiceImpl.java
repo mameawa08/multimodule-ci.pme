@@ -177,7 +177,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			double score_financier=0.0;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
-				score_financier = score_financier + (valeur.getClasse()*(ratioDTO.getPonderation()/100));
+				double ponderation = ratioDTO.getPonderation()/100.0;
+				score_financier = score_financier + (valeur.getClasse()*(ponderation));
 			}
 			scoreDTO.setScore_financier(score_financier);
 			ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
