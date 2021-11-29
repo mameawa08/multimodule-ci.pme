@@ -15,6 +15,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import static com.scoring.services.IReportPrinterService.TypeFile.PDF;
@@ -26,16 +27,20 @@ public class ReportPrinterServiceImpl implements IReportPrinterService {
     private String gedRepositoryPath;
 
     @Override
-    public String print(String jasperFile, String filename, TypeFile type, Map params) throws ReportPrinterException {
+    public String print(String jasperFile, String filename, TypeFile type, Map params, List data) throws ReportPrinterException {
         try {
             JasperPrint jasperPrint;
-//            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
 
             Path path = Paths.get(jasperFile).toAbsolutePath();
             InputStream is = new FileInputStream(path.toString());
             JasperReport jasperReport = JasperCompileManager.compileReport(is);
-
-            jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
+            if(data != null){
+                params.put("scores", dataSource);
+                jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+            }
+            else
+                jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
             Calendar c = Calendar.getInstance();
             StringBuilder sb = new StringBuilder();
             sb.append(filename.toLowerCase().replaceAll(" ", "_")).append("_").

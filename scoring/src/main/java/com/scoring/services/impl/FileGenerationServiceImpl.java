@@ -9,6 +9,7 @@ import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.*;
 import com.scoring.utils.Constante;
 import com.scoring.utils.DateUtils;
+import com.scoring.utils.NumberUtils;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,28 +63,37 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
                 ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
                     params.put("uRatioLiquidite", ratio.getUnite());
-                    params.put("rRatioLiquidite", valeurRatio.getValeur().toString());
+                    params.put("rRatioLiquidite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE) && valeurRatio != null){
                     params.put("uRatioRentabilite", ratio.getUnite());
-                    params.put("rRatioRentabilite", valeurRatio.getValeur().toString());
+                    params.put("rRatioRentabilite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_CAPACITE_REMBOURSEMENT) && valeurRatio != null){
                     params.put("uCapacite", ratio.getUnite());
-                    params.put("rCapacite", valeurRatio.getValeur().toString());
+                    params.put("rCapacite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_AUTONOMIE_FINANCIERE) && valeurRatio != null){
                     params.put("uAutonomie", ratio.getUnite());
-                    params.put("rAutonomie", valeurRatio.getValeur().toString());
+                    params.put("rAutonomie", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_CLIENT) && valeurRatio != null){
                     params.put("uDelaiClient", ratio.getUnite());
-                    params.put("rDelaiClient", valeurRatio.getValeur().toString());
+                    params.put("rDelaiClient", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_FOURNISSEUR) && valeurRatio != null){
                     params.put("uDelaiFournisseur", ratio.getUnite());
-                    params.put("rDelaiFournisseur", valeurRatio.getValeur().toString());
+                    params.put("rDelaiFournisseur", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
+                if(ratio.getCode().contains(Constante.RATIO_POINDS_CHARGES) && valeurRatio != null){
+                    params.put("uPoidsCharges", ratio.getUnite());
+                    params.put("rPoidsCharges", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
+                }
+                if(ratio.getCode().contains(Constante.RATIO_RENTABILITE_EXPLOITATION) && valeurRatio != null){
+                    params.put("uRentabiliteExploit", ratio.getUnite());
+                    params.put("rRentabiliteExploit", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
+                }
+
             }
     //            Entreprise infos
             params.put("siege", entreprise.getAdresse());
@@ -108,7 +118,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("dateDemarrage", entreprise.getAnnee()+"");
             params.put("raisonSociale", entreprise.getRaisonSociale());
             params.put("libelleSigle", "");
-            params.put("activite", "");
+            params.put("activite", (entreprise.getSecteurs()).get(0).getLibelle());
             params.put("idu", "");
 
             params.put("imgPath", gedReportRepositoryPath);
@@ -139,14 +149,14 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             series.add("Performances opérationnelles");
             params.put("series", series);
 
-            params.put("data", new JRBeanCollectionDataSource(data));
+            params.put("data", data);
 
             String filename = "Rapport "+entreprise.getIntitule();
 
             Path gedPath = Paths.get(gedReportRepositoryPath).toAbsolutePath();
             String jasperFile  = gedPath.resolve("rapport_scoreCI.jrxml").toString();
 
-            filename = reportPrinterService.print(jasperFile, filename, IReportPrinterService.TypeFile.PDF, params);
+            filename = reportPrinterService.print(jasperFile, filename, IReportPrinterService.TypeFile.PDF, params, data);
 
             Path path = Paths.get(gedRepositoryPath).toAbsolutePath().resolve(filename);
 
