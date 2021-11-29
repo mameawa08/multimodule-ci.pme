@@ -59,6 +59,7 @@ public class ReportPrinterServiceImpl implements IReportPrinterService {
             return sb.toString();
         }
         catch (Exception e){
+            e.printStackTrace();
             throw new ReportPrinterException(e.getMessage(), e);
         }
     }

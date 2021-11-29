@@ -1,6 +1,7 @@
 package com.scoring.services.impl;
 
 import com.scoring.dto.*;
+import com.scoring.dto.chart.ChartData;
 import com.scoring.exceptions.FileGenerationException;
 import com.scoring.models.ValeurRatio;
 import com.scoring.payloads.RapportPayload;
@@ -8,6 +9,7 @@ import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.*;
 import com.scoring.utils.Constante;
 import com.scoring.utils.DateUtils;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FileGenerationServiceImpl implements IFileGenerationService {
@@ -46,11 +45,14 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
     @Value("${app.ged.jasper.dossier}")
     private String gedReportRepositoryPath;
 
+    @Autowired
+    private ICalculScoreService calculScoreService;
+
     @Override
     public RapportFile generateRapport(Long id, RapportPayload payload) throws FileGenerationException {
         try {
             EntrepriseDTO entreprise = entrepriseService.getEntreprise(id);
-            DirigeantDTO directeur = dirigeantService.getDirigeant(id);
+            DirigeantDTO directeur = dirigeantService.getDirigeantByEntreprise(id);
             List<RatioDTO> ratios = referentielService.getlisteRatios();
 
             Map params = new HashMap<>();
@@ -60,27 +62,27 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
                 ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
                     params.put("uRatioLiquidite", ratio.getUnite());
-                    params.put("rRatioLiquidite", valeurRatio.getValeur());
+                    params.put("rRatioLiquidite", valeurRatio.getValeur().toString());
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE) && valeurRatio != null){
                     params.put("uRatioRentabilite", ratio.getUnite());
-                    params.put("rRatioRentabilite", valeurRatio.getValeur());
+                    params.put("rRatioRentabilite", valeurRatio.getValeur().toString());
                 }
                 if(ratio.getCode().contains(Constante.RATIO_CAPACITE_REMBOURSEMENT) && valeurRatio != null){
                     params.put("uCapacite", ratio.getUnite());
-                    params.put("rCapacite", valeurRatio.getValeur());
+                    params.put("rCapacite", valeurRatio.getValeur().toString());
                 }
                 if(ratio.getCode().contains(Constante.RATIO_AUTONOMIE_FINANCIERE) && valeurRatio != null){
                     params.put("uAutonomie", ratio.getUnite());
-                    params.put("rAutonomie", valeurRatio.getValeur());
+                    params.put("rAutonomie", valeurRatio.getValeur().toString());
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_CLIENT) && valeurRatio != null){
                     params.put("uDelaiClient", ratio.getUnite());
-                    params.put("rDelaiClient", valeurRatio.getValeur());
+                    params.put("rDelaiClient", valeurRatio.getValeur().toString());
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_FOURNISSEUR) && valeurRatio != null){
                     params.put("uDelaiFournisseur", ratio.getUnite());
-                    params.put("rDelaiFournisseur", valeurRatio.getValeur());
+                    params.put("rDelaiFournisseur", valeurRatio.getValeur().toString());
                 }
             }
     //            Entreprise infos
@@ -102,12 +104,42 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("secteurActivite", secteurs);
 
             params.put("activitePrincipale", (entreprise.getSecteurs()).get(0).getLibelle());
-            params.put("capitalSocial", entreprise.getCapital());
-            params.put("dateDemarrage", entreprise.getAnnee());
+            params.put("capitalSocial", entreprise.getCapital().toString());
+            params.put("dateDemarrage", entreprise.getAnnee()+"");
             params.put("raisonSociale", entreprise.getRaisonSociale());
             params.put("libelleSigle", "");
             params.put("activite", "");
             params.put("idu", "");
+
+            params.put("imgPath", gedReportRepositoryPath);
+
+            //Radar
+            ScoresParPMEDTO scoreFinancier = calculScoreService.getScoreFinal(id);
+
+            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
+
+            List<ChartData> data = new ArrayList<>();
+
+            List<Double> values = new ArrayList<>();
+            List<String> labels = new ArrayList<>();
+
+            values.add(scoreFinancier.getScore_financier());
+            for (ScoreEntrepriseParParametreDTO score : scores){
+                ChartData elt = new ChartData("Performances opérationnelles", score.getParametre().getLibelle(), score.getScore());
+                data.add(elt);
+            }
+            ChartData elt = new ChartData("Performances opérationnelles", "Solvabilité", scoreFinancier.getScore_financier());
+            data.add(elt);
+
+            params.put("values", values);
+            params.put("labels", labels);
+//            params.put("categories", labels);
+
+            List<String> series = new ArrayList<>();
+            series.add("Performances opérationnelles");
+            params.put("series", series);
+
+            params.put("data", new JRBeanCollectionDataSource(data));
 
             String filename = "Rapport "+entreprise.getIntitule();
 
@@ -124,10 +156,10 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             RapportFile rapport = new RapportFile();
             rapport.setName(filename);
             rapport.setContent(is.readAllBytes());
+            return rapport;
         }
         catch (Exception e){
             throw new FileGenerationException(e.getMessage(), e);
         }
-        return null;
     }
 }
