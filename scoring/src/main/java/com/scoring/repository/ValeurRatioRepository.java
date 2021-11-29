@@ -1,7 +1,9 @@
 package com.scoring.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.scoring.models.Entreprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,6 @@ public interface ValeurRatioRepository extends JpaRepository<ValeurRatio, Long> 
 
 	@Query("SELECT DISTINCT v FROM ValeurRatio v WHERE v.entreprise IS NOT NULL AND v.entreprise.id=:idEntreprise")
 	List<ValeurRatio> findValeurRatioByEntreprise(@Param("idEntreprise") Long idEntreprise);
+
+	Optional<ValeurRatio> findByEntreprise_IdAndIdRatio(Long entreprise, Long idRatio);
 }

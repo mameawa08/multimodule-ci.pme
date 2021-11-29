@@ -81,6 +81,18 @@ public class ReferentielServiceImpl implements IReferentielService {
         return resp.getBody();
     }
 
+    @Override
+    public List<RatioDTO> getRatios() throws ReferentielException {
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<List<RatioDTO>> resp =
+                rt.exchange(baseUrl + "/ratios", HttpMethod.GET, entity, new ParameterizedTypeReference<List<RatioDTO>>() {});
+        return resp.getBody();
+
+    }
+
     private HttpHeaders getHttpHeaders() {
         OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
 

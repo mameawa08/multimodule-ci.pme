@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.RapportFile;
+import com.scoring.exceptions.FileGenerationException;
 import com.scoring.payloads.EntreprisePayload;
+import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IEntrepriseService;
 
+import com.scoring.services.IFileGenerationService;
 import com.scoring.services.IIndicateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +33,9 @@ public class EntrepriseController {
 
 	@Autowired
 	private IIndicateurService indicateurService;
+
+	@Autowired
+	private IFileGenerationService fileGenerationService;
 
 	@GetMapping("")
 	public ResponseEntity<?> all() {
@@ -96,6 +103,16 @@ public class EntrepriseController {
 			EntrepriseDTO entreprise = entrepriseService.createEntreprise(payload);
 			return ResponseEntity.ok(entreprise);
 		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PostMapping("/{id}/rapport")
+	public ResponseEntity generateReport(@PathVariable Long id, @RequestBody RapportPayload payload){
+		try {
+			RapportFile file = fileGenerationService.generateRapport(id, payload);
+			return ResponseEntity.ok(file);
+		} catch (FileGenerationException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

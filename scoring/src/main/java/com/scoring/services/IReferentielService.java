@@ -21,4 +21,6 @@ public interface IReferentielService {
 	QuestionDTO getQuestionById(Long idQuestion) throws Exception;
 
     List<PonderationDTO> getPonderations() throws ReferentielException;
+
+    List<RatioDTO> getRatios() throws ReferentielException;
 }
