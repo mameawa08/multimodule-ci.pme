@@ -120,9 +120,16 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	public List<ValeurRatioDTO> calculRatios(Long idEntreprise) throws Exception {
 		List<ValeurRatioDTO> listValeurRatio = new ArrayList<ValeurRatioDTO>();
 		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByEntreprise(idEntreprise);
-		if(listValeur!=null && !listValeur.isEmpty())
-			listValeurRatio = dtoFactory.createListValeurRatio(listValeur);
-		else{
+		if(listValeur!=null && !listValeur.isEmpty()){
+			for(ValeurRatio val : listValeur){
+				ValeurRatioDTO dto = dtoFactory.createValeurRatio(val);
+				RatioDTO ratiodTO = referentielService.getRatioById(dto.getIdRatio());
+				dto.setNomRatio(ratiodTO.getLibelle());
+				dto.setCodeRatio(ratiodTO.getCode());
+				listValeurRatio.add(dto);
+			}
+			//listValeurRatio = dtoFactory.createListValeurRatio(listValeur);
+		}else{
 			List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
 			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idEntreprise);
 			EntrepriseDTO entrepriseDTO = null;
