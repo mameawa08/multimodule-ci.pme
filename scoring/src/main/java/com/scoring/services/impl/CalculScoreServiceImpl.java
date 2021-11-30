@@ -253,12 +253,14 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
                 for(PonderationDTO ponderation : ponderations){
                     if (ponderation.getParametreDTO() != null && score.getParametre().getId() == ponderation.getParametreDTO().getId()){
                         value += (score.getScore() * ponderation.getPonderation());
+                        break;
                     }
-                    if(ponderation.getParametreDTO() == null){
+                    /*if(ponderation.getParametreDTO() == null){
                         value += scoresParPME.getScore_financier() * ponderation.getPonderation();
-                    }
+                    }*/
                 }
             }
+            value += scoresParPME.getScore_financier() * 30L;
             value = value / 100;
 
             scoresParPME.setScore_final(value);

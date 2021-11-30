@@ -24,5 +24,5 @@ public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Lo
     Optional<ReponseParPME> findByEntrepriseAndIdQuestion(Entreprise entreprise, Long question);
 
     @Query("SELECT r FROM ReponseParPME r WHERE r.entreprise.id = :entreprise AND r.id_reponse_quali IS NOT NULL")
-    List<ReponseParPME> findReponseParPMEQualitatifByEntreprise(Long entreprise);
+    List<ReponseParPME> findReponseParPMEQualitatifByEntreprise(@Param("entreprise") Long entreprise);
 }

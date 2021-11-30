@@ -165,7 +165,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
             RapportFile rapport = new RapportFile();
             rapport.setName(filename);
-            rapport.setContent(is.readAllBytes());
+            //rapport.setContent(is.readAllBytes());
             return rapport;
         }
         catch (Exception e){
