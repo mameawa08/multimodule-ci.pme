@@ -55,6 +55,9 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             EntrepriseDTO entreprise = entrepriseService.getEntreprise(id);
             DirigeantDTO directeur = dirigeantService.getDirigeantByEntreprise(id);
             List<RatioDTO> ratios = referentielService.getlisteRatios();
+            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
+
+            ScoresParPMEDTO scoresParPMEDTO = calculScoreService.getScoreFinal(id);
 
             Map params = new HashMap<>();
 
@@ -62,39 +65,40 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             for (RatioDTO ratio : ratios) {
                 ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
-                    params.put("uRatioLiquidite", ratio.getUnite());
+                    params.put("cRatioLiquidite", valeurRatio.getClasse()+"");
                     params.put("rRatioLiquidite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE) && valeurRatio != null){
-                    params.put("uRatioRentabilite", ratio.getUnite());
+                    params.put("cRatioRentabilite", valeurRatio.getClasse()+"");
                     params.put("rRatioRentabilite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_CAPACITE_REMBOURSEMENT) && valeurRatio != null){
-                    params.put("uCapacite", ratio.getUnite());
+                    params.put("cCapacite", valeurRatio.getClasse()+"");
                     params.put("rCapacite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_AUTONOMIE_FINANCIERE) && valeurRatio != null){
-                    params.put("uAutonomie", ratio.getUnite());
+                    params.put("cAutonomie", valeurRatio.getClasse()+"");
                     params.put("rAutonomie", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_CLIENT) && valeurRatio != null){
-                    params.put("uDelaiClient", ratio.getUnite());
+                    params.put("cDelaiClient", valeurRatio.getClasse()+"");
                     params.put("rDelaiClient", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_FOURNISSEUR) && valeurRatio != null){
-                    params.put("uDelaiFournisseur", ratio.getUnite());
+                    params.put("cDelaiFournisseur", valeurRatio.getClasse()+"");
                     params.put("rDelaiFournisseur", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_POINDS_CHARGES) && valeurRatio != null){
-                    params.put("uPoidsCharges", ratio.getUnite());
+                    params.put("cPoidsCharges", valeurRatio.getClasse()+"");
                     params.put("rPoidsCharges", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE_EXPLOITATION) && valeurRatio != null){
-                    params.put("uRentabiliteExploit", ratio.getUnite());
+                    params.put("cRentabiliteExploit", valeurRatio.getClasse()+"");
                     params.put("rRentabiliteExploit", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
 
             }
+
     //            Entreprise infos
             params.put("siege", entreprise.getAdresse());
             params.put("ville", "");
@@ -104,7 +108,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("commentaires", payload.getCommentaire());
             params.put("recommendations", payload.getRecommendation());
             params.put("formeJuridique", entreprise.getFormeJur().getLibelle());
-            params.put("dirigeant", directeur.getPrenom()+""+directeur.getNom());
+            params.put("dirigeant", directeur.getPrenom()+" "+directeur.getNom());
 
             String secteurs = "";
             for (SecteurActiviteDTO secteurActivite : entreprise.getSecteurs()){
@@ -124,21 +128,18 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("imgPath", gedReportRepositoryPath);
 
             //Radar
-            ScoresParPMEDTO scoreFinancier = calculScoreService.getScoreFinal(id);
-
-            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
 
             List<ChartData> data = new ArrayList<>();
 
             List<Double> values = new ArrayList<>();
             List<String> labels = new ArrayList<>();
+            values.add(scoresParPMEDTO.getScore_financier());
 
-            values.add(scoreFinancier.getScore_financier());
             for (ScoreEntrepriseParParametreDTO score : scores){
                 ChartData elt = new ChartData("Performances opérationnelles", score.getParametre().getLibelle(), score.getScore());
                 data.add(elt);
             }
-            ChartData elt = new ChartData("Performances opérationnelles", "Solvabilité", scoreFinancier.getScore_financier());
+            ChartData elt = new ChartData("Performances opérationnelles", "Solvabilité", scoresParPMEDTO.getScore_financier());
             data.add(elt);
 
             params.put("values", values);
@@ -150,6 +151,34 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("series", series);
 
             params.put("data", data);
+
+            // Score parametre qualitatif
+            for (ScoreEntrepriseParParametreDTO score : scores){
+                if(score.getParametre().getCode().equals(Constante.P1)){
+                    params.put("vP1", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P2)){
+                    params.put("vP2", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P3)){
+                    params.put("vP3", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P4)){
+                    params.put("vP4", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P5)){
+                    params.put("vP5", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P6)){
+                    params.put("vP6", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+                if(score.getParametre().getCode().equals(Constante.P7)){
+                    params.put("vP7", NumberUtils.formatWithPrecisionOne(score.getScore()));
+                }
+            }
+
+            params.put("scoreFinancier", NumberUtils.formatWithPrecisionOne(scoresParPMEDTO.getScore_financier()));
+            params.put("scoreFinal", NumberUtils.formatWithPrecisionOne(scoresParPMEDTO.getScore_final()));
 
             String filename = "Rapport "+entreprise.getIntitule();
 

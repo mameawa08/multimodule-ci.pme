@@ -10,4 +10,7 @@ public class NumberUtils {
     public static String formatWithPrecisionOne(BigDecimal num){
         return decimalFormat.format(num);
     }
+    public static String formatWithPrecisionOne(Double num){
+        return decimalFormat.format(num);
+    }
 }
