@@ -55,6 +55,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             EntrepriseDTO entreprise = entrepriseService.getEntreprise(id);
             DirigeantDTO directeur = dirigeantService.getDirigeantByEntreprise(id);
             List<RatioDTO> ratios = referentielService.getlisteRatios();
+            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
 
             Map params = new HashMap<>();
 
@@ -62,39 +63,40 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             for (RatioDTO ratio : ratios) {
                 ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
-                    params.put("uRatioLiquidite", ratio.getUnite());
+                    params.put("cRatioLiquidite", valeurRatio.getClasse()+"");
                     params.put("rRatioLiquidite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE) && valeurRatio != null){
-                    params.put("uRatioRentabilite", ratio.getUnite());
+                    params.put("cRatioRentabilite", valeurRatio.getClasse()+"");
                     params.put("rRatioRentabilite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_CAPACITE_REMBOURSEMENT) && valeurRatio != null){
-                    params.put("uCapacite", ratio.getUnite());
+                    params.put("cCapacite", valeurRatio.getClasse()+"");
                     params.put("rCapacite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_AUTONOMIE_FINANCIERE) && valeurRatio != null){
-                    params.put("uAutonomie", ratio.getUnite());
+                    params.put("cAutonomie", valeurRatio.getClasse()+"");
                     params.put("rAutonomie", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_CLIENT) && valeurRatio != null){
-                    params.put("uDelaiClient", ratio.getUnite());
+                    params.put("cDelaiClient", valeurRatio.getClasse()+"");
                     params.put("rDelaiClient", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_DELAI_FOURNISSEUR) && valeurRatio != null){
-                    params.put("uDelaiFournisseur", ratio.getUnite());
+                    params.put("cDelaiFournisseur", valeurRatio.getClasse()+"");
                     params.put("rDelaiFournisseur", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_POINDS_CHARGES) && valeurRatio != null){
-                    params.put("uPoidsCharges", ratio.getUnite());
+                    params.put("cPoidsCharges", valeurRatio.getClasse()+"");
                     params.put("rPoidsCharges", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
                 if(ratio.getCode().contains(Constante.RATIO_RENTABILITE_EXPLOITATION) && valeurRatio != null){
-                    params.put("uRentabiliteExploit", ratio.getUnite());
+                    params.put("cRentabiliteExploit", valeurRatio.getClasse()+"");
                     params.put("rRentabiliteExploit", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
                 }
 
             }
+
     //            Entreprise infos
             params.put("siege", entreprise.getAdresse());
             params.put("ville", "");
@@ -104,7 +106,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("commentaires", payload.getCommentaire());
             params.put("recommendations", payload.getRecommendation());
             params.put("formeJuridique", entreprise.getFormeJur().getLibelle());
-            params.put("dirigeant", directeur.getPrenom()+""+directeur.getNom());
+            params.put("dirigeant", directeur.getPrenom()+" "+directeur.getNom());
 
             String secteurs = "";
             for (SecteurActiviteDTO secteurActivite : entreprise.getSecteurs()){
@@ -125,8 +127,6 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
             //Radar
             ScoresParPMEDTO scoreFinancier = calculScoreService.getScoreFinal(id);
-
-            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
 
             List<ChartData> data = new ArrayList<>();
 
@@ -150,6 +150,13 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("series", series);
 
             params.put("data", data);
+
+            // Score parametre qualitatif
+            for (ScoreEntrepriseParParametreDTO score : scores){
+                if(score.getParametre().getCode().equals(Constante.P1)){
+
+                }
+            }
 
             String filename = "Rapport "+entreprise.getIntitule();
 
