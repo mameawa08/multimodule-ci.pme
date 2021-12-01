@@ -1,9 +1,7 @@
 package com.scoring.controllers;
 
-import com.scoring.dto.ScoreEntrepriseParParametreDTO;
-import com.scoring.dto.ScoresParPMEDTO;
-import com.scoring.exceptions.CalculScoreException;
-import com.scoring.models.ScoresParPME;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scoring.dto.ScoreEntrepriseParParametreDTO;
 import com.scoring.dto.ScoresAndRatioDTO;
+import com.scoring.dto.ScoresParPMEDTO;
+import com.scoring.exceptions.CalculScoreException;
 import com.scoring.services.ICalculScoreService;
-
-import java.util.List;
 
 
 @RestController

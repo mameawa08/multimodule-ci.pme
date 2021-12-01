@@ -6,22 +6,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.scoring.dto.*;
-import com.scoring.exceptions.CalculScoreException;
-import com.scoring.exceptions.ScoreEntrepriseParParametreException;
-import com.scoring.models.*;
-import com.scoring.repository.*;
-import com.scoring.services.IScoreEntrepriseParParametreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.scoring.dto.CalibrageDTO;
+import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.PonderationDTO;
+import com.scoring.dto.RatioDTO;
+import com.scoring.dto.ScoreEntrepriseParParametreDTO;
+import com.scoring.dto.ScoresAndRatioDTO;
+import com.scoring.dto.ScoresParPMEDTO;
+import com.scoring.dto.ValeurRatioDTO;
+import com.scoring.exceptions.CalculScoreException;
 import com.scoring.exceptions.IndicateurException;
+import com.scoring.exceptions.ScoreEntrepriseParParametreException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.Entreprise;
+import com.scoring.models.Parametre;
+import com.scoring.models.Question;
+import com.scoring.models.ReponseParPME;
+import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
+import com.scoring.repository.EntrepriseRepository;
+import com.scoring.repository.ParametreRepository;
+import com.scoring.repository.QuestionRepository;
+import com.scoring.repository.ReponseParPMERepository;
+import com.scoring.repository.ReponseQualitativeRepository;
+import com.scoring.repository.ScoreParPMERepository;
+import com.scoring.repository.ValeurRatioRepository;
 import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IReferentielService;
+import com.scoring.services.IScoreEntrepriseParParametreService;
 
 
 @Service
@@ -250,17 +270,10 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
             double value = 0;
             for(ScoreEntrepriseParParametreDTO score : scores){
-                for(PonderationDTO ponderation : ponderations){
-                    if (ponderation.getParametreDTO() != null && score.getParametre().getId() == ponderation.getParametreDTO().getId()){
-                        value += (score.getScore() * ponderation.getPonderation());
-                        break;
-                    }
-                    /*if(ponderation.getParametreDTO() == null){
-                        value += scoresParPME.getScore_financier() * ponderation.getPonderation();
-                    }*/
-                }
+            	PonderationDTO dto = referentielService.getPonderationByParametre(score.getParametre().getId());
+            	value += (score.getScore() * dto.getPonderation());
             }
-            value += scoresParPME.getScore_financier() * 30L;
+            value += (scoresParPME.getScore_financier() * referentielService.getPonderationScoreFinancier().getPonderation());
             value = value / 100;
 
             scoresParPME.setScore_final(value);
