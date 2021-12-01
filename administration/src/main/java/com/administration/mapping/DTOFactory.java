@@ -138,7 +138,9 @@ public class DTOFactory {
 		userDTO.setId(user.getId());
 		userDTO.setUsername(user.getUsername());
 		userDTO.setEmail(user.getEmail());
-		userDTO.setPassword(user.getPassword());
+		if(user.getPassword() != null && !user.getPassword().equals("")){
+			userDTO.setPassword(user.getPassword());
+		}
 		userDTO.setNom(user.getNom());
 		userDTO.setPrenom(user.getPrenom());
 		//Don't forget to set the profil after the call of this methode

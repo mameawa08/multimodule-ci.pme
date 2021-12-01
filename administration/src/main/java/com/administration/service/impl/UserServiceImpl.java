@@ -100,8 +100,13 @@ public class UserServiceImpl implements IUserService{
 		try {
 			User usr = modelFactory.createUser(user);
 			userRepository.save(usr);
-			user.setId(usr.getId());
-			mailService.sendRegistrationMail(user, payload.getPassword());
+			if(user.getId() == null){
+				mailService.sendRegistrationMail(user, payload.getPassword());
+				user.setId(usr.getId());
+			}
+			else {
+				mailService.sendUpdateUserMail(user);
+			}
 		} catch (Exception e) {
 			throw new UserException("User :: Impossible de creer l'utilisateur : "+e.getMessage(), e);
 		}

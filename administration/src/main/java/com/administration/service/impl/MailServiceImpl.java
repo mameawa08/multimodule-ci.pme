@@ -72,7 +72,7 @@ public class MailServiceImpl implements IMailService {
         model.put("url", url);
         model.put("motdepasse", password);
         String text = feedTemplate(model, "templates/velocity/connexion-template.ftl");
-        sendMail(message, from, user.getEmail(), text, "Invitation sur l'app e-courrier");
+        sendMail(message, from, user.getEmail(), text, "Invitation");
 
         return true;
     }
@@ -83,8 +83,9 @@ public class MailServiceImpl implements IMailService {
         Map<String, Object> model = setUserInTemplate(user);
         model.put("url", url);
         model.put("email", user.getEmail());
+        model.put("profil", user.getProfil().getLibelle());
         String text = feedTemplate(model, "templates/velocity/modif-user.ftl");
-        sendMail(message, from, user.getEmail(), text, "Modification Utilisateur sur l'app e-courrier");
+        sendMail(message, from, user.getEmail(), text, "Modification Utilisateur");
         return false;
     }
 
