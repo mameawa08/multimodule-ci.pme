@@ -14,8 +14,11 @@ public interface PonderationRepository extends JpaRepository<Ponderation_score, 
 	@Query("SELECT DISTINCT p FROM Ponderation_score p WHERE p.actif = 1 ORDER BY p.id ASC")
 	List<Ponderation_score> findAllActif();
 	
-	@Query("SELECT DISTINCT p FROM Ponderation_score p WHERE p.actif = 1 AND p.parametre IS NOT NULL AND p.parametre.id=:idParametre ORDER BY p.id ASC")
-	List<Ponderation_score> findPonderationByParametre(@Param("idParametre") Long idParametre);
+	@Query("SELECT DISTINCT p FROM Ponderation_score p WHERE p.actif = 1 AND p.parametre IS NOT NULL AND p.parametre.id=:idParametre ")
+	Ponderation_score findPonderationByParametre(@Param("idParametre") Long idParametre);
+	
+	@Query("SELECT DISTINCT p FROM Ponderation_score p WHERE p.actif = 1 AND p.parametre IS NULL ")
+	Ponderation_score findPonderationScoreFinancier();
 	
 
 }

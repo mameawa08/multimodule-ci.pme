@@ -1,9 +1,5 @@
 package com.scoring.services.impl;
 
-import com.scoring.dto.*;
-import com.scoring.exceptions.ReferentielException;
-import com.scoring.services.IReferentielService;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,6 +13,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.scoring.dto.CalibrageDTO;
+import com.scoring.dto.FormeJuridiqueDTO;
+import com.scoring.dto.PonderationDTO;
+import com.scoring.dto.QuestionDTO;
+import com.scoring.dto.RatioDTO;
+import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.exceptions.ReferentielException;
+import com.scoring.services.IReferentielService;
 
 @Service
 public class ReferentielServiceImpl implements IReferentielService {
@@ -92,6 +97,21 @@ public class ReferentielServiceImpl implements IReferentielService {
         return resp.getBody();
 
     }
+    
+    @Override
+   	public PonderationDTO getPonderationByParametre(Long idParametre) throws Exception {
+   		ResponseEntity<PonderationDTO> resp = 
+   				rt.exchange(baseUrl+"/ponderations/parametre/"+idParametre, HttpMethod.GET, null, PonderationDTO.class);
+   		return resp.getBody();
+   	}
+    
+    @Override
+   	public PonderationDTO getPonderationScoreFinancier() throws Exception {
+   		ResponseEntity<PonderationDTO> resp = 
+   				rt.exchange(baseUrl+"/ponderations/score/financier", HttpMethod.GET, null, PonderationDTO.class);
+   		return resp.getBody();
+   	}
+
 
     private HttpHeaders getHttpHeaders() {
         OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();

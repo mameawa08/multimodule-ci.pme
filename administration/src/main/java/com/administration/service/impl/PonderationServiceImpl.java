@@ -46,10 +46,17 @@ public class PonderationServiceImpl implements IPonderationService {
 	}
 	
 	@Override
-	public List<Ponderation_scoreDTO> getListePonderationsByParametre(Long idParametre) {
-		List<Ponderation_score> ponderations = ponderationRepository.findPonderationByParametre(idParametre);
-		List<Ponderation_scoreDTO> ponderationsDto = dtoFactory.createListPonderations(ponderations);
-		return ponderationsDto;
+	public Ponderation_scoreDTO getPonderationsByParametre(Long idParametre) {
+		Ponderation_score ponderation = ponderationRepository.findPonderationByParametre(idParametre);
+		Ponderation_scoreDTO ponderationDto = dtoFactory.createPonderationScore(ponderation);
+		return ponderationDto;
+	}
+	
+	@Override
+	public Ponderation_scoreDTO getPonderationScoreFinancier() {
+		Ponderation_score ponderation = ponderationRepository.findPonderationScoreFinancier();
+		Ponderation_scoreDTO ponderationDto = dtoFactory.createPonderationScore(ponderation);
+		return ponderationDto;
 	}
 	
 	

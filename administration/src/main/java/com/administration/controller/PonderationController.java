@@ -46,9 +46,15 @@ public class PonderationController {
 	}
 	
 	@GetMapping(value = "/parametre/{idParametre}")
-	public ResponseEntity<List<Ponderation_scoreDTO>> getListePonderationsByParametre(@PathVariable Long idParametre) throws Exception {
-	       List<Ponderation_scoreDTO> ponderationsListes = ponderationService.getListePonderationsByParametre(idParametre);
-	       return ResponseEntity.ok(ponderationsListes);
+	public ResponseEntity<Ponderation_scoreDTO> getPonderationsByParametre(@PathVariable Long idParametre) throws Exception {
+	       Ponderation_scoreDTO ponderation = ponderationService.getPonderationsByParametre(idParametre);
+	       return ResponseEntity.ok(ponderation);
+	}
+	
+	@GetMapping(value = "/score/financier")
+	public ResponseEntity<Ponderation_scoreDTO> getPonderationScoreFinancier() throws Exception {
+	       Ponderation_scoreDTO ponderation = ponderationService.getPonderationScoreFinancier();
+	       return ResponseEntity.ok(ponderation);
 	}
 	
 	
