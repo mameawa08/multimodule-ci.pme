@@ -1,5 +1,6 @@
 package com.scoring.controllers;
 
+import com.scoring.dto.ScoreEntrepriseParParametreDTO;
 import com.scoring.payloads.QuestionnaireQualitatifPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,6 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
-	
 	@GetMapping("/liste-reponses/{idEntreprise}")
 	public ResponseEntity<?> getListeReponseQuestEli(@PathVariable Long idEntreprise) {
 		try {
@@ -46,6 +46,16 @@ public class TraitementQuestionnaireController {
 		try {
 			boolean traite = traitementQuestionnaireService.validateQuestionnaireQualitif(questionnaireEliPayload);
 			return ResponseEntity.ok(traite);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/qualitatif/parametres", method = {RequestMethod.POST})
+	public ResponseEntity<?> traitementUnParametreQualitatif(@RequestBody QuestionnaireQualitatifPayload questionnaireEliPayload) {
+		try {
+			ScoreEntrepriseParParametreDTO score = traitementQuestionnaireService.validateQuestionnaireQualitifByParametre(questionnaireEliPayload);
+			return ResponseEntity.ok(score);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

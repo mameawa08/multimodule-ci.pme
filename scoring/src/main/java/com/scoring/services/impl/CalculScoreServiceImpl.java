@@ -8,10 +8,11 @@ import java.util.Map;
 
 import com.scoring.dto.*;
 import com.scoring.exceptions.CalculScoreException;
+import com.scoring.exceptions.ReferentielException;
 import com.scoring.exceptions.ScoreEntrepriseParParametreException;
 import com.scoring.models.*;
 import com.scoring.repository.*;
-import com.scoring.services.IScoreEntrepriseParParametreService;
+import com.scoring.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,6 @@ import org.springframework.stereotype.Service;
 import com.scoring.exceptions.IndicateurException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
-import com.scoring.services.ICalculScoreService;
-import com.scoring.services.IIndicateurService;
-import com.scoring.services.IReferentielService;
 
 
 @Service
@@ -65,6 +63,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Autowired
 	private IScoreEntrepriseParParametreService scoreEntrepriseParParametreService;
+
+	@Autowired
+	private IEntrepriseService entrepriseService;
 
 	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
 		double somme1, somme2, value;
@@ -231,9 +232,35 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	@Override
+	public ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long id, Long parametreId) throws CalculScoreException {
+		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId());
+		List<ReponseParPME> reponses = new ArrayList<>();
+
+		for (ReponseParPME reponse: reponseParPMEs){
+			Question question = questionRepository.findById(reponse.getIdQuestion()).orElse(null);
+			if(question != null && question.getParametre().getId().equals(parametreId)){
+				reponses.add(reponse);
+			}
+		}
+
+		return calculScoreForParametre(reponses, parametreId, id);
+	}
+
+	@Override
 	public List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long id) throws CalculScoreException{
 		try {
 			List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(id);
+			return scores;
+		} catch (ScoreEntrepriseParParametreException e) {
+			throw new CalculScoreException("Calcul score :: "+e.getMessage());
+		}
+	}
+
+	@Override
+	public ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametre(Long entrepriseId, Long parametreId) throws CalculScoreException{
+		try {
+			ScoreEntrepriseParParametreDTO scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(entrepriseId, parametreId);
 			return scores;
 		} catch (ScoreEntrepriseParParametreException e) {
 			throw new CalculScoreException("Calcul score :: "+e.getMessage());
@@ -298,6 +325,37 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			maps.put(parametre.getId(), total);
 		}
 		return maps;
+	}
+
+	private ScoreEntrepriseParParametreDTO calculScoreForParametre(List<ReponseParPME> reponses, Long parametreId, Long entrepriseId) throws CalculScoreException{
+		try {
+			EntrepriseDTO entreprise = entrepriseService.getEntreprise(entrepriseId);
+ 			ParametreDTO parametre = referentielService.getParamtre(parametreId);
+			double total = 0;
+			for (ReponseParPME reponse : reponses){
+				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
+				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
+				if (parametre.getCode().equals(question.getParametre().getCode())){
+					total += reponseQualitative.getScore();
+				}
+			}
+			total /= parametre.getNbre_question();
+
+			ScoreEntrepriseParParametreDTO scoreEntrepriseParParametre = scoreEntrepriseParParametreService.getScoreEntrepriseParParametreOrNull(entrepriseId, parametreId);
+			if (scoreEntrepriseParParametre == null){
+				scoreEntrepriseParParametre = new ScoreEntrepriseParParametreDTO();
+			}
+			scoreEntrepriseParParametre.setEntreprise(entreprise);
+			scoreEntrepriseParParametre.setParametre(parametre);
+			scoreEntrepriseParParametre.setScore(total);
+
+			scoreEntrepriseParParametre = scoreEntrepriseParParametreService.saveScore(scoreEntrepriseParParametre);
+
+			return scoreEntrepriseParParametre;
+
+		} catch (Exception e) {
+			throw new CalculScoreException(e.getMessage(), e);
+		}
 	}
 
 

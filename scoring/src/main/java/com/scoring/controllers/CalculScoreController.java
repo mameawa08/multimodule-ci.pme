@@ -43,11 +43,29 @@ public class CalculScoreController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	@GetMapping("/qualitatif/{idEntreprise}/calcul/{parametreId}")
+	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idEntreprise, @PathVariable Long parametreId) {
+		try {
+			ScoreEntrepriseParParametreDTO score = calculScoreService.calculScoreParametreQualitatif(idEntreprise, parametreId);
+			return ResponseEntity.ok(score);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 	@GetMapping("/qualitatif/{idEntreprise}")
 	public ResponseEntity<?> getScoreQualitatif(@PathVariable Long idEntreprise) {
 		try {
 			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(idEntreprise);
+			return ResponseEntity.ok(scores);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	@GetMapping("/qualitatif/{idEntreprise}/parametres/{parametreId}")
+	public ResponseEntity<?> getScoreParametreQualitatif(@PathVariable Long idEntreprise, @PathVariable Long parametreId) {
+		try {
+			ScoreEntrepriseParParametreDTO scores = calculScoreService.getScoreEntrepriseParParametre(idEntreprise, parametreId);
 			return ResponseEntity.ok(scores);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
