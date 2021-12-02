@@ -3,15 +3,11 @@ package com.scoring.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoring.dto.*;
 import com.scoring.services.ICalculScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.scoring.dto.DirigeantDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.QuestionDTO;
-import com.scoring.dto.ReponseParPMEDTO;
-import com.scoring.dto.ReponseQualitativeDTO;
 import com.scoring.exceptions.TraitementQuestionnaireException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
@@ -37,13 +33,13 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 	@Autowired
 	private EntrepriseRepository entrepriseRepository;
-	
+
 	@Autowired
 	private ReponseParPMERepository reponseParPMERepository;
-	
+
 	@Autowired
 	private DirigeantRepository dirigeantRepository;
-	
+
 	@Autowired
 	private QuestionRepository questionRepository;
 
@@ -52,7 +48,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 	@Autowired
 	private ModelFactory modelFactory;
-	
+
 	@Autowired
 	private IMailService iMailService;
 
@@ -107,6 +103,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		return listReponsesDTO;
 	}
 
+
 	@Override
 	public boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException {
 		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
@@ -118,37 +115,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			List<ReponseQualitativePayload> reps = payload.getListReponse();
 
 			if (reps != null && reps.size() > 0){
-				for (ReponseQualitativePayload rep : reps) {
-//					Get question
-					Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: question "+rep.getIdQuestion()+" not found."));
-					QuestionDTO questionDTO = dtoFactory.createQuestion(question);
-
-//					Get Reponse qualitative
-					ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(rep.getReponse()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: reponse "+rep.getReponse()+" not found."));
-					ReponseQualitativeDTO reponseQualitativeDTO = dtoFactory.createReponseQualitative(reponseQualitative);
-
-//					Existing reponse par pme
-					ReponseParPMEDTO reponseParPMEDTO;
-					ReponseParPME reponseParPME = reponseParPMERepository.findByEntrepriseAndIdQuestion(entreprise, question.getId()).orElse(null);
-					reponseParPMEDTO = dtoFactory.createReponseParPME(reponseParPME);
-//					New reponse par pme dto
-					if(reponseParPME == null)
-						reponseParPMEDTO = new ReponseParPMEDTO();
-
-					reponseParPMEDTO.setEntrepriseDTO(entrepriseDTO);
-					reponseParPMEDTO.setIdQuestion(questionDTO.getId());
-					reponseParPMEDTO.setId_reponse_quali(reponseQualitativeDTO.getId());
-
-					reponseParPMEDTOs.add(reponseParPMEDTO);
-				}
-
-				reponses = modelFactory.createListReponseParPME(reponseParPMEDTOs);
-
-				reponseParPMERepository.saveAll(reponses);
-
-				entreprise.setRepQuali(true);
-
-				entrepriseRepository.save(entreprise);
+				saveReponses(payload.getIdEntreprise(), reps);
 
 				calculScoreService.calculScoreParametreQualitatif(entreprise.getId());
 
@@ -162,6 +129,30 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		return true;
 	}
 
+
+	@Override
+	public ScoreEntrepriseParParametreDTO validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload, Long parametreId) throws TraitementQuestionnaireException {
+		List<ReponseParPME> reponses = new ArrayList<>();
+		try {
+
+			List<ReponseQualitativePayload> reps = payload.getListReponse();
+
+			if (reps != null && reps.size() > 0){
+				saveReponses(payload.getIdEntreprise(), reps);
+
+				ScoreEntrepriseParParametreDTO scoreEntrepriseParParametreDTO = calculScoreService.calculScoreParametreQualitatif(parametreId, payload.getIdEntreprise());
+
+				return  scoreEntrepriseParParametreDTO;
+
+			}
+			return null;
+
+		} catch (Exception e) {
+			throw new TraitementQuestionnaireException("Traitement questionnaire ::"+e.getMessage());
+		}
+	}
+
+
 	@Override
 	public List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idEntreprise) throws TraitementQuestionnaireException {
 		Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+idEntreprise+" not found."));;
@@ -169,5 +160,42 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		return dtoFactory.createListReponseParPME(reponses);
 	}
 
+
+//	Private methods
+	private void saveReponses(Long entrepriseId, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
+		Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+entrepriseId+" not found."));;
+		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
+		for (ReponseQualitativePayload rep : reps) {
+	//					Get question
+			Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: question "+rep.getIdQuestion()+" not found."));
+			QuestionDTO questionDTO = dtoFactory.createQuestion(question);
+
+	//					Get Reponse qualitative
+			ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(rep.getReponse()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: reponse "+rep.getReponse()+" not found."));
+			ReponseQualitativeDTO reponseQualitativeDTO = dtoFactory.createReponseQualitative(reponseQualitative);
+
+	//					Existing reponse par pme
+			ReponseParPMEDTO reponseParPMEDTO;
+			ReponseParPME reponseParPME = reponseParPMERepository.findByEntrepriseAndIdQuestion(entreprise, question.getId()).orElse(null);
+			reponseParPMEDTO = dtoFactory.createReponseParPME(reponseParPME);
+	//					New reponse par pme dto
+			if(reponseParPME == null)
+				reponseParPMEDTO = new ReponseParPMEDTO();
+
+			reponseParPMEDTO.setEntrepriseDTO(dtoFactory.createEntreprise(entreprise));
+			reponseParPMEDTO.setIdQuestion(questionDTO.getId());
+			reponseParPMEDTO.setId_reponse_quali(reponseQualitativeDTO.getId());
+
+			reponseParPMEDTOs.add(reponseParPMEDTO);
+		}
+
+		List<ReponseParPME> reponses = modelFactory.createListReponseParPME(reponseParPMEDTOs);
+
+		reponseParPMERepository.saveAll(reponses);
+
+		entreprise.setRepQuali(true);
+
+		entrepriseRepository.save(entreprise);
+	}
 
 }

@@ -23,4 +23,8 @@ public interface IReferentielService {
     List<PonderationDTO> getPonderations() throws ReferentielException;
 
     List<RatioDTO> getRatios() throws ReferentielException;
+
+    ParametreDTO getParamtre(Long id) throws ReferentielException;
+
+    List<ParametreDTO> getParamtres() throws ReferentielException;
 }

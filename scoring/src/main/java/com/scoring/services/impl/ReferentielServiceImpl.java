@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class ReferentielServiceImpl implements IReferentielService {
@@ -91,6 +94,28 @@ public class ReferentielServiceImpl implements IReferentielService {
                 rt.exchange(baseUrl + "/ratios", HttpMethod.GET, entity, new ParameterizedTypeReference<List<RatioDTO>>() {});
         return resp.getBody();
 
+    }
+
+    @Override
+    public ParametreDTO getParamtre(Long id) throws ReferentielException{
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<ParametreDTO> resp =
+                rt.exchange(baseUrl + "/parametres/"+id, HttpMethod.GET, entity, new ParameterizedTypeReference<ParametreDTO>() {});
+        return resp.getBody();
+    }
+
+    @Override
+    public List<ParametreDTO> getParamtres() throws ReferentielException{
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<List<ParametreDTO>> resp =
+                rt.exchange(baseUrl + "/parametres", HttpMethod.GET, entity, new ParameterizedTypeReference<List<ParametreDTO>>() {});
+        return resp.getBody();
     }
 
     private HttpHeaders getHttpHeaders() {

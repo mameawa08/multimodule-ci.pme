@@ -118,7 +118,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("secteurActivite", secteurs);
 
             params.put("activitePrincipale", (entreprise.getSecteurs()).get(0).getLibelle());
-            params.put("capitalSocial", entreprise.getCapital().toString());
+            params.put("capitalSocial", NumberUtils.formatWithSpaceSearator(entreprise.getCapital()));
             params.put("dateDemarrage", entreprise.getAnnee()+"");
             params.put("raisonSociale", entreprise.getRaisonSociale());
             params.put("libelleSigle", "");
