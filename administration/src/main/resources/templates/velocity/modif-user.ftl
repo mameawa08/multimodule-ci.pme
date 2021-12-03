@@ -5,7 +5,7 @@
 <br/>
 
 <br/><br/><br/><br/><br/>
-<center><h3><pre style="font-size: 16px;">Bonjour, ${prenomUser} ${nomUser}</pre> Nous vous informe que vos informations ont été modifiés sur l'application<br/> E-courrier.</h3></center>
+<center><h3><pre style="font-size: 16px;">Bonjour, ${prenomUser} ${nomUser}</pre> Nous vous informe que vos informations ont été modifiés sur l'application.</h3></center>
 <br/>
    <p style="margin-left: 2%; margin-right: 2%;"> Vous pouvez cliquer sur le lien suivant pour vous <a href="${url}">connecter</a> à l'application :</p>
    <br/>
