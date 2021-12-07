@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.scoring.exceptions.IndicateurException;
+import com.scoring.exceptions.ScoreEntrepriseParParametreException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 
@@ -277,17 +278,10 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
             double value = 0;
             for(ScoreEntrepriseParParametreDTO score : scores){
-                for(PonderationDTO ponderation : ponderations){
-                    if (ponderation.getParametreDTO() != null && score.getParametre().getId() == ponderation.getParametreDTO().getId()){
-                        value += (score.getScore() * ponderation.getPonderation());
-                        break;
-                    }
-                    /*if(ponderation.getParametreDTO() == null){
-                        value += scoresParPME.getScore_financier() * ponderation.getPonderation();
-                    }*/
-                }
+            	PonderationDTO dto = referentielService.getPonderationByParametre(score.getParametre().getId());
+            	value += (score.getScore() * dto.getPonderation());
             }
-            value += scoresParPME.getScore_financier() * 30L;
+            value += (scoresParPME.getScore_financier() * referentielService.getPonderationScoreFinancier().getPonderation());
             value = value / 100;
 
             scoresParPME.setScore_final(value);

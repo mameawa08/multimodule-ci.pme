@@ -2,14 +2,7 @@ package com.scoring.models;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
@@ -27,8 +20,9 @@ public class PieceJointe {
 	private Long id;
 	private String nomPiece;
 	private Date DateCreation;
-	@Lob
-	@Type(type = "org.hibernate.type.BlobType")
+//	@Lob
+//	@Type(type = "org.hibernate.type.BlobType")
+    @Column
 	private byte[] contenu;
 
 	@OneToOne

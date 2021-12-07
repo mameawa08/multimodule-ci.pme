@@ -18,8 +18,7 @@
    <hr/>
    </div>
    <center>
-Ceci est un email généré automatiquement, veuillez ne pas y répondre svp. <br/
-Le ministére des finances et du budget<br/>
+Ceci est un email généré automatiquement, veuillez ne pas y répondre svp. <br/>
 </center>
 <br/>
 </body>

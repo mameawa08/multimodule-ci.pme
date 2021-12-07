@@ -180,7 +180,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             params.put("scoreFinancier", NumberUtils.formatWithPrecisionOne(scoresParPMEDTO.getScore_financier()));
             params.put("scoreFinal", NumberUtils.formatWithPrecisionOne(scoresParPMEDTO.getScore_final()));
 
-            String filename = "Rapport "+entreprise.getIntitule();
+            String filename = "Rapport ";
 
             Path gedPath = Paths.get(gedReportRepositoryPath).toAbsolutePath();
             String jasperFile  = gedPath.resolve("rapport_scoreCI.jrxml").toString();

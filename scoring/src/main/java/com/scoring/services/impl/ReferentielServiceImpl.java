@@ -1,15 +1,11 @@
 package com.scoring.services.impl;
 
-import com.scoring.dto.*;
-import com.scoring.exceptions.ReferentielException;
-import com.scoring.services.IReferentielService;
-
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.scoring.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +15,8 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
+import com.scoring.exceptions.ReferentielException;
+import com.scoring.services.IReferentielService;
 
 @Service
 public class ReferentielServiceImpl implements IReferentielService {
@@ -117,6 +114,21 @@ public class ReferentielServiceImpl implements IReferentielService {
                 rt.exchange(baseUrl + "/parametres", HttpMethod.GET, entity, new ParameterizedTypeReference<List<ParametreDTO>>() {});
         return resp.getBody();
     }
+
+    @Override
+   	public PonderationDTO getPonderationByParametre(Long idParametre) throws Exception {
+   		ResponseEntity<PonderationDTO> resp =
+   				rt.exchange(baseUrl+"/ponderations/parametre/"+idParametre, HttpMethod.GET, null, PonderationDTO.class);
+   		return resp.getBody();
+   	}
+
+    @Override
+   	public PonderationDTO getPonderationScoreFinancier() throws Exception {
+   		ResponseEntity<PonderationDTO> resp =
+   				rt.exchange(baseUrl+"/ponderations/score/financier", HttpMethod.GET, null, PonderationDTO.class);
+   		return resp.getBody();
+   	}
+
 
     private HttpHeaders getHttpHeaders() {
         OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
