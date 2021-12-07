@@ -51,10 +51,10 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
-	@RequestMapping(value = "/qualitatif/parametres", method = {RequestMethod.POST})
-	public ResponseEntity<?> traitementUnParametreQualitatif(@RequestBody QuestionnaireQualitatifPayload questionnaireEliPayload) {
+	@RequestMapping(value = "/qualitatif/parametres/{id}", method = {RequestMethod.POST})
+	public ResponseEntity<?> traitementUnParametreQualitatif(@PathVariable Long id, @RequestBody QuestionnaireQualitatifPayload questionnaireEliPayload) {
 		try {
-			ScoreEntrepriseParParametreDTO score = traitementQuestionnaireService.validateQuestionnaireQualitifByParametre(questionnaireEliPayload);
+			ScoreEntrepriseParParametreDTO score = traitementQuestionnaireService.validateQuestionnaireQualitifByParametre(id, questionnaireEliPayload);
 			return ResponseEntity.ok(score);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

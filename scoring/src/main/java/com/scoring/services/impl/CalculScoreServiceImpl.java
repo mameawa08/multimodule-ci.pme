@@ -233,8 +233,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	@Override
-	public ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long id, Long parametreId) throws CalculScoreException {
-		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+	public ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long idEntreprise, Long parametreId) throws CalculScoreException {
+		Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+idEntreprise+" not found."));
 		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId());
 		List<ReponseParPME> reponses = new ArrayList<>();
 
@@ -245,7 +245,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			}
 		}
 
-		return calculScoreForParametre(reponses, parametreId, id);
+		return calculScoreForParametre(reponses, parametreId, idEntreprise);
 	}
 
 	@Override
