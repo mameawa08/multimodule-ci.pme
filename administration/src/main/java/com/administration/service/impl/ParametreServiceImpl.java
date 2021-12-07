@@ -2,6 +2,7 @@ package com.administration.service.impl;
 
 import java.util.List;
 
+import com.administration.exception.ParametreException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,5 +84,11 @@ public class ParametreServiceImpl implements IParametreService {
 
 			return false;
 		}
+	}
+
+	@Override
+	public ParametreDTO getParametre(Long id) throws ParametreException {
+		Parametre parametre = parametreRepository.findById(id).orElseThrow(() -> new ParametreException("Parametre :: "+id+" not found."));
+		return dtoFactory.createParametre(parametre);
 	}
 }

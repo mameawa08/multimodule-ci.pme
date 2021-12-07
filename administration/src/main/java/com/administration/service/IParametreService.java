@@ -3,6 +3,7 @@ package com.administration.service;
 import java.util.List;
 
 import com.administration.dto.ParametreDTO;
+import com.administration.exception.ParametreException;
 import com.administration.payload.ParametrePayload;
 
 public interface IParametreService {
@@ -15,4 +16,5 @@ public interface IParametreService {
 
 	boolean deleteParametre(Long idParametre) throws Exception;
 
+    ParametreDTO getParametre(Long id) throws ParametreException;
 }

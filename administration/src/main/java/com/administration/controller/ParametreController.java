@@ -43,6 +43,17 @@ public class ParametreController {
        List<ParametreDTO> parametreListes = parametreService.getListeParametres();
        return ResponseEntity.ok(parametreListes);
 	}
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getListeParametre(@PathVariable Long id) {
+		ParametreDTO parametre = null;
+		try {
+			parametre = parametreService.getParametre(id);
+			return ResponseEntity.ok(parametre);
+		} catch (ParametreException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 	
 	@GetMapping(value = "/actif")
 	public ResponseEntity<List<ParametreDTO>> getListeParametresActif() throws Exception {
