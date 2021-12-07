@@ -8,7 +8,7 @@ import com.administration.payload.ParametrePayload;
 
 public interface IParametreService {
 
-	List<ParametreDTO> getListeParametres();
+	List<ParametreDTO> getListeParametres() throws ParametreException;
 
 	List<ParametreDTO> getListeParametresActifs();
 

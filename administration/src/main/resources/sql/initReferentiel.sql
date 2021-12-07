@@ -418,55 +418,55 @@ INSERT INTO ratio(id, code, libelle, formule, ponderation, unite, actif) VALUES 
 INSERT INTO ratio(id, code, libelle, formule, ponderation, unite, actif) VALUES (8, 'R8', 'Poids des charges financières', 'Charges financières / EBE', 10, '%', 1);
 
 --CALIBRAGE
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (1, 0, 0.30, 1, 1, 1);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (1, null, 0.30, 1, 1, 1);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (2, 0.30, 0.60, 2, 1, 1);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (3, 0.60, 1, 3, 1, 1);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (4, 1, 1.50, 4, 1, 1);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (5, 1.50, 0, 5, 1, 1);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (6, 0, -0.05, 1, 1, 2);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (5, 1.50, null, 5, 1, 1);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (6, null, -0.05, 1, 1, 2);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (7, -0.05, 0, 2, 1, 2);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (8, 0, 0.06, 3, 1, 2);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (9, 0.06, 0.10, 4, 1, 2);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (10, 0.10, 0, 5, 1, 2);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (11, 0, 1, 5, 1, 3);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (10, 0.10, null, 5, 1, 2);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (11, null, 1, 5, 1, 3);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (12, 1, 3, 4, 1, 3);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (13, 3, 5, 3, 1, 3);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (14, 5, 8, 2, 1, 3);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (15, 8, 0, 1, 1, 3);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (16, 0, 0.05, 1, 1, 4);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (15, 8, null, 1, 1, 3);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (16, null, 0.05, 1, 1, 4);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (17, 0.05, 0.15, 2, 1, 4);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (18, 0.15, 0.30, 3, 1, 4);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (19, 0.30, 0.50, 4, 1, 4);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (20, 0.50, 0, 5, 1, 4);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (21, 0, 6, 5, 1, 5);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (20, 0.50, null, 5, 1, 4);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (21, null, 6, 5, 1, 5);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (22, 6, 30, 4, 1, 5);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (23, 30, 60, 3, 1, 5);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (24, 60, 90, 2, 1, 5);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (25, 90, 0, 1, 1, 5);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (26, 0, 10, 5, 1, 6);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (25, 90, null, 1, 1, 5);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (26, null, 10, 5, 1, 6);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (27, 10, 45, 4, 1, 6);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (28, 45, 75, 3, 1, 6);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (29, 75, 90, 2, 1, 6);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (30, 90, 0, 1, 1, 6);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (31, 0, -0.05, 1, 1, 7);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (30, 90, null, 1, 1, 6);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (31, null, -0.05, 1, 1, 7);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (32, -0.05, 0.05, 2, 1, 7);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (33, 0.05, 0.15, 3, 1, 7);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (34, 0.15, 0.35, 4, 1, 7);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (35, 0.35, 0, 5, 1, 7);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (36, 0, 0, 1, 1, 8);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (35, 0.35, null, 5, 1, 7);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (36, null, 0, 1, 1, 8);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (37, 0, 2, 2, 1, 8);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (38, 2, 6, 3, 1, 8);
 INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (39, 6, 10, 4, 1, 8);
-INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (40, 10, 0, 5, 1, 8);
+INSERT INTO calibrage(id, min, max, classe, actif, id_ratio) VALUES (40, 10, null, 5, 1, 8);
 
 --PONDERATION
 INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 1, 'Score financier/Solvabilité', '30', 1, null);
-INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 2, 'Gestion des projets', '10', 1, 1);
-INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 3, 'Marketing et gestion commerciale', '10', 1, 2);
-INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 4, 'Innovation et qualité', '10', 1, 3);
-INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 5, 'Gestion des ressources humaines', '10', 1, 4);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 2, 'Gestion des Projets', '10', 1, 1);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 3, 'Marketing et Gestion Commerciale', '10', 1, 2);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 4, 'Innovation & Qualité', '10', 1, 3);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 5, 'Gestion des Ressources Humaines', '10', 1, 4);
 INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 6, 'Capacité Managériale', '10', 1, 5);
-INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 7, 'Comptabilité et finance', '10', 1, 6);
+INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 7, 'Comptabilité & Finance', '10', 1, 6);
 INSERT INTO ponderation (id, type_score, ponderation, actif, id_parametre) VALUES ( 8, 'Production et capacité technique', '10', 1, 7);
 
 --FORMES JURIDIQUES
