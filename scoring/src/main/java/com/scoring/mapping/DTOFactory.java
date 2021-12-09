@@ -168,6 +168,15 @@ public class DTOFactory {
 		dto.setNomPiece(pieceJointe.getNomPiece());
 		dto.setDateCreation(pieceJointe.getDateCreation());
 		dto.setContenu(pieceJointe.getContenu());
+
+		if(pieceJointe.getIndicateur() != null){
+			dto.setIndicateur(createIndicateur(pieceJointe.getIndicateur()));
+		}
+
+		if(pieceJointe.getEntreprise() != null){
+			dto.setEntreprise(createEntreprise(pieceJointe.getEntreprise()));
+		}
+
 		dto.setActif(pieceJointe.isActif());
 
 		return dto;

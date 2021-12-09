@@ -26,7 +26,14 @@ public class PieceJointe {
 	private byte[] contenu;
 
 	@OneToOne
-	@JoinColumn(name = "indicateur_id")
+	@JoinColumn(name = "indicateur_id", nullable = true)
 	private Indicateur indicateur;
+
+	@OneToOne
+	@JoinColumn(name = "entreprise_id", nullable = true)
+	private Entreprise entreprise;
+
+	private Long user;
+
 	private boolean actif;
 }

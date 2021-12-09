@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.scoring.dto.IndicateurDTO;
 import com.scoring.dto.PieceJointeDTO;
+import com.scoring.exceptions.PieceJointeException;
 import com.scoring.payloads.IndicateurPayload;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IPieceJointeService;
@@ -11,14 +12,7 @@ import com.scoring.services.IPieceJointeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -86,7 +80,7 @@ public class IndicateurController {
 	@PostMapping("/{id}/attachments")
 	public ResponseEntity<?> addAttachment(@PathVariable Long id, @RequestParam MultipartFile[] files){
 		try {
-			boolean rs = pieceJointeService.createPieceJointe(id, files);
+			boolean rs = pieceJointeService.createPieceJointe(id, files, false);
 			return ResponseEntity.ok(rs);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -101,5 +95,26 @@ public class IndicateurController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-	}  
+	}
+
+
+	@DeleteMapping("/{id}/attachments/{idPiece}")
+    public ResponseEntity<?> deleteAttachment(@PathVariable Long id, @PathVariable Long idPiece){
+        try {
+            boolean rs = pieceJointeService.deleteAttachment(id, idPiece, false);
+            return ResponseEntity.ok(rs);
+        } catch (PieceJointeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/attachments/{nomPiece}")
+    public ResponseEntity<?> updateAttachmentFilename(@PathVariable Long id, @PathVariable String nomPiece){
+        try {
+            boolean rs = pieceJointeService.updateNom(id,nomPiece);
+            return ResponseEntity.ok(rs);
+        } catch (PieceJointeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

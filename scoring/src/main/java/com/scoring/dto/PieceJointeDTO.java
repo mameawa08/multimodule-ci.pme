@@ -14,5 +14,7 @@ public class PieceJointeDTO {
 	private Date DateCreation;
 	private byte[] contenu;
 	private IndicateurDTO indicateur;
+	private EntrepriseDTO entreprise;
+	private Long user;
 	private boolean actif;
 }
