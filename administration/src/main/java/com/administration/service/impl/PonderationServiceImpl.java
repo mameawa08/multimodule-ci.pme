@@ -85,7 +85,16 @@ public class PonderationServiceImpl implements IPonderationService {
 		if (ponderationPayload.getPonderation()==null) {
 			throw new Exception("La valeur de la pondération est obligatoire !");
 		}
-		
+		List<Ponderation_scoreDTO> listPon = getListePonderations();
+		Long nbre=0L;
+		for(Ponderation_scoreDTO pon : listPon){
+			if(!ponderationPayload.getId().equals(pon.getId()))
+			nbre+=pon.getPonderation();
+		}
+		nbre+=ponderationPayload.getPonderation();
+		if(nbre>100L){
+			throw new Exception("La somme des pondérations doit être inférieure à 100 !");
+		}
 		Ponderation_scoreDTO ponderationDTO = new Ponderation_scoreDTO();
 		ponderationDTO.setId(ponderationPayload.getId());
 		ponderationDTO.setTypeScore(ponderationPayload.getTypeScore());
