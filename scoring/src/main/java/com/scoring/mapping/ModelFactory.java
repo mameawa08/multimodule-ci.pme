@@ -147,6 +147,15 @@ public class ModelFactory {
 		model.setNomPiece(pieceJointe.getNomPiece());
 		model.setDateCreation(pieceJointe.getDateCreation());
 		model.setContenu(pieceJointe.getContenu());
+
+		if(pieceJointe.getIndicateur() != null){
+			model.setIndicateur(createIndicateur(pieceJointe.getIndicateur()));
+		}
+
+		if(pieceJointe.getEntreprise() != null){
+			model.setEntreprise(createEntreprise(pieceJointe.getEntreprise()));
+		}
+
 		model.setActif(pieceJointe.isActif());
 
 		return model;

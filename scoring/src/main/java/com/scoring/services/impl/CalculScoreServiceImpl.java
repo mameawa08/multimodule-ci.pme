@@ -345,6 +345,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 			scoreEntrepriseParParametre = scoreEntrepriseParParametreService.saveScore(scoreEntrepriseParParametre);
 
+			calculScoreFinale(entrepriseId);
+
 			return scoreEntrepriseParParametre;
 
 		} catch (Exception e) {
