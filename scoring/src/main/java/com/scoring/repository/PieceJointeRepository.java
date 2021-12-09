@@ -2,6 +2,7 @@ package com.scoring.repository;
 
 import java.util.List;
 
+import com.scoring.models.Entreprise;
 import com.scoring.models.Indicateur;
 import com.scoring.models.PieceJointe;
 
@@ -12,5 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface PieceJointeRepository extends JpaRepository<PieceJointe, Long> {
 	
 	public List<PieceJointe> findByIndicateur(Indicateur indicateur);
-	
+
+	public List<PieceJointe> findByEntreprise(Entreprise entreprise);
+
 }

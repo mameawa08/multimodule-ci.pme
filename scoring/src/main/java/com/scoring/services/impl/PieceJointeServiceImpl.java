@@ -57,6 +57,13 @@ public class PieceJointeServiceImpl implements IPieceJointeService {
 	}
 
 	@Override
+	public List<PieceJointeDTO> getEntrepriseLogo(Long id) throws PieceJointeException{
+		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new PieceJointeException("Piece jointe :: Entreprise "+id+" not found."));
+		List<PieceJointe> pieceJointes = pieceJointeRepository.findByEntreprise(entreprise);
+		return dtoFactory.createListPieceJointe(pieceJointes);
+	}
+
+	@Override
 	public PieceJointeDTO getPieceJointe(Long id) throws PieceJointeException{
 		PieceJointe pieceJointe = pieceJointeRepository.findById(id).orElseThrow(() -> new PieceJointeException("PieceJointe :: "+id+" not found."));
 		return dtoFactory.createPieceJointe(pieceJointe);
@@ -66,6 +73,7 @@ public class PieceJointeServiceImpl implements IPieceJointeService {
 	public boolean createPieceJointe(Long id, MultipartFile[] files, boolean logo) throws PieceJointeException{
 		Indicateur indicateur = null;
         Entreprise entreprise = null;
+        AccessTokenDetails user = userService.getConnectedUser();
         if(logo){
             entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new PieceJointeException("Piece jointe :: Entreprise "+id+" not found."));
         }else {
@@ -87,6 +95,7 @@ public class PieceJointeServiceImpl implements IPieceJointeService {
                     }else{
 					    model.setIndicateur(indicateur);
                     }
+					model.setUser(user.getUserId());
 
 					pieceJointeRepository.save(model);
 					pieceJointe.setId(model.getId());

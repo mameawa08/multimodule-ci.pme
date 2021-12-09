@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RapportFile;
 import com.scoring.exceptions.FileGenerationException;
 import com.scoring.mapping.DTOFactory;
@@ -121,6 +122,16 @@ public class EntrepriseController {
 	public ResponseEntity<?> addAttachment(@PathVariable Long id, @RequestParam MultipartFile[] files){
 		try {
 			boolean rs = pieceJointeService.createPieceJointe(id, files, true);
+			return ResponseEntity.ok(rs);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/{id}/attachments")
+	public ResponseEntity<?> getAttachments(@PathVariable Long id){
+		try {
+			List<PieceJointeDTO> rs = pieceJointeService.getEntrepriseLogo(id);
 			return ResponseEntity.ok(rs);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IPieceJointeService {
 	
 	public List<PieceJointeDTO> getPieceJointes(Long id) throws PieceJointeException;
+
+	List<PieceJointeDTO> getEntrepriseLogo(Long id) throws PieceJointeException;
+
 	public PieceJointeDTO getPieceJointe(Long id) throws PieceJointeException;
 //	public boolean createPieceJointe(Long id, MultipartFile[] files) throws PieceJointeException;
 
