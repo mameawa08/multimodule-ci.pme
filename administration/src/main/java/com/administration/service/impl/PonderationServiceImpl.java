@@ -1,11 +1,14 @@
 package com.administration.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.administration.dto.ParametreDTO;
 import com.administration.dto.Ponderation_scoreDTO;
+import com.administration.exception.ParametreException;
 import com.administration.mapping.DTOFactory;
 import com.administration.mapping.ModelFactory;
 import com.administration.model.Parametre;
@@ -26,15 +29,27 @@ public class PonderationServiceImpl implements IPonderationService {
 	private ParametreRepository parametreRepository;
 	
 	@Autowired
+	private ParametreServiceImpl parametreServiceImpl;
+	
+	@Autowired
 	private DTOFactory dtoFactory;
 	
 	@Autowired
 	private ModelFactory modelFactory;
 
 	@Override
-	public List<Ponderation_scoreDTO> getListePonderations() {
+	public List<Ponderation_scoreDTO> getListePonderations() throws ParametreException {
 		List<Ponderation_score> ponderations = ponderationRepository.findAll();
-		List<Ponderation_scoreDTO> ponderationsDto = dtoFactory.createListPonderations(ponderations);
+		List<Ponderation_scoreDTO> ponderationsDto = new ArrayList<Ponderation_scoreDTO>();
+		Ponderation_scoreDTO dto;
+		for(Ponderation_score pon: ponderations){
+			dto = dtoFactory.createPonderationScore(pon);
+			if(pon.getParametre()!=null){
+				ParametreDTO paramDTO = parametreServiceImpl.getParametre(pon.getParametre().getId());
+				dto.setTypeScore(paramDTO.getLibelle());
+			}
+			ponderationsDto.add(dto);
+		}		 
 		return ponderationsDto;
 	}
 	

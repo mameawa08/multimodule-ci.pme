@@ -3,12 +3,13 @@ package com.administration.service;
 import java.util.List;
 
 import com.administration.dto.Ponderation_scoreDTO;
+import com.administration.exception.ParametreException;
 import com.administration.payload.PonderationPayload;
 
 
 public interface IPonderationService {
 
-	List<Ponderation_scoreDTO> getListePonderations();
+	List<Ponderation_scoreDTO> getListePonderations() throws ParametreException;
 
 	List<Ponderation_scoreDTO> getListePonderationsActif();
 
