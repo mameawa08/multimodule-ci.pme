@@ -3,14 +3,6 @@ package com.scoring.mapping;
 import javax.inject.Named;
 
 import com.scoring.dto.*;
-import com.scoring.models.Dirigeant;
-import com.scoring.models.Entreprise;
-import com.scoring.models.Indicateur;
-import com.scoring.models.PieceJointe;
-import com.scoring.models.Repondant;
-import com.scoring.models.ReponseParPME;
-import com.scoring.models.ScoresParPME;
-import com.scoring.models.ValeurRatio;
 import com.scoring.models.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,5 +213,18 @@ public class ModelFactory {
 
 		return parametre;
 	}
+	
+	public DemandeScoring createDemandeScoring(DemandeScoringDTO demandeScoringDTO){
+		if (demandeScoringDTO == null)
+			return null;
+		DemandeScoring demandeScoring = new DemandeScoring();
+		demandeScoring.setId(demandeScoringDTO.getId());
+		demandeScoring.setMotif_rejet(demandeScoringDTO.getMotif_rejet());
+		demandeScoring.setStatus(demandeScoringDTO.getStatus());
+		demandeScoring.setEntreprise(createEntreprise(demandeScoringDTO.getEntrepriseDTO()));
+
+		return demandeScoring;
+	}
+
 
 }

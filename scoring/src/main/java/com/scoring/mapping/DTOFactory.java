@@ -339,4 +339,24 @@ public class DTOFactory {
 		return dto;
 	}
 	
+	public DemandeScoringDTO createDemandeScoring(DemandeScoring demandeScoring){
+		if (demandeScoring == null)
+			return null;
+		DemandeScoringDTO dto = new DemandeScoringDTO();
+		dto.setId(demandeScoring.getId());
+		dto.setMotif_rejet(demandeScoring.getMotif_rejet());
+		dto.setStatus(demandeScoring.getStatus());
+		dto.setEntrepriseDTO(createEntreprise(demandeScoring.getEntreprise()));
+
+		return dto;
+	}
+	
+	public List<DemandeScoringDTO> createListDemandeScoring(List<DemandeScoring> demandes) {
+		if (demandes == null || demandes.size() == 0)
+			return new ArrayList<>();
+
+		return demandes.stream().map(this::createDemandeScoring).collect(Collectors.toList());
+	}
+
+	
 }
