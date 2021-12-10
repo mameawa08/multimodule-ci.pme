@@ -92,9 +92,10 @@ public class PonderationServiceImpl implements IPonderationService {
 			nbre+=pon.getPonderation();
 		}
 		nbre+=ponderationPayload.getPonderation();
-		if(nbre>100L){
-			throw new Exception("La somme des pondérations doit être inférieure à 100 !");
+		if(nbre>100L || nbre<100L){
+			throw new Exception("La somme des pondérations doit être égale à 100 !");
 		}
+
 		Ponderation_scoreDTO ponderationDTO = new Ponderation_scoreDTO();
 		ponderationDTO.setId(ponderationPayload.getId());
 		ponderationDTO.setTypeScore(ponderationPayload.getTypeScore());

@@ -65,6 +65,7 @@ public class ParametreServiceImpl implements IParametreService {
 		
 		Parametre parametre = modelFactory.createParametre(parametreDTO);
 		parametre = parametreRepository.saveAndFlush(parametre);
+		parametreDTO.setId(parametre.getId());
 		return parametreDTO;
 		
 	}
