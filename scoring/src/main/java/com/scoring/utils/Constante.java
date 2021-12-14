@@ -19,5 +19,9 @@ public class Constante {
     public static final String P6                                   = "P6";
     public static final String P7                                   = "P7";
 
+    public static final int ETAT_DEMANDE_BROUILLON                  = 1;
+    public static final int ETAT_DEMANDE_ENVOYE                     = 2;
+
+
 
 }
