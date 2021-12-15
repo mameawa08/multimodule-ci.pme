@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.scoring.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -57,7 +58,22 @@ public class MailServiceImpl implements IMailService {
 		String text = feedTemplate(model, "templates/velocity/notification.ftl");
 	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getRaisonSociale());
 	}
-	
+
+	@Override
+	public void sendDemandeNotification(UserDTO user, String nomEntreprise) throws Exception{
+		MimeMessage message = sender.createMimeMessage();
+		Map<String, Object> model = new HashMap();
+		model.put("url", url);
+		model.put("date", formatDateNormal(new Date()));
+		model.put("nom_pme", nomEntreprise);
+		String text = feedTemplate(model, "templates/velocity/notification-demande.ftl");
+		sendMail(message, from, user.getEmail(), text, "Demande de scoring  pour l'entreprise "+nomEntreprise);
+	}
+
+	public String formatDateNormal(Date date) {
+		return DateUtils.formatDate(date);
+	}
+
 	private void sendMail(final MimeMessage message, InternetAddress from, String to, String text, String subject) throws MessagingException, UnsupportedEncodingException {
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(new InternetAddress(mailSender, "cipme.ci"));
@@ -78,7 +94,4 @@ public class MailServiceImpl implements IMailService {
 	    return text;
 	 }
 	 
-	 public String formatDateNormal(Date date) {
-		return DateUtils.formatDate(date);
-	}
 }

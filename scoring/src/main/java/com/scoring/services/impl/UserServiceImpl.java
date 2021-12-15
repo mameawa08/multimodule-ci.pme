@@ -7,6 +7,7 @@ import com.scoring.exceptions.UserException;
 import com.scoring.payloads.AddEntreprisePayload;
 import com.scoring.services.IUserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -48,13 +51,6 @@ public class UserServiceImpl implements IUserService {
             throw new UserException("Erreur lors de l'ajout de l'entreprise.");
     }
 
-    private HttpHeaders getHttpHeaders() {
-        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer "+principal.getTokenValue());
-        return headers;
-    }
 
 
     @Override
@@ -66,5 +62,23 @@ public class UserServiceImpl implements IUserService {
             return accessTokenDetails;
         }
         return null;
+    }
+
+    @Override
+    public List<UserDTO> getUsersByProfil(Long id) throws UserException{
+        HttpHeaders headers = getHttpHeaders();
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<List<UserDTO>> resp = rt.exchange(baseUrl + "/users/profils/" + id, HttpMethod.GET, entity, new ParameterizedTypeReference<List<UserDTO>>(){});
+        return  resp.getBody();
+    }
+
+//    Private Methods
+    private HttpHeaders getHttpHeaders() {
+        OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("authorization", "Bearer "+principal.getTokenValue());
+        return headers;
     }
 }

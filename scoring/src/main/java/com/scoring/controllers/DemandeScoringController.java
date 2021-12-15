@@ -54,4 +54,24 @@ public class DemandeScoringController {
 		}
 	}
 
+	@GetMapping("/{id}/envoyer")
+	public ResponseEntity envoyerDemande(@PathVariable Long id){
+		try {
+			boolean rs = demandeScoringService.envoyerDemande(id);
+			return ResponseEntity.ok(rs);
+		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/{id}/receptionner")
+	public ResponseEntity receptionnerDemande(@PathVariable Long id){
+		try {
+			boolean rs = demandeScoringService.receptionnerDemande(id);
+			return ResponseEntity.ok(rs);
+		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }

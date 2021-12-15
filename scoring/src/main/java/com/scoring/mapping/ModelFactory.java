@@ -222,7 +222,8 @@ public class ModelFactory {
 		demandeScoring.setMotif_rejet(demandeScoringDTO.getMotif_rejet());
 		demandeScoring.setStatus(demandeScoringDTO.getStatus());
 		demandeScoring.setEntreprise(createEntreprise(demandeScoringDTO.getEntrepriseDTO()));
-
+		demandeScoring.setDateEnvoie(demandeScoringDTO.getDateEnvoie());
+		demandeScoring.setDateReception(demandeScoringDTO.getDateReception());
 		return demandeScoring;
 	}
 
