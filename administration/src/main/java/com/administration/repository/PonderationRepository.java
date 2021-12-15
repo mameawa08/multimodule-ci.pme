@@ -20,5 +20,6 @@ public interface PonderationRepository extends JpaRepository<Ponderation_score, 
 	@Query("SELECT DISTINCT p FROM Ponderation_score p WHERE p.actif = 1 AND p.parametre IS NULL ")
 	Ponderation_score findPonderationScoreFinancier();
 	
-
+	@Query("SELECT  COUNT(p) FROM Ponderation_score p WHERE p.actif = 1")
+	int findNbrePonderation();
 }

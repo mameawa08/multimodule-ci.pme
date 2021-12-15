@@ -98,6 +98,13 @@ public class PonderationServiceImpl implements IPonderationService {
 
 		Ponderation_scoreDTO ponderationDTO = new Ponderation_scoreDTO();
 		ponderationDTO.setId(ponderationPayload.getId());
+		if(ponderationDTO.getId()==null){
+			int nbrePond = ponderationRepository.findNbrePonderation()+1;
+			ponderationDTO.setCompteur(Long.valueOf(nbrePond+""));
+		}else{
+			Ponderation_score model = ponderationRepository.findById(ponderationDTO.getId()).orElseThrow(()-> new Exception("Not found."));
+			ponderationDTO.setCompteur(model.getCompteur());
+		}
 		ponderationDTO.setTypeScore(ponderationPayload.getTypeScore());
 		ponderationDTO.setPonderation(ponderationPayload.getPonderation());
 		Parametre parametre = null;

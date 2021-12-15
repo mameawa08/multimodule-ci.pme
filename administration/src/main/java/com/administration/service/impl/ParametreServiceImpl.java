@@ -57,10 +57,11 @@ public class ParametreServiceImpl implements IParametreService {
 		if(parametreDTO.getId()==null){
 			int nbre = parametreRepository.findNbreParametre()+1;
 			parametreDTO.setCode("P"+nbre);
+			parametreDTO.setCompteur(Long.valueOf(nbre+""));
 		}else{
 			parametreDTO.setCode(parametrePayload.getCode());
-			Parametre dto = parametreRepository.findById(parametrePayload.getId()).orElseThrow(()-> new Exception("Not found."));
-			parametreDTO.setCompteur(dto.getCompteur());
+			Parametre model = parametreRepository.findById(parametreDTO.getId()).orElseThrow(()-> new Exception("Not found."));
+			parametreDTO.setCompteur(model.getCompteur());
 		}
 		parametreDTO.setLibelle(parametrePayload.getLibelle());
 		parametreDTO.setNbre_question(parametrePayload.getNbreQuestion());

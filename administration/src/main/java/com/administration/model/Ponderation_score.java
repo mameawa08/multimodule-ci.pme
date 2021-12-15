@@ -49,6 +49,6 @@ public class Ponderation_score implements Serializable {
     private Parametre  parametre;
     
     @Column
-    private int compteur;
+    private Long compteur;
 
 }

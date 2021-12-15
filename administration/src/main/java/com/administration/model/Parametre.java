@@ -45,5 +45,5 @@ public class Parametre implements Serializable {
 	private int	actif;
 
     @Column
-    private int compteur;
+    private Long compteur;
 }

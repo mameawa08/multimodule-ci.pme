@@ -23,6 +23,6 @@ public class ReponseQualitativeDTO {
     
 	private int	actif;
 	
-	private int compteur;
+	private Long compteur;
 
 }

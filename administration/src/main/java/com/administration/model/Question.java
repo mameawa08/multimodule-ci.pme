@@ -53,6 +53,6 @@ public class Question implements Serializable {
     private Theme  theme;
     
     @Column
-    private int compteur;
+    private Long compteur;
 
 }

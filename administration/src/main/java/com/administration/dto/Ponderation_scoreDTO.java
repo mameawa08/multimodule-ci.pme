@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Ponderation_scoreDTO {
 
     private Long id;
-	
+
 	private String typeScore;
 
     private Long ponderation;
@@ -22,6 +22,6 @@ public class Ponderation_scoreDTO {
     
     private ParametreDTO  parametreDTO;
     
-    private int compteur;
+    private Long compteur;
 
 }

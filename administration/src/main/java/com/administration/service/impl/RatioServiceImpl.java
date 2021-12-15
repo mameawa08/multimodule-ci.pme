@@ -68,9 +68,26 @@ public class RatioServiceImpl implements IRatioService {
 		if (ratioPayload.getFormule() == null || ratioPayload.getFormule().equals("")) {
 			throw new Exception("La formule du ratio est obligatoire !");
 		}
+		List<RatioDTO> listRatios = getListeRatios();
+		Long nbre=0L;
+		for(RatioDTO r : listRatios){
+			if(!ratioPayload.getId().equals(r.getId()))
+			nbre+=r.getPonderation();
+		}
+		nbre+=ratioPayload.getPonderation();
+		if(nbre>100L || nbre<100L){
+			throw new Exception("La somme des pondérations doit être égale à 100 !");
+		}
 		
 		RatioDTO ratioDTO = new RatioDTO();
 		ratioDTO.setId(ratioPayload.getId());
+		if(ratioDTO.getId()==null){
+			int nbreRatio = ratioRepository.findNbreRatio()+1;
+			ratioDTO.setCompteur(Long.valueOf(nbreRatio+""));
+		}else{
+			Ratio model = ratioRepository.findById(ratioDTO.getId()).orElseThrow(()-> new Exception("Not found."));
+			ratioDTO.setCompteur(model.getCompteur());
+		}
 		ratioDTO.setCode(ratioPayload.getCode());
 		ratioDTO.setLibelle(ratioPayload.getLibelle());
 		ratioDTO.setFormule(ratioPayload.getFormule());

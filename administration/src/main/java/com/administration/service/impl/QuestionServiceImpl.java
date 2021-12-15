@@ -102,12 +102,16 @@ public class QuestionServiceImpl implements IQuestionService {
 				nbre = questionRepository.findNbreQuestionByParametre(questionPayload.getIdParametre())+1;
 			}else
 				nbre = questionRepository.findNBreQuestionEligible()+1;
+			questionDTO.setCompteur(Long.valueOf(nbre+""));
 			if(param!=null)
 				questionDTO.setCode("Q"+nbre+param.getCode());
 			else
 				questionDTO.setCode("QE"+nbre);
-		}else
+		}else{
 			questionDTO.setCode(questionPayload.getCode());
+			Question model = questionRepository.findById(questionDTO.getId()).orElseThrow(()-> new Exception("Not found."));
+			questionDTO.setCompteur(model.getCompteur());
+		}
 		questionDTO.setParametreDTO(dtoFactory.createParametre(param));
 		questionDTO.setActif(1);
 		

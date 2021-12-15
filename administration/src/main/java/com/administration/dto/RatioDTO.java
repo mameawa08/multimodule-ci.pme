@@ -25,6 +25,6 @@ public class RatioDTO {
     
 	private int	actif;
 	
-	private int compteur;
+	private Long compteur;
 
 }

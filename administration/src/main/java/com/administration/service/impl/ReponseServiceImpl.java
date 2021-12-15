@@ -72,8 +72,12 @@ public class ReponseServiceImpl implements IReponseService {
 		if(reponseDTO.getId()==null){
 			int nbre = reponseRepository.findNbreReponseByQuestion(reponsePayload.getIdQuestion())+1;
 			reponseDTO.setCode("R"+nbre+question.getCode());
-		}else
+			reponseDTO.setCompteur(Long.valueOf(nbre+""));
+		}else{
 			reponseDTO.setCode(reponsePayload.getCode());
+			ReponseQualitative model = reponseRepository.findById(reponseDTO.getId()).orElseThrow(()-> new Exception("Not found."));
+			reponseDTO.setCompteur(model.getCompteur());
+		}
 		reponseDTO.setQuestionDTO(dtoFactory.createQuestion(question));
 		reponseDTO.setActif(1);
 		

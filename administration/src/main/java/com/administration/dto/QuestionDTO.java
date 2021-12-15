@@ -28,6 +28,6 @@ public class QuestionDTO {
     
     private List<ReponseQualitativeDTO> listReponsesDTO;
     
-    private int compteur;
+    private Long compteur;
 
 }

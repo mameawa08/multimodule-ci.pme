@@ -51,6 +51,6 @@ public class ReponseQualitative implements Serializable {
 	private int	actif;
     
     @Column
-    private int compteur;
+    private Long compteur;
 
 }
