@@ -47,5 +47,8 @@ public class Ponderation_score implements Serializable {
     @ManyToOne
   	@JoinColumn(name = "id_parametre", nullable = true)
     private Parametre  parametre;
+    
+    @Column
+    private int compteur;
 
 }

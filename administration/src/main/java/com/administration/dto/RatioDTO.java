@@ -24,5 +24,7 @@ public class RatioDTO {
     private String unite;
     
 	private int	actif;
+	
+	private int compteur;
 
 }

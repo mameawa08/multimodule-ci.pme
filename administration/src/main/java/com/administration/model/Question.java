@@ -51,5 +51,8 @@ public class Question implements Serializable {
     @ManyToOne
   	@JoinColumn(name = "id_theme", nullable = true)
     private Theme  theme;
+    
+    @Column
+    private int compteur;
 
 }

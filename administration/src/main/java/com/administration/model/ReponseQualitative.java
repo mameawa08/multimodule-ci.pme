@@ -49,5 +49,8 @@ public class ReponseQualitative implements Serializable {
     
     @Column(name = "actif")
 	private int	actif;
+    
+    @Column
+    private int compteur;
 
 }

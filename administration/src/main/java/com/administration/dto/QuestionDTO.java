@@ -27,5 +27,7 @@ public class QuestionDTO {
     private ParametreDTO  parametreDTO;
     
     private List<ReponseQualitativeDTO> listReponsesDTO;
+    
+    private int compteur;
 
 }

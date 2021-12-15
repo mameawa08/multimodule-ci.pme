@@ -157,6 +157,7 @@ public class DTOFactory {
 		dto.setLibelle(parametre.getLibelle());
 		dto.setNbre_question(parametre.getNbre_question());
 		dto.setActif(parametre.getActif());
+		dto.setCompteur(parametre.getCompteur());
 
 		return dto;
 	}
@@ -179,7 +180,8 @@ public class DTOFactory {
 		dto.setActif(question.getActif());
 		if(question.getParametre()!=null)
 			dto.setParametreDTO(createParametre(question.getParametre()));
-
+		dto.setCompteur(question.getCompteur());
+		
 		return dto;
 	}
 
@@ -202,6 +204,7 @@ public class DTOFactory {
 		dto.setActif(reponse.getActif());
 		dto.setScore(reponse.getScore());
 		dto.setQuestionDTO(createQuestion(reponse.getQuestion()));
+		dto.setCompteur(reponse.getCompteur());
 
 		return dto;
 	}
@@ -225,6 +228,7 @@ public class DTOFactory {
 		dto.setPonderation(ratio.getPonderation());
 		dto.setUnite(ratio.getUnite());
 		dto.setActif(ratio.getActif());
+		dto.setCompteur(ratio.getCompteur());
 
 		return dto;
 	}
@@ -271,6 +275,7 @@ public class DTOFactory {
 		dto.setPonderation(ponderation.getPonderation());
 		dto.setParametreDTO(createParametre(ponderation.getParametre()));
 		dto.setActif(ponderation.getActif());
+		dto.setCompteur(ponderation.getCompteur());
 
 		return dto;
 	}

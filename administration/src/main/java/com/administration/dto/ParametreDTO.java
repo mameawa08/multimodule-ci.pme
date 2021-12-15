@@ -20,5 +20,7 @@ public class ParametreDTO {
     private int nbre_question;
     
 	private int	actif;
+	
+	private int compteur;
 
 }

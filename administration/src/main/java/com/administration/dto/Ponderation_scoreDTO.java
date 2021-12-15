@@ -21,5 +21,7 @@ public class Ponderation_scoreDTO {
 	private int	actif;
     
     private ParametreDTO  parametreDTO;
+    
+    private int compteur;
 
 }

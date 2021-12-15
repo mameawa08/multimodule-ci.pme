@@ -22,5 +22,7 @@ public class ReponseQualitativeDTO {
     private QuestionDTO  questionDTO;
     
 	private int	actif;
+	
+	private int compteur;
 
 }
