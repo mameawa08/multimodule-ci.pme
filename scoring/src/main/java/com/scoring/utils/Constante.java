@@ -21,7 +21,8 @@ public class Constante {
 
     public static final int ETAT_DEMANDE_BROUILLON                  = 1;
     public static final int ETAT_DEMANDE_ENVOYE                     = 2;
+    public static final int ETAT_DEMANDE_EN_COURS                   = 3;
 
 
-
+    public static final Long PROFIL_EXPERT_PME                      = 4L;
 }

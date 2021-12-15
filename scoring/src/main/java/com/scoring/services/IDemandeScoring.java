@@ -12,4 +12,8 @@ public interface IDemandeScoring {
     DemandeScoringDTO getDemande(Long id) throws DemandeException;
 
     DemandeScoringDTO createDemande(Long idEntreprise) throws DemandeException;
+
+    boolean envoyerDemande(Long id) throws DemandeException;
+
+    boolean receptionnerDemande(Long id) throws DemandeException;
 }

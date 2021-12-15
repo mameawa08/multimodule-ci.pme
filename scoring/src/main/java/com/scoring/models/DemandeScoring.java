@@ -1,6 +1,7 @@
 package com.scoring.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,12 @@ public class DemandeScoring implements Serializable {
     
     @Type(type="text")
     private String motif_rejet;
-    
+
+    @Column(nullable = true)
+    private Date dateEnvoie;
+
+    @Column(nullable = true)
+    private Date dateReception;
 
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.administration.exception.ScoringConnectException;
+import com.administration.model.Profil;
+import com.administration.repository.ProfilRepository;
 import com.administration.service.IMailService;
 import com.administration.service.IScoringConnectService;
 import com.administration.utils.Constante;
@@ -60,7 +62,10 @@ public class UserServiceImpl implements IUserService{
 	 private final String REGEX_IDENTIFIANT = "^(\\d{6})([a-zA-Z]{1})$";
 
     public final static String REGEX_EMAIL = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
-	
+
+    @Autowired
+    private ProfilRepository profilRepository;
+
 	@Override
 	public List<UserDTO> getUsers() throws UserException{
 		List<UserDTO> users = new ArrayList<UserDTO>();
@@ -267,7 +272,14 @@ public class UserServiceImpl implements IUserService{
 		return true;
 	}
 
-	// Private methods
+    @Override
+    public List<UserDTO> getUsersByProfil(Long idProfil) throws UserException {
+		Profil profil = profilRepository.findById(idProfil).orElseThrow(() -> new UserException("Profil :: "+idProfil+" not found"));
+		List<User> users = userRepository.findByProfil(profil);
+        return dtoFactory.createListUser(users);
+    }
+
+    // Private methods
 	private void checkRegistrationRequirement(UserPaylaod payload) throws UserException{
 		validatePayload(payload);
 

@@ -105,4 +105,15 @@ public class UserController {
 	}
 
 
+	@GetMapping("/profils/{idProfil}")
+	public ResponseEntity getUsersByProfil(@PathVariable Long idProfil){
+		try {
+			List<UserDTO> users = userService.getUsersByProfil(idProfil);
+			return ResponseEntity.ok(users);
+		}
+		catch (UserException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }

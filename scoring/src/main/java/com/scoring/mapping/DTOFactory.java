@@ -347,7 +347,8 @@ public class DTOFactory {
 		dto.setMotif_rejet(demandeScoring.getMotif_rejet());
 		dto.setStatus(demandeScoring.getStatus());
 		dto.setEntrepriseDTO(createEntreprise(demandeScoring.getEntreprise()));
-
+		dto.setDateEnvoie(demandeScoring.getDateEnvoie());
+		dto.setDateReception(demandeScoring.getDateReception());
 		return dto;
 	}
 	
