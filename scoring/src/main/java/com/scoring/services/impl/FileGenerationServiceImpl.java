@@ -1,26 +1,43 @@
 package com.scoring.services.impl;
 
-import com.scoring.dto.*;
-import com.scoring.dto.chart.ChartData;
-import com.scoring.exceptions.FileGenerationException;
-import com.scoring.models.ValeurRatio;
-import com.scoring.payloads.RapportPayload;
-import com.scoring.repository.ValeurRatioRepository;
-import com.scoring.services.*;
-import com.scoring.utils.Constante;
-import com.scoring.utils.DateUtils;
-import com.scoring.utils.NumberUtils;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.scoring.dto.DemandeScoringDTO;
+import com.scoring.dto.DirigeantDTO;
+import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.RapportFile;
+import com.scoring.dto.RatioDTO;
+import com.scoring.dto.ScoreEntrepriseParParametreDTO;
+import com.scoring.dto.ScoresParPMEDTO;
+import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.dto.chart.ChartData;
+import com.scoring.exceptions.FileGenerationException;
+import com.scoring.models.ValeurRatio;
+import com.scoring.payloads.RapportPayload;
+import com.scoring.repository.ValeurRatioRepository;
+import com.scoring.services.ICalculScoreService;
+import com.scoring.services.IDemandeScoring;
+import com.scoring.services.IDirigeantService;
+import com.scoring.services.IEntrepriseService;
+import com.scoring.services.IFileGenerationService;
+import com.scoring.services.IReferentielService;
+import com.scoring.services.IReportPrinterService;
+import com.scoring.utils.Constante;
+import com.scoring.utils.DateUtils;
+import com.scoring.utils.NumberUtils;
 
 @Service
 public class FileGenerationServiceImpl implements IFileGenerationService {
@@ -39,6 +56,9 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
     @Autowired
     private IReportPrinterService reportPrinterService;
+    
+    @Autowired
+    private IDemandeScoring demandeScoringService;
 
     @Value("${app.ged.report.dossier}")
     private String gedRepositoryPath;
@@ -194,7 +214,15 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
             RapportFile rapport = new RapportFile();
             rapport.setName(filename);
-            rapport.setContent(is.readAllBytes());
+           // rapport.setContent(is.readAllBytes());
+            
+            DemandeScoringDTO demandeEnCoursDTO = demandeScoringService.getDemandeEnCours(id);
+            if(demandeEnCoursDTO.getRapportGenere()==false){
+            	demandeEnCoursDTO.setRapportGenere(true);
+            	demandeScoringService.validerDemandeProvisoire(demandeEnCoursDTO.getId());
+            }
+            
+            
             return rapport;
         }
         catch (Exception e){

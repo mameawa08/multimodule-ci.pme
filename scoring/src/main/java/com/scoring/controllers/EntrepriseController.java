@@ -2,24 +2,30 @@ package com.scoring.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.IndicateurDTO;
 import com.scoring.dto.PieceJointeDTO;
 import com.scoring.dto.RapportFile;
 import com.scoring.exceptions.FileGenerationException;
-import com.scoring.mapping.DTOFactory;
 import com.scoring.payloads.EntreprisePayload;
 import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IEntrepriseService;
-
 import com.scoring.services.IFileGenerationService;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IPieceJointeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
