@@ -1,29 +1,28 @@
 package com.scoring.services.impl;
 
-import com.scoring.dto.DemandeScoringDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.UserDTO;
-import com.scoring.exceptions.DemandeException;
-import com.scoring.exceptions.EntrepriseException;
-import com.scoring.exceptions.UserException;
-import com.scoring.models.DemandeScoring;
-import com.scoring.models.Entreprise;
-import com.scoring.services.IEntrepriseService;
-import com.scoring.services.IMailService;
-import com.scoring.services.IUserService;
-import com.scoring.utils.Constante;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.codec.DecodingException;
 import org.springframework.stereotype.Service;
 
+import com.scoring.dto.DemandeScoringDTO;
+import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.UserDTO;
+import com.scoring.exceptions.DemandeException;
+import com.scoring.exceptions.EntrepriseException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.DemandeScoring;
+import com.scoring.payloads.DemandePayload;
 import com.scoring.repository.DemandeScoringRepository;
 import com.scoring.services.IDemandeScoring;
-
-import java.util.Date;
-import java.util.List;
+import com.scoring.services.IEntrepriseService;
+import com.scoring.services.IMailService;
+import com.scoring.services.IUserService;
+import com.scoring.utils.Constante;
 
 
 @Service
@@ -103,6 +102,59 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         try{
         	demande.setStatus(Constante.ETAT_DEMANDE_EN_COURS);
         	demande.setDateReception(new Date());
+        	demandeScoringRepository.save(demande);
+        	return true;
+		}
+        catch (Exception e){
+        	throw new DemandeException(e.getMessage(), e);
+		}
+    }
+    
+    @Override
+    public boolean rejeterDemande(Long id, DemandePayload demandePayload) throws DemandeException {
+        DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
+        try{
+        	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS)
+        		demande.setStatus(Constante.ETAT_DEMANDE_REJETE);
+        	demande.setMotif_rejet(demandePayload.getMotif_rejet());
+        	demandeScoringRepository.save(demande);
+        	return true;
+		}
+        catch (Exception e){
+        	throw new DemandeException(e.getMessage(), e);
+		}
+    }
+    
+    @Override
+    public boolean validerDemandeProvisoire(Long id) throws DemandeException {
+        DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
+        try{
+        	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS)
+        		demande.setStatus(Constante.ETAT_DEMANDE_PROVISOIRE);
+        	demandeScoringRepository.save(demande);
+        	return true;
+		}
+        catch (Exception e){
+        	throw new DemandeException(e.getMessage(), e);
+		}
+    }
+    
+	public DemandeScoringDTO getDemandeEnCours(Long idEntreprise) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS);
+		return dtoFactory.createDemandeScoring(demande);
+	}
+    
+	public DemandeScoringDTO getDemandeProvisoire(Long idEntreprise) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, Constante.ETAT_DEMANDE_PROVISOIRE);
+		return dtoFactory.createDemandeScoring(demande);
+	}
+    
+    @Override
+    public boolean cloturerDemande(Long id) throws DemandeException {
+        DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
+        try{
+        	if(demande.getStatus()==Constante.ETAT_DEMANDE_PROVISOIRE)
+        		demande.setStatus(Constante.ETAT_DEMANDE_CLORURE);
         	demandeScoringRepository.save(demande);
         	return true;
 		}

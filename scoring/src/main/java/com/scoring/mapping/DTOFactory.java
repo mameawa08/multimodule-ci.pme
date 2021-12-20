@@ -349,6 +349,8 @@ public class DTOFactory {
 		dto.setEntrepriseDTO(createEntreprise(demandeScoring.getEntreprise()));
 		dto.setDateEnvoie(demandeScoring.getDateEnvoie());
 		dto.setDateReception(demandeScoring.getDateReception());
+		dto.setRapportGenere(demandeScoring.getRapportGenere());
+		dto.setDateCreation(demandeScoring.getDateCreation());
 		return dto;
 	}
 	

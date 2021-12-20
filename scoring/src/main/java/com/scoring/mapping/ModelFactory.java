@@ -224,6 +224,8 @@ public class ModelFactory {
 		demandeScoring.setEntreprise(createEntreprise(demandeScoringDTO.getEntrepriseDTO()));
 		demandeScoring.setDateEnvoie(demandeScoringDTO.getDateEnvoie());
 		demandeScoring.setDateReception(demandeScoringDTO.getDateReception());
+		demandeScoring.setRapportGenere(demandeScoringDTO.getRapportGenere());
+		demandeScoring.setDateCreation(demandeScoringDTO.getDateCreation());
 		return demandeScoring;
 	}
 

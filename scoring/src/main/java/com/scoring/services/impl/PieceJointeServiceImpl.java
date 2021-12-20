@@ -3,12 +3,16 @@ package com.scoring.services.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.scoring.config.AccessTokenDetails;
 import com.scoring.dto.PieceJointeDTO;
 import com.scoring.exceptions.PieceJointeException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
-import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Indicateur;
 import com.scoring.models.PieceJointe;
@@ -16,13 +20,7 @@ import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.IndicateurRepository;
 import com.scoring.repository.PieceJointeRepository;
 import com.scoring.services.IPieceJointeService;
-
 import com.scoring.services.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PieceJointeServiceImpl implements IPieceJointeService {
@@ -32,9 +30,6 @@ public class PieceJointeServiceImpl implements IPieceJointeService {
 
 	@Autowired
 	private DTOFactory dtoFactory;
-
-	@Autowired
-	private PayloadToDTO payloadToDTO;
 
 	@Autowired
 	private ModelFactory modelFactory;
@@ -124,18 +119,18 @@ public class PieceJointeServiceImpl implements IPieceJointeService {
     public boolean deleteAttachment(Long id, Long pieceId, boolean logo) throws PieceJointeException {
         AccessTokenDetails user = userService.getConnectedUser();
         Indicateur indicateur = null;
-        Entreprise entreprise = null;
-        if (logo){
+        //Entreprise entreprise = null;
+        //if (logo){
             indicateur = indicateurRepository.findById(id).orElseThrow(() -> new PieceJointeException("Indicateur "+id+" not found."));
-        }else{
+       /* }else{
             entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new PieceJointeException("Entreprise "+id+" not found."));
-        }
+        }*/
 
         PieceJointe piece = pieceJointeRepository.findById(pieceId).orElseThrow(() -> new PieceJointeException("Not found."));
 
         if((logo && piece.getUser().equals(user.getUserId()) && indicateur.getId().equals(piece.getIndicateur().getId()))
                 ||
-                (!logo && piece.getUser().equals(user.getUserId()) && entreprise.getId().equals(piece.getEntreprise().getId()))
+                (!logo && piece.getUser().equals(user.getUserId()) /*&& entreprise.getId().equals(piece.getEntreprise().getId())*/)
         ){
             pieceJointeRepository.delete(piece);
             return true;

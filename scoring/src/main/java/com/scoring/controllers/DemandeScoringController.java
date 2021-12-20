@@ -1,15 +1,21 @@
 package com.scoring.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.payloads.DemandePayload;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IDemandeScoring;
-
-import java.util.List;
 
 
 @RestController
@@ -68,6 +74,26 @@ public class DemandeScoringController {
 	public ResponseEntity receptionnerDemande(@PathVariable Long id){
 		try {
 			boolean rs = demandeScoringService.receptionnerDemande(id);
+			return ResponseEntity.ok(rs);
+		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/{id}/rejet")
+	public ResponseEntity rejeterDemande(@PathVariable Long id, @RequestBody DemandePayload demandePayload){
+		try {
+			boolean rs = demandeScoringService.rejeterDemande(id, demandePayload);
+			return ResponseEntity.ok(rs);
+		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/{id}/cloture")
+	public ResponseEntity cloturerDemande(@PathVariable Long id){
+		try {
+			boolean rs = demandeScoringService.cloturerDemande(id);
 			return ResponseEntity.ok(rs);
 		} catch (DemandeException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
