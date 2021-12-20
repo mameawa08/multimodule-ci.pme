@@ -14,9 +14,9 @@ import java.util.List;
 public interface DemandeScoringRepository extends JpaRepository<DemandeScoring, Long> {
 
     List<DemandeScoring> findAllByOrderByIdDesc();
-    
+
     @Query("SELECT DISTINCT d FROM DemandeScoring d WHERE d.entreprise.id = :idEntreprise and d.status = :status ")
 	DemandeScoring findDemandeByStatus(@Param("idEntreprise") Long idEntreprise, @Param("status") int status);
-    
-    
+
+
 }
