@@ -66,6 +66,11 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	public DemandeScoringDTO createDemande(Long idEntreprise) throws DemandeException {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(idEntreprise);
+
+			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLORURE);
+			if (demandeScoring != null){
+				throw new DemandeException("Une demande de scoring est deja en cours.");
+			}
 			DemandeScoringDTO demande = new DemandeScoringDTO();
 			demande.setEntrepriseDTO(entreprise);
 			demande.setStatus(Constante.ETAT_DEMANDE_BROUILLON);
