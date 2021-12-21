@@ -1,9 +1,9 @@
 package com.scoring.dto;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 /**
  * @author agileway
@@ -29,6 +29,10 @@ public class DemandeScoringDTO {
     
     private Date dateCreation;
     
-
+	private boolean 	repEli=false;
+	
+	private boolean 	indicateurAjoute;
+	
+	private boolean 	repQuali;
 
 }

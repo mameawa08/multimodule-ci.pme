@@ -59,7 +59,7 @@ public class Indicateur {
 	private double produit_financier;
 
 	@ManyToOne
-	@JoinColumn(name = "entreprise_id")
-	private Entreprise entreprise;
+	@JoinColumn(name = "id_demande")
+	private DemandeScoring  demande_scoring;
 		
 }

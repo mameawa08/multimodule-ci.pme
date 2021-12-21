@@ -139,22 +139,19 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		}
     }
     
-	public DemandeScoringDTO getDemandeEnCours(Long idEntreprise) throws DemandeException {
-    	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS);
+    @Override
+	public DemandeScoringDTO getDemandeBystatus(Long idEntreprise, int statutDemande) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, statutDemande);
 		return dtoFactory.createDemandeScoring(demande);
 	}
     
-	public DemandeScoringDTO getDemandeProvisoire(Long idEntreprise) throws DemandeException {
-    	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, Constante.ETAT_DEMANDE_PROVISOIRE);
-		return dtoFactory.createDemandeScoring(demande);
-	}
     
     @Override
     public boolean cloturerDemande(Long id) throws DemandeException {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
         try{
         	if(demande.getStatus()==Constante.ETAT_DEMANDE_PROVISOIRE)
-        		demande.setStatus(Constante.ETAT_DEMANDE_CLORURE);
+        		demande.setStatus(Constante.ETAT_DEMANDE_CLOTURE);
         	demandeScoringRepository.save(demande);
         	return true;
 		}
@@ -162,4 +159,12 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         	throw new DemandeException(e.getMessage(), e);
 		}
     }
+
+    
+    @Override
+	public DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeNonClotureParEntreprise(idEntreprise);
+		return dtoFactory.createDemandeScoring(demande);
+	}
+	
 }

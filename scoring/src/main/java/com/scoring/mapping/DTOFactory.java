@@ -42,9 +42,6 @@ public class DTOFactory {
 		dto.setLogo(entreprise.getLogo());
 		dto.setEligible(entreprise.isEligible());
 		dto.setActif(entreprise.isActif());
-		dto.setRepEli(entreprise.isRepEli());
-		dto.setRepQuali(entreprise.isRepQuali());
-		dto.setIndicateurAjoute(entreprise.isIndicateurAjoute());
 //		dto.setSecteurs(entreprise.getSecteurs());
 		dto.setSecteurs(setSecteurActivite(entreprise.getSecteurs()));
 //		dto.setFormeJuridique(entreprise.getFormeJuridique());
@@ -146,7 +143,7 @@ public class DTOFactory {
 		dto.setProduit_financier(indicateur.getProduit_financier());
 		dto.setAnnee(indicateur.getAnnee());
 		dto.setActif(indicateur.isActif());
-		dto.setEntreprise(createEntreprise(indicateur.getEntreprise()));
+		dto.setDemande_scoringDTO(createDemandeScoring(indicateur.getDemande_scoring()));
 
 		return dto;
 	}
@@ -195,7 +192,7 @@ public class DTOFactory {
 		ReponseParPMEDTO dto = new ReponseParPMEDTO();
 		dto.setId(reponse.getId());
 		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
-		dto.setEntrepriseDTO(createEntreprise(reponse.getEntreprise()));
+		dto.setDemande_scoringDTO(createDemandeScoring(reponse.getDemande_scoring()));
 		dto.setIdQuestion(reponse.getIdQuestion());
 		dto.setId_reponse_quali(reponse.getId_reponse_quali());
 		return dto;
@@ -246,7 +243,7 @@ public class DTOFactory {
 		dto.setIdRatio(valeurRatio.getIdRatio());
 		dto.setValeur(valeurRatio.getValeur());
 		dto.setClasse(valeurRatio.getClasse());
-		dto.setEntrepriseDTO(createEntreprise(valeurRatio.getEntreprise()));
+		dto.setDemandeScoringDTO(createDemandeScoring(valeurRatio.getDemande_scoring()));
 		
 		return dto;
 	}
@@ -266,7 +263,7 @@ public class DTOFactory {
 		dto.setId(score.getId());
 		dto.setScore_final(score.getScore_final());
 		dto.setScore_financier(score.getScore_financier());
-		dto.setEntrepriseDTO(createEntreprise(score.getEntreprise()));
+		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemande_scoring()));
 		
 		return dto;
 	}
@@ -284,7 +281,7 @@ public class DTOFactory {
 
 		ScoreEntrepriseParParametreDTO dto = new ScoreEntrepriseParParametreDTO();
 		dto.setId(score.getId());
-		dto.setEntreprise(createEntreprise(score.getEntreprise()));
+		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemande_scoring()));
 		dto.setParametre(createParametre(score.getParametre()));
 		dto.setScore(score.getScore());
 
@@ -351,6 +348,9 @@ public class DTOFactory {
 		dto.setDateReception(demandeScoring.getDateReception());
 		dto.setRapportGenere(demandeScoring.getRapportGenere());
 		dto.setDateCreation(demandeScoring.getDateCreation());
+		dto.setRepEli(demandeScoring.isRepEli());
+		dto.setIndicateurAjoute(demandeScoring.isIndicateurAjoute());
+		dto.setRepQuali(demandeScoring.isRepQuali());
 		return dto;
 	}
 	

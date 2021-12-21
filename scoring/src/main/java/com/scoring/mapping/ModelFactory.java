@@ -28,9 +28,6 @@ public class ModelFactory {
 		model.setLogo(entreprise.getLogo());
 		model.setEligible(entreprise.isEligible());
 		model.setActif(entreprise.isActif());
-		model.setRepEli(entreprise.isRepEli());
-		model.setRepQuali(entreprise.isRepQuali());
-		model.setIndicateurAjoute(entreprise.isIndicateurAjoute());
 		if(entreprise.getDirigeant() != null && entreprise.getDirigeant().getId() != null)
 			model.setDirigeant(createDirigeant(entreprise.getDirigeant()));
 
@@ -89,7 +86,7 @@ public class ModelFactory {
 		ReponseParPME model = new ReponseParPME();
 		model.setId(reponseDTO.getId());
 		model.setReponse_eligibilite(reponseDTO.isReponse_eligibilite());
-		model.setEntreprise(createEntreprise(reponseDTO.getEntrepriseDTO()));
+		model.setDemande_scoring(createDemandeScoring(reponseDTO.getDemande_scoringDTO()));
 		model.setIdQuestion(reponseDTO.getIdQuestion());
 		model.setId_reponse_quali(reponseDTO.getId_reponse_quali());
 		return model;
@@ -125,7 +122,7 @@ public class ModelFactory {
 		model.setProduit_financier(indicateur.getProduit_financier());
 		model.setAnnee(indicateur.getAnnee());
 		model.setActif(indicateur.isActif());
-		model.setEntreprise(createEntreprise(indicateur.getEntreprise()));
+		model.setDemande_scoring(createDemandeScoring(indicateur.getDemande_scoringDTO()));
 
 		return model;
 	}
@@ -161,7 +158,7 @@ public class ModelFactory {
 		valeurRatio.setIdRatio(valeurRatioDTO.getIdRatio());
 		valeurRatio.setValeur(valeurRatioDTO.getValeur());
 		valeurRatio.setClasse(valeurRatioDTO.getClasse());
-		valeurRatio.setEntreprise(createEntreprise(valeurRatioDTO.getEntrepriseDTO()));
+		valeurRatio.setDemande_scoring(createDemandeScoring(valeurRatioDTO.getDemandeScoringDTO()));
 
 		return valeurRatio;
 	}
@@ -180,7 +177,7 @@ public class ModelFactory {
 		score.setId(scoreDTO.getId());
 		score.setScore_final(scoreDTO.getScore_final());
 		score.setScore_financier(scoreDTO.getScore_financier());
-		score.setEntreprise(createEntreprise(scoreDTO.getEntrepriseDTO()));
+		score.setDemande_scoring(createDemandeScoring(scoreDTO.getDemandeScoringDTO()));
 
 		return score;
 	}
@@ -194,7 +191,7 @@ public class ModelFactory {
 
 		ScoreEntrepriseParParametre model = new ScoreEntrepriseParParametre();
 		model.setId(score.getId());
-		model.setEntreprise(createEntreprise(score.getEntreprise()));
+		model.setDemande_scoring(createDemandeScoring(score.getDemandeScoringDTO()));
 		model.setParametre(createParametre(score.getParametre()));
 		model.setScore(score.getScore());
 
@@ -226,6 +223,9 @@ public class ModelFactory {
 		demandeScoring.setDateReception(demandeScoringDTO.getDateReception());
 		demandeScoring.setRapportGenere(demandeScoringDTO.getRapportGenere());
 		demandeScoring.setDateCreation(demandeScoringDTO.getDateCreation());
+		demandeScoring.setRepEli(demandeScoringDTO.isRepEli());
+		demandeScoring.setIndicateurAjoute(demandeScoringDTO.isIndicateurAjoute());
+		demandeScoring.setRepQuali(demandeScoringDTO.isRepQuali());
 		return demandeScoring;
 	}
 

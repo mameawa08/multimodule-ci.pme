@@ -3,20 +3,26 @@ package com.scoring.services.impl;
 import java.util.Calendar;
 import java.util.List;
 
+import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.IndicateurDTO;
+import com.scoring.exceptions.DemandeException;
 import com.scoring.exceptions.EntrepriseException;
 import com.scoring.exceptions.IndicateurException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
 import com.scoring.mapping.PayloadToDTO;
+import com.scoring.models.DemandeScoring;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Indicateur;
 import com.scoring.payloads.IndicateurPayload;
+import com.scoring.repository.DemandeScoringRepository;
 import com.scoring.repository.EntrepriseRepository;
 import com.scoring.repository.IndicateurRepository;
+import com.scoring.services.IDemandeScoring;
 import com.scoring.services.IEntrepriseService;
 import com.scoring.services.IIndicateurService;
+import com.scoring.utils.Constante;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +44,15 @@ public class IndicateurServiceImpl implements IIndicateurService {
 
 	@Autowired
 	private EntrepriseRepository entrepriseRepository;
+	
+	@Autowired
+	private DemandeScoringRepository demandeScoringRepository;
 
 	@Autowired
 	private IEntrepriseService entrepriseService;
+	
+	@Autowired
+	private IDemandeScoring demandeScoringService;
 
 
 	int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -66,7 +78,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	}
 
 	@Override
-	public IndicateurDTO createIndicateur(IndicateurPayload payload) throws IndicateurException{
+	public IndicateurDTO createIndicateur(IndicateurPayload payload) throws IndicateurException, DemandeException{
 		IndicateurDTO indicateur = null;
 		if(payload.getId() != null){
 			indicateur = getIndicateur(payload.getId());
@@ -151,21 +163,26 @@ public class IndicateurServiceImpl implements IIndicateurService {
 				+indicateur.getRmChargesFinancieres()+indicateur.getRqParticipations()+indicateur.getRsImpot());
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
-			indicateur.setEntreprise(entreprise);
+			DemandeScoringDTO demandeScoringDTO = demandeScoringService.getDemandeBystatus(entreprise.getId(), Constante.ETAT_DEMANDE_BROUILLON);
+			indicateur.setDemande_scoringDTO(demandeScoringDTO);
 
 			Indicateur model = modelFactory.createIndicateur(indicateur);
 
 			indicateurRepository.save(model);
 			indicateur.setId(model.getId());
 
-			if(!entreprise.isIndicateurAjoute()){
-				entreprise.setIndicateurAjoute(true);
-				Entreprise entreprise1  = modelFactory.createEntreprise(entreprise);
-				entrepriseRepository.save(entreprise1);
+			if(!demandeScoringDTO.isIndicateurAjoute()){
+				demandeScoringDTO.setIndicateurAjoute(true);
+				DemandeScoring demandeScoring = modelFactory.createDemandeScoring(demandeScoringDTO);
+				demandeScoringRepository.save(demandeScoring);
+				/*Entreprise entreprise1  = modelFactory.createEntreprise(entreprise);
+				entrepriseRepository.save(entreprise1);*/
 			}
 
 		} catch (EntrepriseException e) {
 			throw new IndicateurException("Indicateur :: L'entreprise, id "+payload.getEntreprise()+" not found.");
+		} catch (DemandeException e) {
+			throw new DemandeException("Demande not found.");
 		}
 
 		return indicateur;

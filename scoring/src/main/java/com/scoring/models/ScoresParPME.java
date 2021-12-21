@@ -42,7 +42,7 @@ public class ScoresParPME implements Serializable {
     private double score_final;
     
     @ManyToOne
-  	@JoinColumn(name = "id_entreprise", nullable = true)
-    private Entreprise  entreprise;
+	@JoinColumn(name = "id_demande")
+	private DemandeScoring  demande_scoring;
 
 }

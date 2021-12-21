@@ -22,9 +22,6 @@ public class EntrepriseDTO {
 	private String 		logo;
 	private boolean 	eligible;
 	private boolean 	actif;
-	private boolean 	repEli;
-	private boolean 	repQuali;
-	private boolean 	indicateurAjoute;
 
 	private DirigeantDTO dirigeant;
 	private FormeJuridiqueDTO		 formeJur;

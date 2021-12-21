@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.payloads.DemandePayload;
-import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IDemandeScoring;
 
 
@@ -96,6 +95,18 @@ public class DemandeScoringController {
 			boolean rs = demandeScoringService.cloturerDemande(id);
 			return ResponseEntity.ok(rs);
 		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+
+	@GetMapping("/demande/{idEntreprise}")
+	public ResponseEntity getDemandeNonClotureParEntrprise(@PathVariable Long idEntreprise){
+		try {
+			DemandeScoringDTO demande = demandeScoringService.getDemandeNonClotureParEntreprise(idEntreprise);
+			return ResponseEntity.ok(demande);
+		}
+		catch (DemandeException e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

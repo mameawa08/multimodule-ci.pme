@@ -38,8 +38,8 @@ public class ReponseParPME implements Serializable {
 	private boolean reponse_eligibilite;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_entreprise")
-	private Entreprise  entreprise;
+	@JoinColumn(name = "id_demande")
+	private DemandeScoring  demande_scoring;
 	
 	@Column(name = "id_question")
 	private Long  idQuestion;

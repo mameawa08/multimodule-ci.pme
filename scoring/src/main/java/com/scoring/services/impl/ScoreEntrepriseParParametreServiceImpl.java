@@ -64,8 +64,8 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
 
     @Override
     public ScoreEntrepriseParParametreDTO saveScore(ScoreEntrepriseParParametreDTO score) throws ScoreEntrepriseParParametreException{
-        if (score.getEntreprise() == null || (score.getEntreprise() != null && score.getEntreprise().getId() == null))
-            throw new ScoreEntrepriseParParametreException("L'entreprise est obligatoire.");
+        if (score.getDemandeScoringDTO() == null || (score.getDemandeScoringDTO() != null && score.getDemandeScoringDTO().getId() == null))
+            throw new ScoreEntrepriseParParametreException("La demande est obligatoire.");
 
         if (score.getParametre() == null || (score.getParametre() != null && score.getParametre().getId() == null))
             throw new ScoreEntrepriseParParametreException("Le parametre est obligatoire.");

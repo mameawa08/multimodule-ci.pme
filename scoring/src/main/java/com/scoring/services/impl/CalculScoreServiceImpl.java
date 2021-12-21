@@ -6,21 +6,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.scoring.dto.*;
-import com.scoring.exceptions.CalculScoreException;
-import com.scoring.exceptions.ReferentielException;
-import com.scoring.exceptions.ScoreEntrepriseParParametreException;
-import com.scoring.models.*;
-import com.scoring.repository.*;
-import com.scoring.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.scoring.dto.CalibrageDTO;
+import com.scoring.dto.DemandeScoringDTO;
+import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.IndicateurDTO;
+import com.scoring.dto.ParametreDTO;
+import com.scoring.dto.PonderationDTO;
+import com.scoring.dto.RatioDTO;
+import com.scoring.dto.ScoreEntrepriseParParametreDTO;
+import com.scoring.dto.ScoresAndRatioDTO;
+import com.scoring.dto.ScoresParPMEDTO;
+import com.scoring.dto.ValeurRatioDTO;
+import com.scoring.exceptions.CalculScoreException;
 import com.scoring.exceptions.IndicateurException;
 import com.scoring.exceptions.ScoreEntrepriseParParametreException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.DemandeScoring;
+import com.scoring.models.Entreprise;
+import com.scoring.models.Parametre;
+import com.scoring.models.Question;
+import com.scoring.models.ReponseParPME;
+import com.scoring.models.ReponseQualitative;
+import com.scoring.models.ScoresParPME;
+import com.scoring.models.ValeurRatio;
+import com.scoring.repository.DemandeScoringRepository;
+import com.scoring.repository.EntrepriseRepository;
+import com.scoring.repository.ParametreRepository;
+import com.scoring.repository.QuestionRepository;
+import com.scoring.repository.ReponseParPMERepository;
+import com.scoring.repository.ReponseQualitativeRepository;
+import com.scoring.repository.ScoreParPMERepository;
+import com.scoring.repository.ValeurRatioRepository;
+import com.scoring.services.ICalculScoreService;
+import com.scoring.services.IDemandeScoring;
+import com.scoring.services.IEntrepriseService;
+import com.scoring.services.IIndicateurService;
+import com.scoring.services.IReferentielService;
+import com.scoring.services.IScoreEntrepriseParParametreService;
+import com.scoring.utils.Constante;
 
 
 @Service
@@ -34,6 +62,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	
 	@Autowired
 	private ScoreParPMERepository scoreParPMERepository;
+	
+	@Autowired
+	private DemandeScoringRepository demandeScoringRepository;
 
 	@Autowired
 	private DTOFactory dtoFactory;
@@ -67,6 +98,10 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Autowired
 	private IEntrepriseService entrepriseService;
+	
+	@Autowired
+	private IDemandeScoring demandeScoringService;
+
 
 	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
 		double somme1, somme2, value;
@@ -135,13 +170,16 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
 			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idEntreprise);
 			EntrepriseDTO entrepriseDTO = null;
+			DemandeScoringDTO demande = null;
 			if(idEntreprise==null)
 				throw new IndicateurException("L'id de l'entreprise est obligatoire pour ce calcul !");
-			else
+			else{
 				entrepriseDTO = dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found.")));
+				demande = demandeScoringService.getDemandeBystatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS);
+			}
 			for(int i=1; i<=8;i++){
 				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
-				valeurRatioDTO.setEntrepriseDTO(entrepriseDTO);
+				valeurRatioDTO.setDemandeScoringDTO(demande);
 				valeurRatioDTO.setIdRatio(listRatioDTO.get(i-1).getId());
 				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatioDTO.getIdRatio());
 				valeurRatioDTO.setNomRatio(ratioDTO.getLibelle());
@@ -182,7 +220,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		if(scoreparPME!=null && scoreparPME.getScore_financier()!=0)
 			scoreDTO=dtoFactory.createScoreParPME(scoreparPME);
 		else{
-			scoreDTO.setEntrepriseDTO(dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found."))));
+			scoreDTO.setDemandeScoringDTO(demandeScoringService.getDemandeBystatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS));
 			double score_financier=0.0;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
@@ -200,6 +238,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	@Override
 	public List<ScoreEntrepriseParParametreDTO> calculScoreParametreQualitatif(Long id) throws CalculScoreException {
 		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+		DemandeScoring demandeScoring = demandeScoringRepository.findDemandeByStatus(entreprise.getId(), Constante.ETAT_DEMANDE_EN_COURS);
 		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId());
 
 		Map<Long, Integer> maps = calculTotalScoreForEachParametre(reponseParPMEs);
@@ -220,8 +259,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				double value = (double) map.getValue() / parametre.getNbre_question();
 				score.setScore(value);
 				score.setParametre(dtoFactory.createParametre(parametre));
-				score.setEntreprise(dtoFactory.createEntreprise(entreprise));
-
+				
+				score.setDemandeScoringDTO(dtoFactory.createDemandeScoring(demandeScoring));
 				score = scoreEntrepriseParParametreService.saveScore(score);
 				scores.add(score);
 
@@ -324,6 +363,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	private ScoreEntrepriseParParametreDTO calculScoreForParametre(List<ReponseParPME> reponses, Long parametreId, Long entrepriseId) throws CalculScoreException{
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(entrepriseId);
+			DemandeScoringDTO demandeDTO = demandeScoringService.getDemandeBystatus(entrepriseId, Constante.ETAT_DEMANDE_EN_COURS);
  			ParametreDTO parametre = referentielService.getParamtre(parametreId);
 			double total = 0;
 			for (ReponseParPME reponse : reponses){
@@ -334,12 +374,11 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				}
 			}
 			total /= parametre.getNbre_question();
-
 			ScoreEntrepriseParParametreDTO scoreEntrepriseParParametre = scoreEntrepriseParParametreService.getScoreEntrepriseParParametreOrNull(entrepriseId, parametreId);
 			if (scoreEntrepriseParParametre == null){
 				scoreEntrepriseParParametre = new ScoreEntrepriseParParametreDTO();
 			}
-			scoreEntrepriseParParametre.setEntreprise(entreprise);
+			scoreEntrepriseParParametre.setDemandeScoringDTO(demandeDTO);
 			scoreEntrepriseParParametre.setParametre(parametre);
 			scoreEntrepriseParParametre.setScore(total);
 

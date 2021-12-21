@@ -18,6 +18,6 @@ public class ScoresParPMEDTO {
 
     private double score_final;
     
-    private EntrepriseDTO  entrepriseDTO;
+    private DemandeScoringDTO  demandeScoringDTO;
 
 }
