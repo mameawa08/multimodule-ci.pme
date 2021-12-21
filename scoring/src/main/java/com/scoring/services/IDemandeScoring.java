@@ -28,4 +28,6 @@ public interface IDemandeScoring {
 	DemandeScoringDTO getDemandeProvisoire(Long idEntreprise) throws DemandeException;
 
 	boolean cloturerDemande(Long id) throws DemandeException;
+
+    DemandeScoringDTO getDemandeOuverte(Long idEntreprise);
 }

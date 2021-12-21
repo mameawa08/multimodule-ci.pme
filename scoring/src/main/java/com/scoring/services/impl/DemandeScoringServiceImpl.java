@@ -74,6 +74,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 			DemandeScoringDTO demande = new DemandeScoringDTO();
 			demande.setEntrepriseDTO(entreprise);
 			demande.setStatus(Constante.ETAT_DEMANDE_BROUILLON);
+			demande.setDateCreation(new Date());
 
 			DemandeScoring model = modelFactory.createDemandeScoring(demande);
 			demandeScoringRepository.save(model);
@@ -167,4 +168,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         	throw new DemandeException(e.getMessage(), e);
 		}
     }
+
+	@Override
+	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
+		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLORURE);
+    	return dtoFactory.createDemandeScoring(demande);
+	}
 }

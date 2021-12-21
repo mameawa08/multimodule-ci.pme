@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.payloads.DemandePayload;
-import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IDemandeScoring;
 
 
@@ -46,6 +45,12 @@ public class DemandeScoringController {
 		catch (DemandeException e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+
+	@GetMapping("/{idEntreprise}/ouverte")
+	public ResponseEntity getDemandeOuverte(@PathVariable Long idEntreprise){
+		DemandeScoringDTO demande = demandeScoringService.getDemandeOuverte(idEntreprise);
+		return ResponseEntity.ok(demande);
 	}
 
 
