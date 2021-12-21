@@ -60,6 +60,6 @@ public class Indicateur {
 
 	@ManyToOne
 	@JoinColumn(name = "id_demande")
-	private DemandeScoring  demande_scoring;
+	private DemandeScoring  demandeScoring;
 		
 }

@@ -83,7 +83,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
     //        Ratio
             for (RatioDTO ratio : ratios) {
-                ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
+                ValeurRatio valeurRatio = valeurRatioRepository.findByDemandeScoring_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
                     params.put("cRatioLiquidite", valeurRatio.getClasse()+"");
                     params.put("rRatioLiquidite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
@@ -214,7 +214,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
             RapportFile rapport = new RapportFile();
             rapport.setName(filename);
-            rapport.setContent(is.readAllBytes());
+           // rapport.setContent(is.readAllBytes());
             
             DemandeScoringDTO demandeEnCoursDTO = demandeScoringService.getDemandeBystatus(id, Constante.ETAT_DEMANDE_EN_COURS);
             if(demandeEnCoursDTO.getRapportGenere()==false){

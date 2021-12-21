@@ -1,5 +1,6 @@
 package com.scoring.repository;
 
+import com.scoring.models.DemandeScoring;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Parametre;
 import com.scoring.models.ScoreEntrepriseParParametre;
@@ -13,10 +14,10 @@ import java.util.Optional;
 @Repository
 public interface ScoreEntrepriseParParametreRepository extends JpaRepository<ScoreEntrepriseParParametre, Long> {
 
-    Optional<ScoreEntrepriseParParametre> findByEntrepriseAndParametre(Entreprise entreprise, Parametre parametre);
+    Optional<ScoreEntrepriseParParametre> findByDemandeScoringAndParametre(DemandeScoring demande, Parametre parametre);
 
-    List<ScoreEntrepriseParParametre> findByEntreprise(Entreprise entreprise);
+    List<ScoreEntrepriseParParametre> findByDemandeScoring(DemandeScoring demande);
 
-    @Query("SELECT s FROM ScoreEntrepriseParParametre s WHERE s.entreprise.id = :entreprise ORDER BY s.parametre.id ASC ")
-    List<ScoreEntrepriseParParametre> findByEntrepriseByOrderByParametreAsc(Long entreprise);
+    @Query("SELECT s FROM ScoreEntrepriseParParametre s WHERE s.demandeScoring.id = :idDemande ORDER BY s.parametre.id ASC ")
+    List<ScoreEntrepriseParParametre> findByDemandeByOrderByParametreAsc(Long idDemande);
 }

@@ -17,7 +17,7 @@ public class ScoreEntrepriseParParametre {
 
     @ManyToOne
 	@JoinColumn(name = "id_demande")
-	private DemandeScoring  demande_scoring;
+	private DemandeScoring  demandeScoring;
 
     @ManyToOne
     @JoinColumn(name = "parametre_id")

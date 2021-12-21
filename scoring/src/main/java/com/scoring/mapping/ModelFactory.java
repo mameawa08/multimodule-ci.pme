@@ -86,7 +86,7 @@ public class ModelFactory {
 		ReponseParPME model = new ReponseParPME();
 		model.setId(reponseDTO.getId());
 		model.setReponse_eligibilite(reponseDTO.isReponse_eligibilite());
-		model.setDemande_scoring(createDemandeScoring(reponseDTO.getDemande_scoringDTO()));
+		model.setDemandeScoring(createDemandeScoring(reponseDTO.getDemandeScoringDTO()));
 		model.setIdQuestion(reponseDTO.getIdQuestion());
 		model.setId_reponse_quali(reponseDTO.getId_reponse_quali());
 		return model;
@@ -122,7 +122,7 @@ public class ModelFactory {
 		model.setProduit_financier(indicateur.getProduit_financier());
 		model.setAnnee(indicateur.getAnnee());
 		model.setActif(indicateur.isActif());
-		model.setDemande_scoring(createDemandeScoring(indicateur.getDemande_scoringDTO()));
+		model.setDemandeScoring(createDemandeScoring(indicateur.getDemandeScoringDTO()));
 
 		return model;
 	}
@@ -158,7 +158,7 @@ public class ModelFactory {
 		valeurRatio.setIdRatio(valeurRatioDTO.getIdRatio());
 		valeurRatio.setValeur(valeurRatioDTO.getValeur());
 		valeurRatio.setClasse(valeurRatioDTO.getClasse());
-		valeurRatio.setDemande_scoring(createDemandeScoring(valeurRatioDTO.getDemandeScoringDTO()));
+		valeurRatio.setDemandeScoring(createDemandeScoring(valeurRatioDTO.getDemandeScoringDTO()));
 
 		return valeurRatio;
 	}
@@ -177,7 +177,7 @@ public class ModelFactory {
 		score.setId(scoreDTO.getId());
 		score.setScore_final(scoreDTO.getScore_final());
 		score.setScore_financier(scoreDTO.getScore_financier());
-		score.setDemande_scoring(createDemandeScoring(scoreDTO.getDemandeScoringDTO()));
+		score.setDemandeScoring(createDemandeScoring(scoreDTO.getDemandeScoringDTO()));
 
 		return score;
 	}
@@ -191,7 +191,7 @@ public class ModelFactory {
 
 		ScoreEntrepriseParParametre model = new ScoreEntrepriseParParametre();
 		model.setId(score.getId());
-		model.setDemande_scoring(createDemandeScoring(score.getDemandeScoringDTO()));
+		model.setDemandeScoring(createDemandeScoring(score.getDemandeScoringDTO()));
 		model.setParametre(createParametre(score.getParametre()));
 		model.setScore(score.getScore());
 

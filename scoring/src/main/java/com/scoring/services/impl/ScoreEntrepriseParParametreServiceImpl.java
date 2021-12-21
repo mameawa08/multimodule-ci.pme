@@ -37,7 +37,7 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
     @Override
     public List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long entrepriseId) throws ScoreEntrepriseParParametreException {
         Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: entreprise "+entrepriseId+" not found."));
-        List<ScoreEntrepriseParParametre> scores = scoreEntrepriseParParametreRepository.findByEntrepriseByOrderByParametreAsc(entreprise.getId());
+        List<ScoreEntrepriseParParametre> scores = scoreEntrepriseParParametreRepository.findByDemandeByOrderByParametreAsc(entreprise.getId());
 
         return dtoFactory.createListScoreEntrepriseParParametre(scores);
     }
@@ -46,7 +46,7 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
     public ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametre(Long entrepriseId, Long parametreId) throws ScoreEntrepriseParParametreException {
         Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: entreprise "+entrepriseId+" not found."));
         Parametre parametre = parametreRepository.findById(parametreId).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: parametre "+parametreId+" not found."));
-        ScoreEntrepriseParParametre score = scoreEntrepriseParParametreRepository.findByEntrepriseAndParametre(entreprise, parametre).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: not found."));;
+        ScoreEntrepriseParParametre score = null/*scoreEntrepriseParParametreRepository.findByDemandeScoringAndParametre(entreprise, parametre).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: not found."))*/;
 
         return dtoFactory.createScoreEntrepriseParParametre(score);
     }
@@ -57,7 +57,7 @@ public class ScoreEntrepriseParParametreServiceImpl implements IScoreEntrepriseP
     public ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametreOrNull(Long entrepriseId, Long parametreId) throws ScoreEntrepriseParParametreException {
         Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: entreprise "+entrepriseId+" not found."));
         Parametre parametre = parametreRepository.findById(parametreId).orElseThrow(() -> new ScoreEntrepriseParParametreException("ScoreEntrepriseParParametre :: parametre "+parametreId+" not found."));
-        ScoreEntrepriseParParametre score = scoreEntrepriseParParametreRepository.findByEntrepriseAndParametre(entreprise, parametre).orElse(null);
+        ScoreEntrepriseParParametre score = null/*scoreEntrepriseParParametreRepository.findByEntrepriseAndParametre(entreprise, parametre).orElse(null)*/;
 
         return dtoFactory.createScoreEntrepriseParParametre(score);
     }

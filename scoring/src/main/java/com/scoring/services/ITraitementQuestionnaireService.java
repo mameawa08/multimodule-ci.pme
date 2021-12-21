@@ -13,7 +13,7 @@ public interface ITraitementQuestionnaireService {
 
 	boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception;
 
-	List<ReponseParPMEDTO> getListeRepQuestEli(Long idEntreprise) throws Exception;
+	List<ReponseParPMEDTO> getListeRepQuestEli(Long idDemande) throws Exception;
 
     boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException;
 

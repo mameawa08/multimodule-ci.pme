@@ -43,7 +43,7 @@ public class ValeurRatio implements Serializable {
 
     @ManyToOne
 	@JoinColumn(name = "id_demande")
-	private DemandeScoring  demande_scoring;
+	private DemandeScoring  demandeScoring;
     
     @Column
 	private Long idRatio;

@@ -31,10 +31,10 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
-	@GetMapping("/liste-reponses/{idEntreprise}")
-	public ResponseEntity<?> getListeReponseQuestEli(@PathVariable Long idEntreprise) {
+	@GetMapping("/liste-reponses/{idDemande}")
+	public ResponseEntity<?> getListeReponseQuestEli(@PathVariable Long idDemande) {
 		try {
-			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeRepQuestEli(idEntreprise);
+			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeRepQuestEli(idDemande);
 			return ResponseEntity.ok(listeReponses);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

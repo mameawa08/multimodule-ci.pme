@@ -11,5 +11,7 @@ public class QuestionnaireEliPayload {
 
 	private Long idEntreprise;
 	
+	private Long idDemande;
+	
 	List<ReponseParPMEPayload> listReponse;
 }

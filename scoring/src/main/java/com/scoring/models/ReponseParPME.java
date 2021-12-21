@@ -39,7 +39,7 @@ public class ReponseParPME implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_demande")
-	private DemandeScoring  demande_scoring;
+	private DemandeScoring  demandeScoring;
 	
 	@Column(name = "id_question")
 	private Long  idQuestion;

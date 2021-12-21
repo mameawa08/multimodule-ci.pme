@@ -15,7 +15,7 @@ public class ReponseParPMEDTO {
 
 	private boolean reponse_eligibilite;
 	
-	private DemandeScoringDTO  demande_scoringDTO;
+	private DemandeScoringDTO  demandeScoringDTO;
 	
 	private Long  idQuestion;
 	

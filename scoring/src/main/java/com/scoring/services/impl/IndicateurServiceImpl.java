@@ -73,7 +73,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	@Override
 	public List<IndicateurDTO> getIndicateursByEntreprise(Long id) throws IndicateurException{
 		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" not found."));
-		List<Indicateur> indicateurs = indicateurRepository.findByEntreprise(entreprise);
+		List<Indicateur> indicateurs = null/*indicateurRepository.findByEntreprise(entreprise)*/;
 		return dtoFactory.createListIndicateur(indicateurs);
 	}
 
@@ -164,7 +164,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
 			DemandeScoringDTO demandeScoringDTO = demandeScoringService.getDemandeBystatus(entreprise.getId(), Constante.ETAT_DEMANDE_BROUILLON);
-			indicateur.setDemande_scoringDTO(demandeScoringDTO);
+			indicateur.setDemandeScoringDTO(demandeScoringDTO);
 
 			Indicateur model = modelFactory.createIndicateur(indicateur);
 
@@ -202,14 +202,14 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	
 	@Override
 	public IndicateurDTO getLastIndicateur(Long idEntreprise) throws IndicateurException{
-		IndicateurDTO indicateurDTO = dtoFactory.createIndicateur(indicateurRepository.findLastIndicateurByEntreprise(idEntreprise));
+		IndicateurDTO indicateurDTO = dtoFactory.createIndicateur(indicateurRepository.findLastIndicateurByDemande(idEntreprise));
 		return indicateurDTO;
 	}
 
 	@Override
 	public IndicateurDTO getIndicateursByEntrepriseAndAnnee(Long id, int annee) throws IndicateurException {
 		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" not found."));
-		Indicateur indicateur = indicateurRepository.findByEntrepriseAndAnnee(entreprise, annee).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" pour annee "+annee+" not found."));
+		Indicateur indicateur = null/*indicateurRepository.findByDemandeAndAnnee(entreprise, annee).orElseThrow(() -> new IndicateurException("Indicateur :: Entreprise "+id+" pour annee "+annee+" not found."))*/;
 		return dtoFactory.createIndicateur(indicateur);
 	}
 

@@ -143,7 +143,7 @@ public class DTOFactory {
 		dto.setProduit_financier(indicateur.getProduit_financier());
 		dto.setAnnee(indicateur.getAnnee());
 		dto.setActif(indicateur.isActif());
-		dto.setDemande_scoringDTO(createDemandeScoring(indicateur.getDemande_scoring()));
+		dto.setDemandeScoringDTO(createDemandeScoring(indicateur.getDemandeScoring()));
 
 		return dto;
 	}
@@ -192,7 +192,7 @@ public class DTOFactory {
 		ReponseParPMEDTO dto = new ReponseParPMEDTO();
 		dto.setId(reponse.getId());
 		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
-		dto.setDemande_scoringDTO(createDemandeScoring(reponse.getDemande_scoring()));
+		dto.setDemandeScoringDTO(createDemandeScoring(reponse.getDemandeScoring()));
 		dto.setIdQuestion(reponse.getIdQuestion());
 		dto.setId_reponse_quali(reponse.getId_reponse_quali());
 		return dto;
@@ -243,7 +243,7 @@ public class DTOFactory {
 		dto.setIdRatio(valeurRatio.getIdRatio());
 		dto.setValeur(valeurRatio.getValeur());
 		dto.setClasse(valeurRatio.getClasse());
-		dto.setDemandeScoringDTO(createDemandeScoring(valeurRatio.getDemande_scoring()));
+		dto.setDemandeScoringDTO(createDemandeScoring(valeurRatio.getDemandeScoring()));
 		
 		return dto;
 	}
@@ -263,7 +263,7 @@ public class DTOFactory {
 		dto.setId(score.getId());
 		dto.setScore_final(score.getScore_final());
 		dto.setScore_financier(score.getScore_financier());
-		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemande_scoring()));
+		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemandeScoring()));
 		
 		return dto;
 	}
@@ -281,7 +281,7 @@ public class DTOFactory {
 
 		ScoreEntrepriseParParametreDTO dto = new ScoreEntrepriseParParametreDTO();
 		dto.setId(score.getId());
-		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemande_scoring()));
+		dto.setDemandeScoringDTO(createDemandeScoring(score.getDemandeScoring()));
 		dto.setParametre(createParametre(score.getParametre()));
 		dto.setScore(score.getScore());
 
