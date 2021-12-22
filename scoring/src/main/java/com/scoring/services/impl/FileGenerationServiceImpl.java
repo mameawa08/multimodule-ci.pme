@@ -218,7 +218,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
            // rapport.setContent(is.readAllBytes());
             
             DemandeScoringDTO demandeEnCoursDTO = demandeScoringService.getDemandeBystatus(id, Constante.ETAT_DEMANDE_EN_COURS);
-            if(demandeEnCoursDTO.getRapportGenere()==false){
+            if(demandeEnCoursDTO!=null && demandeEnCoursDTO.getRapportGenere()==false){
             	demandeEnCoursDTO.setRapportGenere(true);
             	demandeScoringService.validerDemandeProvisoire(demandeEnCoursDTO.getId());
             }
