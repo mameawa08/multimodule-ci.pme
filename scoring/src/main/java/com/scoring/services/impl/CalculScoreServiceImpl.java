@@ -154,9 +154,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 	
 	@Override
-	public List<ValeurRatioDTO> calculRatios(Long idEntreprise) throws Exception {
+	public List<ValeurRatioDTO> calculRatios(Long idDemande) throws Exception {
 		List<ValeurRatioDTO> listValeurRatio = new ArrayList<ValeurRatioDTO>();
-		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByDemande(idEntreprise);
+		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByDemande(idDemande);
 		if(listValeur!=null && !listValeur.isEmpty()){
 			for(ValeurRatio val : listValeur){
 				ValeurRatioDTO dto = dtoFactory.createValeurRatio(val);
@@ -168,14 +168,13 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			//listValeurRatio = dtoFactory.createListValeurRatio(listValeur);
 		}else{
 			List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
-			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idEntreprise);
-			EntrepriseDTO entrepriseDTO = null;
+			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idDemande);
 			DemandeScoringDTO demande = null;
-			if(idEntreprise==null)
-				throw new IndicateurException("L'id de l'entreprise est obligatoire pour ce calcul !");
+			if(idDemande==null)
+				throw new IndicateurException("L'id de la demande est obligatoire pour ce calcul !");
 			else{
-				entrepriseDTO = dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found.")));
-				demande = demandeScoringService.getDemandeBystatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS);
+				//entrepriseDTO = dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found.")));
+				demande = demandeScoringService.getDemande(idDemande);
 			}
 			for(int i=1; i<=8;i++){
 				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
@@ -212,15 +211,15 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 	
 	@Override
-	public ScoresAndRatioDTO getScoreFinAndRatios(Long idEntreprise) throws Exception {
+	public ScoresAndRatioDTO getScoreFinAndRatios(Long idDemande) throws Exception {
 		ScoresAndRatioDTO scoreAndratios = new ScoresAndRatioDTO();
-		scoreAndratios.setListValeurRatioDTO(calculRatios(idEntreprise));
+		scoreAndratios.setListValeurRatioDTO(calculRatios(idDemande));
 		ScoresParPMEDTO scoreDTO = new ScoresParPMEDTO();
-		ScoresParPME scoreparPME =  scoreParPMERepository.findScoreByDemande(idEntreprise);
+		ScoresParPME scoreparPME =  scoreParPMERepository.findScoreByDemande(idDemande);
 		if(scoreparPME!=null && scoreparPME.getScore_financier()!=0)
 			scoreDTO=dtoFactory.createScoreParPME(scoreparPME);
 		else{
-			scoreDTO.setDemandeScoringDTO(demandeScoringService.getDemandeBystatus(idEntreprise, Constante.ETAT_DEMANDE_EN_COURS));
+			scoreDTO.setDemandeScoringDTO(demandeScoringService.getDemande(idDemande));
 			double score_financier=0.0;
 			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
@@ -237,9 +236,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Override
 	public List<ScoreEntrepriseParParametreDTO> calculScoreParametreQualitatif(Long id) throws CalculScoreException {
-		Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
-		DemandeScoring demandeScoring = demandeScoringRepository.findDemandeByStatus(entreprise.getId(), Constante.ETAT_DEMANDE_EN_COURS);
-		List<ReponseParPME> reponseParPMEs = null/*reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId())*/;
+		//Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+		DemandeScoring demandeScoring = demandeScoringRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: demande "+id+" not found."));
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByDemande(demandeScoring.getId());
 
 		Map<Long, Integer> maps = calculTotalScoreForEachParametre(reponseParPMEs);
 		List<ScoreEntrepriseParParametreDTO> scores = new ArrayList<>();
@@ -251,7 +250,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 			try {
 
-				score = scoreEntrepriseParParametreService.getScoreEntrepriseParParametreOrNull(entreprise.getId(), parametre.getId());
+				score = scoreEntrepriseParParametreService.getScoreDemandeParParametreOrNull(demandeScoring.getId(), parametre.getId());
 				if (score == null){
 					score = new ScoreEntrepriseParParametreDTO();
 				}
@@ -272,9 +271,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	@Override
-	public ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long idEntreprise, Long parametreId) throws CalculScoreException {
-		Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+idEntreprise+" not found."));
-		List<ReponseParPME> reponseParPMEs = null/*reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId())*/;
+	public ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long idDemande, Long parametreId) throws CalculScoreException {
+		DemandeScoring demande = demandeScoringRepository.findById(idDemande).orElseThrow(()-> new CalculScoreException("Calcul score :: demande "+idDemande+" not found."));
+		List<ReponseParPME> reponseParPMEs = reponseParPMERepository.findReponseParPMEQualitatifByDemande(demande.getId());
 		List<ReponseParPME> reponses = new ArrayList<>();
 
 		for (ReponseParPME reponse: reponseParPMEs){
@@ -284,13 +283,13 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			}
 		}
 
-		return calculScoreForParametre(reponses, parametreId, idEntreprise);
+		return calculScoreForParametre(reponses, parametreId, idDemande);
 	}
 
 	@Override
-	public List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long id) throws CalculScoreException{
+	public List<ScoreEntrepriseParParametreDTO> getScoreDemandeParParametre(Long id) throws CalculScoreException{
 		try {
-			List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(id);
+			List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreDemandeParParametre(id);
 			return scores;
 		} catch (ScoreEntrepriseParParametreException e) {
 			throw new CalculScoreException("Calcul score :: "+e.getMessage());
@@ -298,9 +297,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	}
 
 	@Override
-	public ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametre(Long entrepriseId, Long parametreId) throws CalculScoreException{
+	public ScoreEntrepriseParParametreDTO getScoreDemandeParParametre(Long idDemande, Long parametreId) throws CalculScoreException{
 		try {
-			ScoreEntrepriseParParametreDTO scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(entrepriseId, parametreId);
+			ScoreEntrepriseParParametreDTO scores = scoreEntrepriseParParametreService.getScoreDemandeParParametre(idDemande, parametreId);
 			return scores;
 		} catch (ScoreEntrepriseParParametreException e) {
 			throw new CalculScoreException("Calcul score :: "+e.getMessage());
@@ -309,11 +308,11 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 	@Override
 	public ScoresParPMEDTO calculScoreFinale(Long id) throws CalculScoreException{
-        Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
+        DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: demande "+id+" not found."));
         try {
-            List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreEntrepriseParParametre(id);
+            List<ScoreEntrepriseParParametreDTO> scores = scoreEntrepriseParParametreService.getScoreDemandeParParametre(id);
             List<PonderationDTO> ponderations = referentielService.getPonderations();
-            ScoresParPME scoresParPME = null;/*scoreParPMERepository.findByEntreprise(entreprise).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."))*/;
+            ScoresParPME scoresParPME = scoreParPMERepository.findByDemandeScoring(demande).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."));
 
             double value = 0;
             for(ScoreEntrepriseParParametreDTO score : scores){
@@ -336,8 +335,8 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
     @Override
     public ScoresParPMEDTO getScoreFinal(Long id) throws CalculScoreException{
-        Entreprise entreprise = entrepriseRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: entreprise "+id+" not found."));
-        ScoresParPME scoresParPME = null;/*scoreParPMERepository.findByEntreprise(entreprise).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."))*/;
+        DemandeScoring demandeScoring = demandeScoringRepository.findById(id).orElseThrow(()-> new CalculScoreException("Calcul score :: demande "+id+" not found."));
+        ScoresParPME scoresParPME = scoreParPMERepository.findByDemandeScoring(demandeScoring).orElseThrow(() -> new CalculScoreException("Calcul score :: vous devez d'abord calculer le score financier."));
         return dtoFactory.createScoreParPME(scoresParPME);
     }
 
@@ -360,10 +359,10 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		return maps;
 	}
 
-	private ScoreEntrepriseParParametreDTO calculScoreForParametre(List<ReponseParPME> reponses, Long parametreId, Long entrepriseId) throws CalculScoreException{
+	private ScoreEntrepriseParParametreDTO calculScoreForParametre(List<ReponseParPME> reponses, Long parametreId, Long idDemande) throws CalculScoreException{
 		try {
-			EntrepriseDTO entreprise = entrepriseService.getEntreprise(entrepriseId);
-			DemandeScoringDTO demandeDTO = demandeScoringService.getDemandeBystatus(entrepriseId, Constante.ETAT_DEMANDE_EN_COURS);
+			//EntrepriseDTO entreprise = entrepriseService.getEntreprise(entrepriseId);
+			DemandeScoringDTO demandeDTO = demandeScoringService.getDemande(idDemande);
  			ParametreDTO parametre = referentielService.getParamtre(parametreId);
 			double total = 0;
 			for (ReponseParPME reponse : reponses){
@@ -374,7 +373,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 				}
 			}
 			total /= parametre.getNbre_question();
-			ScoreEntrepriseParParametreDTO scoreEntrepriseParParametre = scoreEntrepriseParParametreService.getScoreEntrepriseParParametreOrNull(entrepriseId, parametreId);
+			ScoreEntrepriseParParametreDTO scoreEntrepriseParParametre = scoreEntrepriseParParametreService.getScoreDemandeParParametreOrNull(idDemande, parametreId);
 			if (scoreEntrepriseParParametre == null){
 				scoreEntrepriseParParametre = new ScoreEntrepriseParParametreDTO();
 			}
@@ -384,7 +383,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 			scoreEntrepriseParParametre = scoreEntrepriseParParametreService.saveScore(scoreEntrepriseParParametre);
 
-			calculScoreFinale(entrepriseId);
+			calculScoreFinale(idDemande);
 
 			return scoreEntrepriseParParametre;
 

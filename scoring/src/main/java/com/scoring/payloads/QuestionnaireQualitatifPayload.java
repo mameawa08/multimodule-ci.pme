@@ -11,5 +11,7 @@ public class QuestionnaireQualitatifPayload {
 
 	private Long idEntreprise;
 	
+	private Long idDemande;
+	
 	List<ReponseQualitativePayload> listReponse;
 }

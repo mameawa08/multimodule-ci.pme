@@ -129,15 +129,15 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		try {
 			Entreprise entreprise = entrepriseRepository.findById(payload.getIdEntreprise()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+payload.getIdEntreprise()+" not found."));;
 			EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(entreprise);
-
+			DemandeScoringDTO demande = demandeScoringService.getDemande(payload.getIdDemande());
 			List<ReponseQualitativePayload> reps = payload.getListReponse();
 
 			if (reps != null && reps.size() > 0){
-				saveReponses(payload.getIdEntreprise(), reps);
+				saveReponses(payload.getIdDemande(), reps);
 
-				calculScoreService.calculScoreParametreQualitatif(entreprise.getId());
+				calculScoreService.calculScoreParametreQualitatif(demande.getId());
 
-				calculScoreService.calculScoreFinale(entreprise.getId());
+				calculScoreService.calculScoreFinale(demande.getId());
 			}
 
 		} catch (Exception e) {
@@ -176,9 +176,9 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			List<ReponseQualitativePayload> reps = payload.getListReponse();
 
 			if (reps != null && reps.size() > 0){
-				saveReponses(payload.getIdEntreprise(), reps);
+				saveReponses(payload.getIdDemande(), reps);
 
-				ScoreEntrepriseParParametreDTO scoreEntrepriseParParametreDTO = calculScoreService.calculScoreParametreQualitatif(payload.getIdEntreprise(), idParametre);
+				ScoreEntrepriseParParametreDTO scoreEntrepriseParParametreDTO = calculScoreService.calculScoreParametreQualitatif(payload.getIdDemande(), idParametre);
 
 				return  scoreEntrepriseParParametreDTO;
 
@@ -191,17 +191,18 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	}
 
 	@Override
-	public List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idEntreprise) throws TraitementQuestionnaireException {
-		Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+idEntreprise+" not found."));;
-		List<ReponseParPME> reponses = null/*reponseParPMERepository.findReponseParPMEQualitatifByEntreprise(entreprise.getId())*/;
+	public List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idDemande) throws TraitementQuestionnaireException {
+		//Entreprise entreprise = entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+idEntreprise+" not found."));;
+		DemandeScoring demandeScoring = demandeRepository.findById(idDemande).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaire :: demande "+idDemande+" not found."));
+		List<ReponseParPME> reponses = reponseParPMERepository.findReponseParPMEQualitatifByDemande(demandeScoring.getId());
 		return dtoFactory.createListReponseParPME(reponses);
 	}
 
 
 //	Private methods
-	private void saveReponses(Long entrepriseId, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
-		Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+entrepriseId+" not found."));;
-		DemandeScoring demande = demandeRepository.findDemandeByStatus(entrepriseId, Constante.ETAT_DEMANDE_EN_COURS);
+	private void saveReponses(Long idDemande, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
+		//Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+entrepriseId+" not found."));;
+		DemandeScoring demande = demandeRepository.findById(idDemande).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaire :: demande "+idDemande+" not found."));
 		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
 
 		for (ReponseQualitativePayload rep : reps) {
@@ -215,7 +216,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 	//					Existing reponse par pme
 			ReponseParPMEDTO reponseParPMEDTO;
-			ReponseParPME reponseParPME = null/*reponseParPMERepository.findByEntrepriseAndIdQuestion(entreprise, question.getId()).orElse(null)*/;
+			ReponseParPME reponseParPME = reponseParPMERepository.findByDemandeScoringAndIdQuestion(demande, question.getId()).orElse(null);
 			reponseParPMEDTO = dtoFactory.createReponseParPME(reponseParPME);
 	//					New reponse par pme dto
 			if(reponseParPME == null)

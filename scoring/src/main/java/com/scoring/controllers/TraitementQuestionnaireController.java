@@ -61,10 +61,10 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
-	@GetMapping("/liste-reponses/{idEntreprise}/qualitatif")
-	public ResponseEntity<?> getListeReponseQuestionQualitatif(@PathVariable Long idEntreprise) {
+	@GetMapping("/liste-reponses/{idDemande}/qualitatif")
+	public ResponseEntity<?> getListeReponseQuestionQualitatif(@PathVariable Long idDemande) {
 		try {
-			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeReponseQuestionQUalitatif(idEntreprise);
+			List<ReponseParPMEDTO> listeReponses = traitementQuestionnaireService.getListeReponseQuestionQUalitatif(idDemande);
 			return ResponseEntity.ok(listeReponses);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

@@ -117,4 +117,24 @@ public class IndicateurController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @GetMapping("/{idDemande}/demande")
+	public ResponseEntity<?> getIndicateurs(@PathVariable Long id) {
+		try {
+			List<IndicateurDTO> indicateurs = indicateurService.getIndicateursByDemande(id);
+			return ResponseEntity.ok(indicateurs);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+    
+    @GetMapping("/{idDemande}/demande/{annee}")
+	public ResponseEntity<?> getIndicateurByAnnee(@PathVariable Long id, @PathVariable int annee) {
+		try {
+			IndicateurDTO indicateur = indicateurService.getIndicateursByDemandeAndAnnee(id, annee);
+			return ResponseEntity.ok(indicateur);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }
