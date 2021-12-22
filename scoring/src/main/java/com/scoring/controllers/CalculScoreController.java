@@ -23,48 +23,48 @@ public class CalculScoreController {
 	@Autowired
 	private ICalculScoreService calculScoreService;
 
-	@GetMapping("/financier/{idEntreprise}")
-	public ResponseEntity<?> getScoreFinAndRatiosCalcules(@PathVariable Long idEntreprise) {
+	@GetMapping("/financier/{idDemande}")
+	public ResponseEntity<?> getScoreFinAndRatiosCalcules(@PathVariable Long idDemande) {
 		try {
-			ScoresAndRatioDTO scoreAndRatios = calculScoreService.getScoreFinAndRatios(idEntreprise);
+			ScoresAndRatioDTO scoreAndRatios = calculScoreService.getScoreFinAndRatios(idDemande);
 			return ResponseEntity.ok(scoreAndRatios);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
-	@GetMapping("/qualitatif/{idEntreprise}/calcul")
-	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idEntreprise) {
+	@GetMapping("/qualitatif/{idDemande}/calcul")
+	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idDemande) {
 		try {
-			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.calculScoreParametreQualitatif(idEntreprise);
+			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.calculScoreParametreQualitatif(idDemande);
 			return ResponseEntity.ok(scores);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@GetMapping("/qualitatif/{idEntreprise}/calcul/{parametreId}")
-	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idEntreprise, @PathVariable Long parametreId) {
+	@GetMapping("/qualitatif/{idDemande}/calcul/{parametreId}")
+	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idDemande, @PathVariable Long parametreId) {
 		try {
-			ScoreEntrepriseParParametreDTO score = calculScoreService.calculScoreParametreQualitatif(idEntreprise, parametreId);
+			ScoreEntrepriseParParametreDTO score = calculScoreService.calculScoreParametreQualitatif(idDemande, parametreId);
 			return ResponseEntity.ok(score);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
-	@GetMapping("/qualitatif/{idEntreprise}")
-	public ResponseEntity<?> getScoreQualitatif(@PathVariable Long idEntreprise) {
+	@GetMapping("/qualitatif/{idDemande}")
+	public ResponseEntity<?> getScoreQualitatif(@PathVariable Long idDemande) {
 		try {
-			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(idEntreprise);
+			List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreDemandeParParametre(idDemande);
 			return ResponseEntity.ok(scores);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@GetMapping("/qualitatif/{idEntreprise}/parametres/{parametreId}")
-	public ResponseEntity<?> getScoreParametreQualitatif(@PathVariable Long idEntreprise, @PathVariable Long parametreId) {
+	@GetMapping("/qualitatif/{idDemande}/parametres/{parametreId}")
+	public ResponseEntity<?> getScoreParametreQualitatif(@PathVariable Long idDemande, @PathVariable Long parametreId) {
 		try {
-			ScoreEntrepriseParParametreDTO scores = calculScoreService.getScoreEntrepriseParParametre(idEntreprise, parametreId);
+			ScoreEntrepriseParParametreDTO scores = calculScoreService.getScoreDemandeParParametre(idDemande, parametreId);
 			return ResponseEntity.ok(scores);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

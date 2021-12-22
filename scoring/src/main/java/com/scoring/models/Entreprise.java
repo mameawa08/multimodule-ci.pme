@@ -29,13 +29,6 @@ public class Entreprise {
 	private String 		logo;
 	private boolean 	eligible;
 	private boolean 	actif;
-	@Column(columnDefinition = "boolean default false")
-	private boolean 	repEli=false;
-	@Column(columnDefinition = "boolean default false")
-	private boolean 	repQuali=false;
-
-	@Column(columnDefinition = "boolean default false")
-	private boolean 	indicateurAjoute =false;
 	
 	@OneToOne(mappedBy = "entreprise")
 	private Dirigeant dirigeant;

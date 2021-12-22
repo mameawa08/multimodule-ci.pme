@@ -3,6 +3,7 @@ package com.scoring.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.scoring.models.DemandeScoring;
 import com.scoring.models.Entreprise;
 import com.scoring.models.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,14 +16,14 @@ import com.scoring.models.ReponseParPME;
 @Repository
 public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Long> {
 	
-	@Query("SELECT DISTINCT r FROM ReponseParPME r WHERE r.entreprise IS NOT NULL AND r.entreprise.id=:idEntreprise "
+	@Query("SELECT DISTINCT r FROM ReponseParPME r WHERE r.demandeScoring IS NOT NULL AND r.demandeScoring.id=:idDemande "
 			+ "AND r.id_reponse_quali IS NULL ORDER BY r.id ASC")
-	List<ReponseParPME> findRepQuestEliByEntreprise(@Param("idEntreprise") Long idEntreprise);
+	List<ReponseParPME> findRepQuestEliByDemande(@Param("idDemande") Long idDemande);
 
-	List<ReponseParPME> findByEntreprise(Entreprise entreprise);
+	List<ReponseParPME> findByDemandeScoring(DemandeScoring demande);
 
-    Optional<ReponseParPME> findByEntrepriseAndIdQuestion(Entreprise entreprise, Long question);
+    Optional<ReponseParPME> findByDemandeScoringAndIdQuestion(DemandeScoring demande, Long question);
 
-    @Query("SELECT r FROM ReponseParPME r WHERE r.entreprise.id = :entreprise AND r.id_reponse_quali IS NOT NULL")
-    List<ReponseParPME> findReponseParPMEQualitatifByEntreprise(Long entreprise);
+    @Query("SELECT r FROM ReponseParPME r WHERE r.demandeScoring.id = :idDemande AND r.id_reponse_quali IS NOT NULL")
+    List<ReponseParPME> findReponseParPMEQualitatifByDemande(Long idDemande);
 }

@@ -18,7 +18,7 @@ import com.scoring.services.IDemandeScoring;
 
 
 @RestController
-@RequestMapping(value = "/api/demandes/scoring")
+@RequestMapping(value = "/api/demandes")
 public class DemandeScoringController {
 	
 	@Autowired
@@ -101,6 +101,29 @@ public class DemandeScoringController {
 			boolean rs = demandeScoringService.cloturerDemande(id);
 			return ResponseEntity.ok(rs);
 		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+
+	@GetMapping("/entreprise/{idEntreprise}")
+	public ResponseEntity getDemandeNonClotureParEntreprise(@PathVariable Long idEntreprise){
+		try {
+			DemandeScoringDTO demande = demandeScoringService.getDemandeNonClotureParEntreprise(idEntreprise);
+			return ResponseEntity.ok(demande);
+		}
+		catch (DemandeException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/entreprise/{idEntreprise}/statut/{idStatut}")
+	public ResponseEntity getDemandeParPMEAndStatut(@PathVariable Long idEntreprise, @PathVariable int idStatut){
+		try {
+			DemandeScoringDTO demande = demandeScoringService.getDemandeBystatus(idEntreprise, idStatut);
+			return ResponseEntity.ok(demande);
+		}
+		catch (DemandeException e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

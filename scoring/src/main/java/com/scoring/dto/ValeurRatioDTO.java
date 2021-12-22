@@ -19,7 +19,7 @@ public class ValeurRatioDTO {
 
     private int classe;
     
-    private EntrepriseDTO entrepriseDTO;
+    private DemandeScoringDTO demandeScoringDTO;
    
 	private Long idRatio;
 	

@@ -1,5 +1,6 @@
 package com.scoring.repository;
 
+import com.scoring.models.DemandeScoring;
 import com.scoring.models.Entreprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface ScoreParPMERepository extends JpaRepository<ScoresParPME, Long> {
 
-	@Query("SELECT DISTINCT s FROM ScoresParPME s WHERE s.entreprise IS NOT NULL AND s.entreprise.id=:idEntreprise")
-	ScoresParPME findScoreByEntreprise(@Param("idEntreprise") Long idEntreprise);
+	@Query("SELECT DISTINCT s FROM ScoresParPME s WHERE s.demandeScoring IS NOT NULL AND s.demandeScoring.id=:idDemande")
+	ScoresParPME findScoreByDemande(@Param("idDemande") Long idDemande);
 
-	Optional<ScoresParPME> findByEntreprise(Entreprise entreprise);
+	Optional<ScoresParPME> findByDemandeScoring(DemandeScoring demande);
     
 }

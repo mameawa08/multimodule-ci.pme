@@ -30,4 +30,5 @@ public class IndicateurPayload {
 	private double rsImpot;
 	private int annee;
 	private int entreprise;
+	private Long idDemande;
 }

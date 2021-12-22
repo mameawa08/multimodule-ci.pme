@@ -23,11 +23,11 @@ public interface IDemandeScoring {
 
 	boolean validerDemandeProvisoire(Long id) throws DemandeException;
 
-	DemandeScoringDTO getDemandeEnCours(Long idEntreprise) throws DemandeException;
-
-	DemandeScoringDTO getDemandeProvisoire(Long idEntreprise) throws DemandeException;
-
 	boolean cloturerDemande(Long id) throws DemandeException;
+
+	DemandeScoringDTO getDemandeBystatus(Long idEntreprise, int statutDemande) throws DemandeException;
+
+	DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException;
 
     DemandeScoringDTO getDemandeOuverte(Long idEntreprise);
 }

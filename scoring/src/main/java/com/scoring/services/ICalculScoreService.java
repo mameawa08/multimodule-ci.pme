@@ -20,9 +20,9 @@ public interface ICalculScoreService {
 
     ScoreEntrepriseParParametreDTO calculScoreParametreQualitatif(Long id, Long parametreId) throws CalculScoreException;
 
-    List<ScoreEntrepriseParParametreDTO> getScoreEntrepriseParParametre(Long id) throws CalculScoreException;
+    List<ScoreEntrepriseParParametreDTO> getScoreDemandeParParametre(Long id) throws CalculScoreException;
 
-    ScoreEntrepriseParParametreDTO getScoreEntrepriseParParametre(Long entrepriseId, Long parametreId) throws CalculScoreException;
+    ScoreEntrepriseParParametreDTO getScoreDemandeParParametre(Long idDemande, Long parametreId) throws CalculScoreException;
 
     ScoresParPMEDTO calculScoreFinale(Long id) throws CalculScoreException;
 

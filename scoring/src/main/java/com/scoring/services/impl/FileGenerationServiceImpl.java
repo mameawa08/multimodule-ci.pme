@@ -72,10 +72,11 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
     @Override
     public RapportFile generateRapport(Long id, RapportPayload payload) throws FileGenerationException {
         try {
-            EntrepriseDTO entreprise = entrepriseService.getEntreprise(id);
-            DirigeantDTO directeur = dirigeantService.getDirigeantByEntreprise(id);
+        	DemandeScoringDTO demande = demandeScoringService.getDemande(id);
+            EntrepriseDTO entreprise = entrepriseService.getEntreprise(demande.getEntrepriseDTO().getId());
+            DirigeantDTO directeur = dirigeantService.getDirigeantByEntreprise(demande.getEntrepriseDTO().getId());
             List<RatioDTO> ratios = referentielService.getlisteRatios();
-            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreEntrepriseParParametre(id);
+            List<ScoreEntrepriseParParametreDTO> scores = calculScoreService.getScoreDemandeParParametre(id);
 
             ScoresParPMEDTO scoresParPMEDTO = calculScoreService.getScoreFinal(id);
 
@@ -83,7 +84,7 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
 
     //        Ratio
             for (RatioDTO ratio : ratios) {
-                ValeurRatio valeurRatio = valeurRatioRepository.findByEntreprise_IdAndIdRatio(entreprise.getId(), ratio.getId()).orElse(null);
+                ValeurRatio valeurRatio = valeurRatioRepository.findByDemandeScoring_IdAndIdRatio(demande.getId(), ratio.getId()).orElse(null);
                 if(ratio.getCode().contains(Constante.RATIO_LIQUIDITE) && valeurRatio != null){
                     params.put("cRatioLiquidite", valeurRatio.getClasse()+"");
                     params.put("rRatioLiquidite", NumberUtils.formatWithPrecisionOne(valeurRatio.getValeur()));
@@ -216,8 +217,8 @@ public class FileGenerationServiceImpl implements IFileGenerationService {
             rapport.setName(filename);
            // rapport.setContent(is.readAllBytes());
             
-            DemandeScoringDTO demandeEnCoursDTO = demandeScoringService.getDemandeEnCours(id);
-            if(demandeEnCoursDTO.getRapportGenere()==false){
+            DemandeScoringDTO demandeEnCoursDTO = demandeScoringService.getDemandeBystatus(id, Constante.ETAT_DEMANDE_EN_COURS);
+            if(demandeEnCoursDTO!=null && demandeEnCoursDTO.getRapportGenere()==false){
             	demandeEnCoursDTO.setRapportGenere(true);
             	demandeScoringService.validerDemandeProvisoire(demandeEnCoursDTO.getId());
             }

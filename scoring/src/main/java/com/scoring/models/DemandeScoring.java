@@ -58,6 +58,15 @@ public class DemandeScoring implements Serializable {
     
     @Column
     private Boolean rapportGenere;
+    
+    @Column(columnDefinition = "boolean default false")
+	private boolean 	repEli=false;
+    
+    @Column(columnDefinition = "boolean default false")
+	private boolean 	indicateurAjoute =false;
+    
+    @Column(columnDefinition = "boolean default false")
+	private boolean 	repQuali=false;
 
 
 }

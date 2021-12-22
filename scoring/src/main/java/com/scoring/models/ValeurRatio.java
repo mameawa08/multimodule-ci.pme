@@ -41,9 +41,9 @@ public class ValeurRatio implements Serializable {
     @Column
     private int classe;
 
-	@ManyToOne
-	@JoinColumn(name = "id_entreprise")
-    private Entreprise entreprise;
+    @ManyToOne
+	@JoinColumn(name = "id_demande")
+	private DemandeScoring  demandeScoring;
     
     @Column
 	private Long idRatio;

@@ -19,4 +19,7 @@ public interface DemandeScoringRepository extends JpaRepository<DemandeScoring, 
 	DemandeScoring findDemandeByStatus(@Param("idEntreprise") Long idEntreprise, @Param("status") int status);
 
     DemandeScoring findByEntreprise_IdAndStatusIsNot(Long idEntreprise, int status);
+
+    @Query("SELECT DISTINCT d FROM DemandeScoring d WHERE d.entreprise.id=:idEntreprise and d.status!=6 ")
+    DemandeScoring findDemandeNonClotureParEntreprise(@Param("idEntreprise") Long idEntreprise);
 }
