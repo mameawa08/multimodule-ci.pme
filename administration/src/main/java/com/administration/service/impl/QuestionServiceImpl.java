@@ -2,6 +2,8 @@ package com.administration.service.impl;
 
 import java.util.List;
 
+import com.administration.dto.ReponseQualitativeDTO;
+import com.administration.model.ReponseQualitative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,8 +130,13 @@ public class QuestionServiceImpl implements IQuestionService {
 				throw new Exception("La question à supprimer est nulle !");
 			}
 			Question q = questionRepository.findById(idQuestion).orElseThrow(()-> new Exception("Not found."));
-			if (q != null)
+			if (q != null){
+				List<ReponseQualitativeDTO> reponses = reponseService.getListeReponsesByQuestion(q.getId());
+				for( ReponseQualitativeDTO  reponse : reponses){
+					reponseService.deleteReponse(reponse.getId());
+				}
 				questionRepository.delete(q);
+			}
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

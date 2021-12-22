@@ -2,7 +2,9 @@ package com.administration.service.impl;
 
 import java.util.List;
 
+import com.administration.dto.QuestionDTO;
 import com.administration.exception.ParametreException;
+import com.administration.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,9 @@ public class ParametreServiceImpl implements IParametreService {
 	
 	@Autowired
 	private ModelFactory modelFactory;
+
+	@Autowired
+	private IQuestionService questionService;
 
 	@Override
 	public List<ParametreDTO> getListeParametres() {
@@ -80,12 +85,16 @@ public class ParametreServiceImpl implements IParametreService {
 				throw new Exception("Le paramètre à supprimer est nul !");
 			}
 			Parametre p = parametreRepository.findById(idParametre).orElseThrow(()-> new Exception("Not found."));
-			if (p != null)
+			if (p != null){
+				List<QuestionDTO> questions = questionService.getListeQuestionsByParametre(p.getId());
+				for (QuestionDTO question : questions){
+					questionService.deleteQuestion(question.getId());
+				}
 				parametreRepository.delete(p);
+			}
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-
 			return false;
 		}
 	}
