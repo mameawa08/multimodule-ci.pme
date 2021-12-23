@@ -119,9 +119,9 @@ public class IndicateurController {
     }
     
     @GetMapping("/{idDemande}/demande")
-	public ResponseEntity<?> getIndicateurs(@PathVariable Long id) {
+	public ResponseEntity<?> getIndicateurs(@PathVariable Long idDemande) {
 		try {
-			List<IndicateurDTO> indicateurs = indicateurService.getIndicateursByDemande(id);
+			List<IndicateurDTO> indicateurs = indicateurService.getIndicateursByDemande(idDemande);
 			return ResponseEntity.ok(indicateurs);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -129,9 +129,9 @@ public class IndicateurController {
 	}
     
     @GetMapping("/{idDemande}/demande/{annee}")
-	public ResponseEntity<?> getIndicateurByAnnee(@PathVariable Long id, @PathVariable int annee) {
+	public ResponseEntity<?> getIndicateurByAnnee(@PathVariable Long idDemande, @PathVariable int annee) {
 		try {
-			IndicateurDTO indicateur = indicateurService.getIndicateursByDemandeAndAnnee(id, annee);
+			IndicateurDTO indicateur = indicateurService.getIndicateursByDemandeAndAnnee(idDemande, annee);
 			return ResponseEntity.ok(indicateur);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

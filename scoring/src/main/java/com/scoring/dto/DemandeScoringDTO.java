@@ -25,7 +25,7 @@ public class DemandeScoringDTO {
 
     private Date dateReception;
     
-    private Boolean rapportGenere;
+    private boolean rapportGenere;
     
     private Date dateCreation;
     
