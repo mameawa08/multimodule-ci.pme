@@ -156,8 +156,11 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     public boolean cloturerDemande(Long id) throws DemandeException {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
         try{
-        	if(demande.getStatus()==Constante.ETAT_DEMANDE_PROVISOIRE)
+        	if(demande.getStatus()==Constante.ETAT_DEMANDE_PROVISOIRE){
         		demande.setStatus(Constante.ETAT_DEMANDE_CLOTURE);
+                demande.setRapportGenere(true);
+            }
+
         	demandeScoringRepository.save(demande);
         	return true;
 		}
@@ -179,4 +182,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
     	return dtoFactory.createDemandeScoring(demande);
 	}
+
+    @Override
+    public DemandeScoringDTO getDemandeLastClosed(Long idEntreprise) {
+        DemandeScoring demandeScoring = demandeScoringRepository.findFirstByEntreprise_IdOrderByDateCreationDesc(idEntreprise);
+        return dtoFactory.createDemandeScoring(demandeScoring);
+    }
 }

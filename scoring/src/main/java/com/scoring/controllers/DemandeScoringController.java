@@ -2,6 +2,10 @@ package com.scoring.controllers;
 
 import java.util.List;
 
+import com.scoring.dto.RapportFile;
+import com.scoring.exceptions.FileGenerationException;
+import com.scoring.payloads.RapportPayload;
+import com.scoring.services.IFileGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,9 @@ public class DemandeScoringController {
 	
 	@Autowired
 	private IDemandeScoring demandeScoringService;
+
+	@Autowired
+	private IFileGenerationService fileGenerationService;
 
 
 	@GetMapping("")
@@ -50,6 +57,12 @@ public class DemandeScoringController {
 	@GetMapping("/{idEntreprise}/ouverte")
 	public ResponseEntity getDemandeOuverte(@PathVariable Long idEntreprise){
 		DemandeScoringDTO demande = demandeScoringService.getDemandeOuverte(idEntreprise);
+		return ResponseEntity.ok(demande);
+	}
+
+	@GetMapping("/{idEntreprise}/last-closed")
+	public ResponseEntity getDemandeLastClosed(@PathVariable Long idEntreprise){
+		DemandeScoringDTO demande = demandeScoringService.getDemandeLastClosed(idEntreprise);
 		return ResponseEntity.ok(demande);
 	}
 
@@ -85,7 +98,7 @@ public class DemandeScoringController {
 		}
 	}
 	
-	@GetMapping("/{id}/rejet")
+	@PostMapping("/{id}/rejet")
 	public ResponseEntity rejeterDemande(@PathVariable Long id, @RequestBody DemandePayload demandePayload){
 		try {
 			boolean rs = demandeScoringService.rejeterDemande(id, demandePayload);
@@ -124,6 +137,16 @@ public class DemandeScoringController {
 			return ResponseEntity.ok(demande);
 		}
 		catch (DemandeException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PostMapping("/{id}/rapport")
+	public ResponseEntity generateReport(@PathVariable Long id, @RequestBody RapportPayload payload){
+		try {
+			RapportFile file = fileGenerationService.generateRapport(id, payload);
+			return ResponseEntity.ok(file);
+		} catch (FileGenerationException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

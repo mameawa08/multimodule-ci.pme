@@ -30,4 +30,6 @@ public interface IDemandeScoring {
 	DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException;
 
     DemandeScoringDTO getDemandeOuverte(Long idEntreprise);
+
+    DemandeScoringDTO getDemandeLastClosed(Long idEntreprise);
 }
