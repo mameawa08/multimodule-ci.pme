@@ -28,6 +28,7 @@ INSERT INTO habilitations(id, code, libelle) VALUES (19, 'CALCULER_SF', 'Calcule
 INSERT INTO habilitations(id, code, libelle) VALUES (20, 'EVALUER_PME', 'Evaluer PME via questionnaire qualitatif');
 INSERT INTO habilitations(id, code, libelle) VALUES (21, 'GEN_RAPPORT', 'Générer rapport évaluation');
 
+
 --HABILITATION PAR PROFIL
 --ADMIN FONCTIONNEL
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (1, 1);

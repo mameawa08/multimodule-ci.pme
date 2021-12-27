@@ -12,4 +12,5 @@ public interface IEntrepriseService {
 	public EntrepriseDTO getEntreprise(Long id) throws EntrepriseException;
 	public EntrepriseDTO createEntreprise(EntreprisePayload payload) throws EntrepriseException;
 	public boolean switchStatus(Long id) throws EntrepriseException;
+	List<EntrepriseDTO> getListEntreprisesAvecDemandeEnvoyee() throws EntrepriseException;
 }

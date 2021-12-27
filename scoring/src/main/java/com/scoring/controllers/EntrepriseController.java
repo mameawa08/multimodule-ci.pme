@@ -110,6 +110,18 @@ public class EntrepriseController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+
+	@GetMapping("demandes/envoyees")
+	public ResponseEntity<?> getlistePMEsAvecDemandeEnvoyee() {
+		try {
+			List<EntrepriseDTO> entreprises = entrepriseService.getListEntreprisesAvecDemandeEnvoyee();
+			return ResponseEntity.ok(entreprises);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 
 
 }

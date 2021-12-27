@@ -34,4 +34,9 @@ public interface IDemandeScoring {
     DemandeScoringDTO getDemandeLastClosed(Long idEntreprise);
 
 	String getLibelleStatutDemande(int statut);
+
+	DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException;
+
+	
+
 }

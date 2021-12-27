@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scoring.config.AccessTokenDetails;
+import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.dto.EntrepriseDTO;
 import com.scoring.dto.FormeJuridiqueDTO;
 import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.exceptions.DemandeException;
 import com.scoring.exceptions.EntrepriseException;
 import com.scoring.exceptions.ReferentielException;
 import com.scoring.mapping.DTOFactory;
@@ -15,6 +17,7 @@ import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Entreprise;
 import com.scoring.payloads.EntreprisePayload;
 import com.scoring.repository.EntrepriseRepository;
+import com.scoring.services.IDemandeScoring;
 import com.scoring.services.IEntrepriseService;
 
 import com.scoring.services.IReferentielService;
@@ -42,6 +45,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private IDemandeScoring demandeScoringService;
 
 
 	@Override
@@ -138,4 +144,21 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		}
 	}
 
+	@Override
+	public List<EntrepriseDTO> getListEntreprisesAvecDemandeEnvoyee() throws EntrepriseException{
+		List<Entreprise> entreprises = entrepriseRepository.findAll();
+		List<EntrepriseDTO> entreprisesDTO = new ArrayList<EntrepriseDTO>();
+		for(Entreprise pme : entreprises){
+			DemandeScoringDTO dto = null;
+			try {
+				dto = demandeScoringService.getDemandeEnvoyee(pme.getId());
+			} catch (DemandeException e) {
+				
+				e.printStackTrace();
+			}
+			if(dto!=null)
+				entreprisesDTO.add(dtoFactory.createEntreprise(pme));
+		}
+		return entreprisesDTO;
+	}
 }

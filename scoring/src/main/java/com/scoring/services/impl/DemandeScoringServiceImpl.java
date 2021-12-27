@@ -218,4 +218,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
        }
        return libelle;
     }
+    
+    @Override
+    public DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeEnvoyee(idEntreprise);
+        return dtoFactory.createDemandeScoring(demande);
+    }
 }
