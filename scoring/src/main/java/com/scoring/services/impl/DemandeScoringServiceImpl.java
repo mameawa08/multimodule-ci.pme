@@ -173,19 +173,49 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     @Override
 	public DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeNonClotureParEntreprise(idEntreprise);
-		return dtoFactory.createDemandeScoring(demande);
+    	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
+    	dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		return dto;
 	}
 
 
 	@Override
 	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
 		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
-    	return dtoFactory.createDemandeScoring(demande);
+		DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
+		dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		return dto;
 	}
 
     @Override
     public DemandeScoringDTO getDemandeLastClosed(Long idEntreprise) {
         DemandeScoring demandeScoring = demandeScoringRepository.findFirstByEntreprise_IdOrderByDateCreationDesc(idEntreprise);
         return dtoFactory.createDemandeScoring(demandeScoring);
+    }
+    
+    @Override
+    public String getLibelleStatutDemande(int statut) {
+       String libelle="";
+       switch(statut)
+       {
+       case 1:
+    	   libelle="Brouillon";
+    	   break;
+       case 2:
+    	   libelle="Envoyée";
+    	   break;
+       case 3:
+    	   libelle="En cours";
+    	   break;
+       case 4:
+    	   libelle="Rejetée";
+    	   break;
+       case 5:
+    	   libelle="Provisoire";
+    	   break;
+       case 6:
+    	   libelle="Clôturée";
+       }
+       return libelle;
     }
 }

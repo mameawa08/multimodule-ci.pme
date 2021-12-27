@@ -34,5 +34,7 @@ public class DemandeScoringDTO {
 	private boolean 	indicateurAjoute;
 	
 	private boolean 	repQuali;
+	
+	private String libelleStatut;
 
 }

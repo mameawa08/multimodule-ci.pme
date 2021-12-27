@@ -48,9 +48,11 @@ INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (1, 15);
 --ENTREPRENEUR
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (2, 16);
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (2, 17);
+INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (2, 18);
 --EXPERT FINANCIER
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (3, 18);
 --EXPERT PME
+INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (4, 18);
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (4, 19);
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (4, 20);
 INSERT INTO habilitation_par_profil(role_id, habilitation_id) VALUES (4, 21);
