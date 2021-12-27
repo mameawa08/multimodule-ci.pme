@@ -25,4 +25,7 @@ public interface DemandeScoringRepository extends JpaRepository<DemandeScoring, 
 
 
     DemandeScoring findFirstByEntreprise_IdOrderByDateCreationDesc(Long idEntreprise);
+    
+    @Query("SELECT DISTINCT d FROM DemandeScoring d WHERE d.entreprise.id=:idEntreprise AND d.status != 1 AND d.status != 6 ")
+    DemandeScoring findDemandeEnvoyee(@Param("idEntreprise") Long idEntreprise);
 }

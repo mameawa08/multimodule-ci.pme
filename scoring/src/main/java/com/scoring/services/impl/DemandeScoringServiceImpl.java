@@ -174,7 +174,9 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	public DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeNonClotureParEntreprise(idEntreprise);
     	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
-    	dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		if(dto != null){
+    		dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		}
 		return dto;
 	}
 
@@ -183,7 +185,9 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
 		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
 		DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
-		dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		if(dto != null){
+			dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		}
 		return dto;
 	}
 
@@ -217,5 +221,11 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     	   libelle="Clôturée";
        }
        return libelle;
+    }
+    
+    @Override
+    public DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException {
+    	DemandeScoring demande = demandeScoringRepository.findDemandeEnvoyee(idEntreprise);
+        return dtoFactory.createDemandeScoring(demande);
     }
 }
