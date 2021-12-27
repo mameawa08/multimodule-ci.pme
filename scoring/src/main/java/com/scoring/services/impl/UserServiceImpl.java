@@ -69,7 +69,7 @@ public class UserServiceImpl implements IUserService {
         HttpHeaders headers = getHttpHeaders();
         HttpEntity entity = new HttpEntity(headers);
 
-        ResponseEntity<List<UserDTO>> resp = rt.exchange(baseUrl + "/users/profils/" + id, HttpMethod.GET, entity, new ParameterizedTypeReference<List<UserDTO>>(){});
+        ResponseEntity<List<UserDTO>> resp = rt.exchange(baseUrl + "/auth/users/profils/" + id, HttpMethod.GET, entity, new ParameterizedTypeReference<List<UserDTO>>(){});
         return  resp.getBody();
     }
 
