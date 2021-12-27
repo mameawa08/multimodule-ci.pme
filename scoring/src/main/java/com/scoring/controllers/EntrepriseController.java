@@ -39,9 +39,6 @@ public class EntrepriseController {
 	private IIndicateurService indicateurService;
 
 	@Autowired
-	private IFileGenerationService fileGenerationService;
-
-	@Autowired
 	private IPieceJointeService pieceJointeService;
 
 	@GetMapping("")
@@ -90,16 +87,6 @@ public class EntrepriseController {
 			EntrepriseDTO entreprise = entrepriseService.createEntreprise(payload);
 			return ResponseEntity.ok(entreprise);
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
-
-	@PostMapping("/{id}/rapport")
-	public ResponseEntity generateReport(@PathVariable Long id, @RequestBody RapportPayload payload){
-		try {
-			RapportFile file = fileGenerationService.generateRapport(id, payload);
-			return ResponseEntity.ok(file);
-		} catch (FileGenerationException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

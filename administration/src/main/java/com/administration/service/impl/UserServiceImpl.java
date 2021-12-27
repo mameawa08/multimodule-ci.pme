@@ -2,6 +2,7 @@ package com.administration.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.administration.exception.ScoringConnectException;
@@ -355,16 +356,23 @@ public class UserServiceImpl implements IUserService{
 			if(!validatePassword(payload.getPassword()))
 				throw new UserException("Le mot de passe et la confirmation ne sont pas identiques.Le mot de passe doit avoir minimum 8 caractères,"
 						+ " composé de majuscules, de minuscules, de chiffres et de caractères spéciaux");
-
-			UserDTO exist = findUserByEmail(payload.getEmail());
-			if(exist != null)
-				throw new UserException("Cet mail " + payload.getEmail() + " est déjà associé à un compte.");
 		}
 
 		// validate mail
-		if(!Pattern.compile(REGEX_EMAIL).matcher(payload.getEmail()).matches())
-			throw new UserException("Le format de l'email est invalide.");
+		validateEmail(payload.getEmail(), payload.getId());
 
+	}
+
+	private void validateEmail(String email, Long id) throws UserException {
+		if(id == null){
+			Optional<User> user = userRepository.findByEmail(email);
+			if(user.isPresent()){
+				throw new UserException("L'email <"+email+"> est déjà associé à un compte.");
+			}
+		}
+
+		if(!Pattern.compile(REGEX_EMAIL).matcher(email).matches())
+			throw new UserException("Le format de l'email est invalide.");
 	}
 
 }
