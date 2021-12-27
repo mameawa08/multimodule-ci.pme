@@ -36,5 +36,7 @@ public class DemandeScoringDTO {
 	private boolean 	repQuali;
 	
 	private String libelleStatut;
+	
+	private double scoreFinal;
 
 }

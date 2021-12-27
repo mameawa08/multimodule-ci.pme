@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.dto.EntrepriseDTO;
+import com.scoring.dto.ScoresParPMEDTO;
 import com.scoring.dto.UserDTO;
+import com.scoring.exceptions.CalculScoreException;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.exceptions.EntrepriseException;
 import com.scoring.mapping.DTOFactory;
@@ -18,6 +20,7 @@ import com.scoring.mapping.ModelFactory;
 import com.scoring.models.DemandeScoring;
 import com.scoring.payloads.DemandePayload;
 import com.scoring.repository.DemandeScoringRepository;
+import com.scoring.services.ICalculScoreService;
 import com.scoring.services.IDemandeScoring;
 import com.scoring.services.IEntrepriseService;
 import com.scoring.services.IMailService;
@@ -48,6 +51,9 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 
 	@Autowired
 	private IMailService mailService;
+	
+	@Autowired
+	private ICalculScoreService calculScoreService;
 
 
     @Override
@@ -222,6 +228,19 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     @Override
     public DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeEnvoyee(idEntreprise);
-        return dtoFactory.createDemandeScoring(demande);
+    	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
+    	if(dto!=null){
+    		dto.setLibelleStatut(getLibelleStatutDemande(dto.getStatus()));
+    		ScoresParPMEDTO scoreDTO = null;
+			try {
+				scoreDTO = calculScoreService.getScoreFinal(dto.getId());
+			} catch (CalculScoreException e) {
+				
+				e.printStackTrace();
+			}
+    		if(scoreDTO!=null) 
+    			dto.setScoreFinal(scoreDTO.getScore_final());
+    	}
+        return dto;
     }
 }

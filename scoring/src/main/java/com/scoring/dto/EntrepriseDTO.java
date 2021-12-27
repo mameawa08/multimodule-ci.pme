@@ -25,4 +25,5 @@ public class EntrepriseDTO {
 
 	private DirigeantDTO dirigeant;
 	private FormeJuridiqueDTO		 formeJur;
+	private DemandeScoringDTO demandeNonCloturee;
 }
