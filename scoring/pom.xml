@@ -103,6 +103,30 @@
 			<version>6.14.0</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.lowagie</groupId>-->
+<!--			<artifactId>itext</artifactId>-->
+<!--			<version>2.1.7</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>com.itextpdf</groupId>-->
+<!--			<artifactId>itextpdf</artifactId>-->
+<!--			<version>5.0.6</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi</artifactId>-->
+<!--			<version>4.0.1</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi-ooxml</artifactId>-->
+<!--			<version>4.0.1</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>
@@ -122,5 +146,22 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+<!--		<repository>-->
+<!--			<id>jaspersoft-third-party</id>-->
+<!--			&lt;!&ndash;			<url>http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/</url>&ndash;&gt;-->
+<!--			<url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>-->
+<!--		</repository>-->
+	</repositories>
 
 </project>

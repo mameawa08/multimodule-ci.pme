@@ -32,4 +32,6 @@ public interface IDemandeScoring {
     DemandeScoringDTO getDemandeOuverte(Long idEntreprise);
 
     DemandeScoringDTO getDemandeLastClosed(Long idEntreprise);
+
+	String getLibelleStatutDemande(int statut);
 }

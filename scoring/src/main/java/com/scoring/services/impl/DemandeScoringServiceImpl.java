@@ -67,7 +67,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(idEntreprise);
 
-			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
+			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
 			if (demandeScoring != null){
 				throw new DemandeException("Une demande de scoring est deja en cours.");
 			}
@@ -173,19 +173,49 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     @Override
 	public DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeNonClotureParEntreprise(idEntreprise);
-		return dtoFactory.createDemandeScoring(demande);
+    	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
+    	dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		return dto;
 	}
 
 
 	@Override
 	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
-		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusIsNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
-    	return dtoFactory.createDemandeScoring(demande);
+		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
+		DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
+		dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
+		return dto;
 	}
 
     @Override
     public DemandeScoringDTO getDemandeLastClosed(Long idEntreprise) {
         DemandeScoring demandeScoring = demandeScoringRepository.findFirstByEntreprise_IdOrderByDateCreationDesc(idEntreprise);
         return dtoFactory.createDemandeScoring(demandeScoring);
+    }
+    
+    @Override
+    public String getLibelleStatutDemande(int statut) {
+       String libelle="";
+       switch(statut)
+       {
+       case 1:
+    	   libelle="Brouillon";
+    	   break;
+       case 2:
+    	   libelle="Envoyée";
+    	   break;
+       case 3:
+    	   libelle="En cours";
+    	   break;
+       case 4:
+    	   libelle="Rejetée";
+    	   break;
+       case 5:
+    	   libelle="Provisoire";
+    	   break;
+       case 6:
+    	   libelle="Clôturée";
+       }
+       return libelle;
     }
 }

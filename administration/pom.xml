@@ -149,16 +149,7 @@
                 </configuration>
             </plugin>
 		</plugins>
-		
-<!--		<resources>-->
-<!--        	<resource>-->
-<!--            	<directory>src/main/resources</directory>-->
-<!--            	<filtering>true</filtering>-->
-<!--            	<excludes>-->
-<!--                	<exclude>*.jks</exclude>-->
-<!--            	</excludes>-->
-<!--        	</resource>-->
-<!--    	</resources>-->
+
 	</build>
 	
 	<repositories>
@@ -173,16 +164,5 @@
 		</repository>
 	</repositories>
 
-<!--	<dependencyManagement>-->
-<!--		<dependencies>-->
-<!--			<dependency>-->
-<!--				<groupId>org.springframework.cloud</groupId>-->
-<!--				<artifactId>spring-cloud-dependencies</artifactId>-->
-<!--				<version>${spring-cloud.version}</version>-->
-<!--				<type>pom</type>-->
-<!--				<scope>import</scope>-->
-<!--			</dependency>-->
-<!--		</dependencies>-->
-<!--	</dependencyManagement>-->
 
 </project>
