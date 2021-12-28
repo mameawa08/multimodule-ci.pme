@@ -156,8 +156,11 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				
 				e.printStackTrace();
 			}
-			if(dto!=null)
-				entreprisesDTO.add(dtoFactory.createEntreprise(pme));
+			if(dto!=null){
+				EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(pme);
+				entrepriseDTO.setDemandeNonCloturee(dto);
+				entreprisesDTO.add(entrepriseDTO);
+			}
 		}
 		return entreprisesDTO;
 	}

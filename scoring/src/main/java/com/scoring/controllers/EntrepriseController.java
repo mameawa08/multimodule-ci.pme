@@ -16,14 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.IndicateurDTO;
 import com.scoring.dto.PieceJointeDTO;
-import com.scoring.dto.RapportFile;
-import com.scoring.exceptions.FileGenerationException;
 import com.scoring.payloads.EntreprisePayload;
-import com.scoring.payloads.RapportPayload;
 import com.scoring.services.IEntrepriseService;
-import com.scoring.services.IFileGenerationService;
 import com.scoring.services.IIndicateurService;
 import com.scoring.services.IPieceJointeService;
 
