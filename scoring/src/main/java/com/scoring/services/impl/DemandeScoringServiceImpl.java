@@ -141,8 +141,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     public boolean validerDemandeProvisoire(Long id) throws DemandeException {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
         try{
-        	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS)
+        	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS){
         		demande.setStatus(Constante.ETAT_DEMANDE_PROVISOIRE);
+        		demande.setRapportGenere(true);
+			}
         	demandeScoringRepository.save(demande);
         	return true;
 		}

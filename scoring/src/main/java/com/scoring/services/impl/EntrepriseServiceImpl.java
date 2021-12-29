@@ -153,7 +153,6 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			try {
 				dto = demandeScoringService.getDemandeEnvoyee(pme.getId());
 			} catch (DemandeException e) {
-				
 				e.printStackTrace();
 			}
 			if(dto!=null){
