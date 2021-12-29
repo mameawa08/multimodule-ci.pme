@@ -11,6 +11,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.administration.dto.FieldValidationError;
 import com.administration.dto.UserDTO;
 import com.administration.exception.UserException;
 import com.administration.mapping.DTOFactory;
@@ -180,7 +181,10 @@ public class AuthController {
 	        return ResponseEntity.status(HttpStatus.CREATED).body(user);
         }
 	    catch (UserException e){
-	        return ResponseEntity.badRequest().body(e.getMessage());
+	        return ResponseEntity.badRequest().body(new FieldValidationError(
+	                userServcie.getFieldName(e.getMessage()),
+                    e.getMessage()
+            ));
         }
     }
 

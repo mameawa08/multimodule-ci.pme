@@ -280,6 +280,19 @@ public class UserServiceImpl implements IUserService{
         return dtoFactory.createListUser(users);
     }
 
+    @Override
+	public String getFieldName(String message){
+		String field = "";
+		if(message.contains("username")){field = "Username";}
+		if(message.contains("email")){field = "Email";}
+		if(message.contains("nom")){field = "Nom";}
+		if(message.contains("prenom")){field = "Prenom";}
+		if(message.contains("mot de passe")){field = "Password";}
+		if(message.contains("confirmation du mot de passe")){field = "ConfirmationPassword";}
+		if(message.contains("mot de passe et la confirmation")){field = "ConfirmationPassword";}
+		if(message.contains("format")){field = "Email";}
+		return field;
+	}
     // Private methods
 	private void checkRegistrationRequirement(UserPaylaod payload) throws UserException{
 		validatePayload(payload);
@@ -338,8 +351,6 @@ public class UserServiceImpl implements IUserService{
 
 		if(payload.getPrenom() == null || (payload.getPrenom() != null && payload.getPrenom().equals("")))
 			throw new UserException("Le prenom est obligatoire.");
-
-
 
 		if(payload.getId() == null){
 			if(payload.getPassword() == null || (payload.getPassword() != null && payload.getPassword().equals("")))

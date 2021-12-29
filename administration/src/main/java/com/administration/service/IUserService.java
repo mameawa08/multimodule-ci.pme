@@ -31,4 +31,6 @@ public interface IUserService {
 	public boolean confirm(String token) throws UserException;
 
     public List<UserDTO> getUsersByProfil(Long idProfil) throws UserException;
+
+	String getFieldName(String message);
 }

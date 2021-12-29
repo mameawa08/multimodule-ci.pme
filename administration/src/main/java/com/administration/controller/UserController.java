@@ -2,6 +2,7 @@ package com.administration.controller;
 
 import java.util.List;
 
+import com.administration.dto.FieldValidationError;
 import com.administration.payload.AddEntreprisePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,10 @@ public class UserController {
 			UserDTO user = userService.createUser(paylaod);
 			return ResponseEntity.status(HttpStatus.CREATED).body(user);
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.badRequest().body(new FieldValidationError(
+					userService.getFieldName(e.getMessage()),
+					e.getMessage()
+			));
 		}
 	}
 
