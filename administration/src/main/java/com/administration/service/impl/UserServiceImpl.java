@@ -249,7 +249,9 @@ public class UserServiceImpl implements IUserService{
 			Long idEntreprise = scoringConnectService.getEntreprise((long) entrepriseId);
 			user.setEntrepriseId(idEntreprise);
 
-			userRepository.save(user);
+			System.out.println("User ID :: "+id);
+
+			userRepository.saveAndFlush(user);
 			userDTO = dtoFactory.createUser(user);
 		} catch (ScoringConnectException e) {
 			throw new UserException("L'entreprise id "+entrepriseId+" n'existe pas.");
@@ -264,6 +266,7 @@ public class UserServiceImpl implements IUserService{
 		    if(jwtUtils.validateJwtToken(token) && jwtUtils.getUserNameFromJwtToken(token).equals(user.getUsername())){
 			    user.setConfirmationToken(null);
 			    user.setConfirme(1);
+			    user.setActif(1);
 			    userRepository.save(user);
             }
 		}

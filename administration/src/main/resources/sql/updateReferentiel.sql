@@ -8,3 +8,5 @@ ALTER COLUMN valeur TYPE numeric(20,3);
 ALTER TABLE question ALTER COLUMN libelle TYPE character varying(700);
 
 ALTER TABLE reponse_qualitative ALTER COLUMN libelle TYPE character varying(700);
+
+

@@ -28,4 +28,12 @@ public class Constante {
 
 
     public static final Long PROFIL_EXPERT_PME                      = 4L;
+
+    public static final Long REPONSE_NE_SAPPLIQUE_PAS               = 241L;
+    public static final Long REPONSE_NE_SAIS_PAS                    = 240L;
+
+    public static final int SCORE_NE_SAPPLIQUE_PAS                  = -1;
+    public static final int SCORE_NE_SAIS_PAS                       = 0;
+
+
 }

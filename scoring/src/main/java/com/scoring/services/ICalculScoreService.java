@@ -27,4 +27,6 @@ public interface ICalculScoreService {
     ScoresParPMEDTO calculScoreFinale(Long id) throws CalculScoreException;
 
 	ScoresParPMEDTO getScoreFinal(Long id) throws CalculScoreException;
+
+    ScoresAndRatioDTO getScoreFinancierAndRatios(Long idDemande) ;
 }

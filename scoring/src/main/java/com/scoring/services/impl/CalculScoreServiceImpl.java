@@ -340,7 +340,20 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
         return dtoFactory.createScoreParPME(scoresParPME);
     }
 
-    //private methods
+	@Override
+	public ScoresAndRatioDTO getScoreFinancierAndRatios(Long idDemande) {
+		ScoresParPME scoresParPME = scoreParPMERepository.findScoreByDemande(idDemande);
+		List<ValeurRatio> valeurRatios = valeurRatioRepository.findValeurRatioByDemande(idDemande);
+
+		ScoresAndRatioDTO scoresAndRatio = new ScoresAndRatioDTO();
+		scoresAndRatio.setScoreDTO(dtoFactory.createScoreParPME(scoresParPME));
+		scoresAndRatio.setListValeurRatioDTO(dtoFactory.createListValeurRatio(valeurRatios));
+		scoresAndRatio.setId(idDemande);
+
+		return scoresAndRatio;
+	}
+
+	//private methods
 	private Map<Long, Integer> calculTotalScoreForEachParametre(List<ReponseParPME> reponses) throws CalculScoreException{
 		Map<Long, Integer> maps = new HashMap<>();
 		List<Parametre> parametres = parametreRepository.findAll();
@@ -365,14 +378,16 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			DemandeScoringDTO demandeDTO = demandeScoringService.getDemande(idDemande);
  			ParametreDTO parametre = referentielService.getParamtre(parametreId);
 			double total = 0;
+			int nombreQuestion = 0;
 			for (ReponseParPME reponse : reponses){
 				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
 				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
-				if (parametre.getCode().equals(question.getParametre().getCode())){
+				if (parametre.getCode().equals(question.getParametre().getCode()) && reponseQualitative.getId() != Constante.REPONSE_NE_SAPPLIQUE_PAS){
 					total += reponseQualitative.getScore();
+					nombreQuestion++;
 				}
 			}
-			total /= parametre.getNbre_question();
+			total /= nombreQuestion;
 			ScoreEntrepriseParParametreDTO scoreEntrepriseParParametre = scoreEntrepriseParParametreService.getScoreDemandeParParametreOrNull(idDemande, parametreId);
 			if (scoreEntrepriseParParametre == null){
 				scoreEntrepriseParParametre = new ScoreEntrepriseParParametreDTO();

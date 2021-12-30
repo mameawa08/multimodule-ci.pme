@@ -33,6 +33,16 @@ public class CalculScoreController {
 		}
 	}
 
+	@GetMapping("/financier-ratios/{idDemande}")
+	public ResponseEntity<?> getScoreFinancierAndRatiosCalcules(@PathVariable Long idDemande) {
+		try {
+			ScoresAndRatioDTO scoreAndRatios = calculScoreService.getScoreFinancierAndRatios(idDemande);
+			return ResponseEntity.ok(scoreAndRatios);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 	@GetMapping("/qualitatif/{idDemande}/calcul")
 	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idDemande) {
 		try {

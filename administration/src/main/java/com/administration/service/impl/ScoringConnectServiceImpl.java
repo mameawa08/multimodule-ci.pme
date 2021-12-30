@@ -38,7 +38,9 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
             throw new ScoringConnectException("Entreprise :: not found.");
         }
         else{
-            return resp.getBody().getId();
+            Long idEntreprise = resp.getBody().getId();
+            System.out.println("Entreprise ID :: "+idEntreprise);
+            return idEntreprise;
         }
     }
 
