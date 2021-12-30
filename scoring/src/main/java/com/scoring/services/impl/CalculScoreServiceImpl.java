@@ -347,7 +347,20 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 
 		ScoresAndRatioDTO scoresAndRatio = new ScoresAndRatioDTO();
 		scoresAndRatio.setScoreDTO(dtoFactory.createScoreParPME(scoresParPME));
-		scoresAndRatio.setListValeurRatioDTO(dtoFactory.createListValeurRatio(valeurRatios));
+		List<ValeurRatioDTO> listValeurRatio = new ArrayList<>();
+		try {
+			for(ValeurRatio val : valeurRatios){
+				ValeurRatioDTO dto = dtoFactory.createValeurRatio(val);
+				RatioDTO ratiodTO = referentielService.getRatioById(dto.getIdRatio());
+				dto.setNomRatio(ratiodTO.getLibelle());
+				dto.setCodeRatio(ratiodTO.getCode());
+				listValeurRatio.add(dto);
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		scoresAndRatio.setListValeurRatioDTO(listValeurRatio);
 		scoresAndRatio.setId(idDemande);
 
 		return scoresAndRatio;

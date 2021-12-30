@@ -52,6 +52,7 @@ public class CalculScoreController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
 	@GetMapping("/qualitatif/{idDemande}/calcul/{parametreId}")
 	public ResponseEntity<?> calculScoreQualitatif(@PathVariable Long idDemande, @PathVariable Long parametreId) {
 		try {
@@ -71,6 +72,7 @@ public class CalculScoreController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
 	@GetMapping("/qualitatif/{idDemande}/parametres/{parametreId}")
 	public ResponseEntity<?> getScoreParametreQualitatif(@PathVariable Long idDemande, @PathVariable Long parametreId) {
 		try {
