@@ -70,7 +70,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	@Override
 	public List<IndicateurDTO> getIndicateursByDemande(Long id) throws IndicateurException{
 		DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new IndicateurException("Indicateur :: Demande "+id+" not found."));
-		List<Indicateur> indicateurs = indicateurRepository.findByDemandeScoring(demande);
+		List<Indicateur> indicateurs = indicateurRepository.findByDemandeScoringOrderByAnneeDesc(demande);
 		return dtoFactory.createListIndicateur(indicateurs);
 	}
 

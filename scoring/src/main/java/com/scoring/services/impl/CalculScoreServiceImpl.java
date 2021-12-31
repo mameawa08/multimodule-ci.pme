@@ -395,7 +395,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			for (ReponseParPME reponse : reponses){
 				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
 				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
-				if (parametre.getCode().equals(question.getParametre().getCode()) && reponseQualitative.getId() != Constante.REPONSE_NE_SAPPLIQUE_PAS){
+				if (parametre.getCode().equals(question.getParametre().getCode()) && !reponseQualitative.getId().equals(Constante.REPONSE_NE_SAPPLIQUE_PAS)){
 					total += reponseQualitative.getScore();
 					nombreQuestion++;
 				}
