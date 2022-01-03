@@ -142,6 +142,7 @@ public class DTOFactory {
 		dto.setEndettement_struct(indicateur.getEndettement_struct());
 		dto.setProduit_financier(indicateur.getProduit_financier());
 		dto.setAnnee(indicateur.getAnnee());
+		dto.setDerniereAnnee(indicateur.getDerniereAnnee());
 		dto.setActif(indicateur.isActif());
 		dto.setDemandeScoringDTO(createDemandeScoring(indicateur.getDemandeScoring()));
 

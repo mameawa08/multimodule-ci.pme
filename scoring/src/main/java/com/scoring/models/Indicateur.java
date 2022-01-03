@@ -34,6 +34,8 @@ public class Indicateur {
 	private double djDettesFournisseurs;
 	private double raAchats;
 	private int annee;
+	@Column(nullable = true)
+	private int derniereAnnee;
 	private boolean actif;
 	@Column(name = "xd_excedent_brut", nullable=true)
 	private double xdExcedentBrutExploit;

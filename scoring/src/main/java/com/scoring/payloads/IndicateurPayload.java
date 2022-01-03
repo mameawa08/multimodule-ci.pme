@@ -29,6 +29,7 @@ public class IndicateurPayload {
 	private double rqParticipations;
 	private double rsImpot;
 	private int annee;
+	private int derniereAnnee;
 	private int entreprise;
 	private Long idDemande;
 }

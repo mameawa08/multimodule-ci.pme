@@ -1,5 +1,7 @@
 package com.scoring.services.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -71,7 +73,40 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	public List<IndicateurDTO> getIndicateursByDemande(Long id) throws IndicateurException{
 		DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new IndicateurException("Indicateur :: Demande "+id+" not found."));
 		List<Indicateur> indicateurs = indicateurRepository.findByDemandeScoringOrderByAnneeDesc(demande);
-		return dtoFactory.createListIndicateur(indicateurs);
+        List<IndicateurDTO> listIndicateur = dtoFactory.createListIndicateur(indicateurs);
+        List<IndicateurDTO> listIndicateurs = new ArrayList<>();
+		int derniereAnnee = listIndicateur.get(0).getDerniereAnnee();
+        switch (listIndicateur.size()){
+			case 1:{
+				listIndicateurs = new ArrayList<>(listIndicateur);
+				if(derniereAnnee != listIndicateur.get(0).getAnnee()){
+					listIndicateurs.add(0, null);
+				}
+				if((derniereAnnee - 1) != listIndicateur.get(0).getAnnee()){
+					listIndicateurs.add(1, null);
+				}
+				if((derniereAnnee - 2) != listIndicateur.get(0).getAnnee()){
+					listIndicateurs.add(2, null);
+				}
+				break;
+			}
+			case 2:{
+				listIndicateurs = new ArrayList<>(listIndicateur);
+				if(derniereAnnee != listIndicateur.get(0).getAnnee()){
+					listIndicateurs.add(0, null);
+				}
+				else if((derniereAnnee -1) != listIndicateur.get(1).getAnnee()){
+					listIndicateurs.add(1, null);
+				}
+				else{
+					listIndicateurs.add(2, null);
+				}
+				break;
+			}
+
+		}
+
+        return listIndicateurs;
 	}
 
 	@Override
@@ -147,6 +182,9 @@ public class IndicateurServiceImpl implements IIndicateurService {
 
 		if(payload.getAnnee() != 0 && (payload.getAnnee() < (year - 5) || payload.getAnnee() > year))
 			throw new IndicateurException("L'indicateur doit au moins etre des 5 dernieres annees.");
+
+		if(payload.getDerniereAnnee() != 0 && (payload.getDerniereAnnee() < (year - 5) || payload.getDerniereAnnee() > year))
+			throw new IndicateurException("La derniere annee de l'etat financier est obligatoire.");
 
 		if(payload.getEntreprise() == 0)
 			throw new IndicateurException("L'entreprise est obligatoire");
