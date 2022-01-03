@@ -121,6 +121,7 @@ public class ModelFactory {
 		model.setEndettement_struct(indicateur.getEndettement_struct());
 		model.setProduit_financier(indicateur.getProduit_financier());
 		model.setAnnee(indicateur.getAnnee());
+		model.setDerniereAnnee(indicateur.getDerniereAnnee());
 		model.setActif(indicateur.isActif());
 		model.setDemandeScoring(createDemandeScoring(indicateur.getDemandeScoringDTO()));
 

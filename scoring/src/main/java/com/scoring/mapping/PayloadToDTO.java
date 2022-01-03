@@ -142,6 +142,7 @@ public class PayloadToDTO {
 		dto.setRqParticipations(indicateur.getRqParticipations());
 		dto.setRsImpot(indicateur.getRsImpot());
 		dto.setAnnee(indicateur.getAnnee());
+		dto.setDerniereAnnee(indicateur.getDerniereAnnee());
 
 		
 

@@ -21,6 +21,7 @@ public class IndicateurDTO {
 	private double djDettesFournisseurs;
 	private double raAchats;
 	private int annee;
+	private int derniereAnnee;
 	private DemandeScoringDTO demandeScoringDTO;
 	private boolean actif;
 	private double xdExcedentBrutExploit;
