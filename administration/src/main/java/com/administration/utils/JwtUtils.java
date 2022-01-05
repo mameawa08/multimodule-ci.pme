@@ -57,31 +57,6 @@ public class JwtUtils {
         jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
     }
 
-    // public String generateJwtToken(Authentication authentication) {
-
-    //     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-    //     return Jwts.builder()
-    //             .setSubject((userPrincipal.getUsername()))
-    //             .setIssuedAt(new Date())
-    //             .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-    //             .signWith(SignatureAlgorithm.HS256, jwtSecret)
-    //             .compact();
-    // }
-
-   /* @Bean
-	public KeyStore keyStore() {
-		try {
-			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(keyStorePath);
-			keyStore.load(resourceAsStream, keyStorePassword.toCharArray());
-			return keyStore;
-		} catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
-			log.error("Unable to load keystore: {}", keyStorePath, e);
-		}
-		
-		throw new IllegalArgumentException("Unable to load keystore");
-	}*/
 
     public String generateJwtToken(String payload, int expiration) throws UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         //Key key = keyStore().getKey(keyAlias, privateKeyPassphrase.toCharArray());
@@ -95,7 +70,12 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody().getSubject();
+        try{
+            return Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody().getSubject();
+        }
+        catch (ExpiredJwtException e){
+            return e.getClaims().getSubject();
+        }
     }
 
     public boolean validateJwtToken(String authToken) throws SignatureException, MalformedJwtException, ExpiredJwtException, UnsupportedJwtException, IllegalArgumentException, UnsupportedEncodingException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {

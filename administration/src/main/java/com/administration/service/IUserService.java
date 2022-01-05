@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.administration.dto.UserDTO;
 import com.administration.exception.UserException;
+import com.administration.payload.ConfirmationPayload;
 import com.administration.payload.UpdatePasswordBody;
 import com.administration.payload.UserPaylaod;
 
@@ -30,7 +31,9 @@ public interface IUserService {
 
 	public boolean confirm(String token) throws UserException;
 
-    public List<UserDTO> getUsersByProfil(Long idProfil) throws UserException;
+	boolean sendConfirmationToken(ConfirmationPayload payload) throws UserException;
+
+	public List<UserDTO> getUsersByProfil(Long idProfil) throws UserException;
 
 	String getFieldName(String message);
 }

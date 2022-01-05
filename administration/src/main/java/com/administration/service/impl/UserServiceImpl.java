@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.administration.exception.ScoringConnectException;
 import com.administration.model.Profil;
+import com.administration.payload.ConfirmationPayload;
 import com.administration.repository.ProfilRepository;
 import com.administration.service.IMailService;
 import com.administration.service.IScoringConnectService;
@@ -218,14 +219,7 @@ public class UserServiceImpl implements IUserService{
 		try {
 			String token = jwtUtils.generateJwtToken(user.getUsername(), 1_800_000);
 			user.setConfirmationToken(token);
-			StringBuilder sb = new StringBuilder();
-			sb.append("http://").append(environment.getProperty("front.host"))
-					.append("/").append(environment.getProperty("front.context")).append("/")
-					.append("account").append("/")
-					.append("confirm")
-					.append("?token=")
-					.append(token);
-			confirmationUrl = sb.toString();
+			confirmationUrl = getConfirmationUrl(token);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -274,6 +268,28 @@ public class UserServiceImpl implements IUserService{
 			throw new UserException("Confirmation :: "+e.getMessage());
 		}
 		return true;
+	}
+
+	@Override
+	public boolean sendConfirmationToken(ConfirmationPayload payload) throws UserException{
+		User user = userRepository.findByEmailAndConfirmationToken(payload.getEmail(), payload.getToken()).orElseThrow(() -> new UserException("Confirmation :: user not found."));
+		String email = jwtUtils.getUserNameFromJwtToken(payload.getToken());
+		try {
+			if (email.equals(user.getEmail())){
+				String confirmationToken = jwtUtils.generateJwtToken(email, 1_800_000);
+				String confirmationUrl = getConfirmationUrl(confirmationToken);
+
+				user.setConfirmationToken(confirmationToken);
+				userRepository.saveAndFlush(user);
+				UserDTO userDTO = dtoFactory.createUser(user);
+				mailService.sendActivationMail(userDTO, confirmationUrl);
+				return true;
+			}
+			return false;
+		}
+		catch (Exception e){
+			throw new UserException(e.getMessage(), e);
+		}
 	}
 
     @Override
@@ -387,6 +403,17 @@ public class UserServiceImpl implements IUserService{
 
 		if(!Pattern.compile(REGEX_EMAIL).matcher(email).matches())
 			throw new UserException("Le format de l'email est invalide.");
+	}
+
+	private String getConfirmationUrl(String token) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://").append(environment.getProperty("front.host"))
+				.append("/").append(environment.getProperty("front.context")).append("/")
+				.append("account").append("/")
+				.append("confirm")
+				.append("?token=")
+				.append(token);
+		return sb.toString();
 	}
 
 }

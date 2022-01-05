@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.security.auth.callback.ConfirmationCallback;
 import javax.servlet.http.HttpServletRequest;
 
 import com.administration.dto.FieldValidationError;
@@ -192,6 +193,17 @@ public class AuthController {
     public ResponseEntity confirm(@RequestParam String token){
 	    try{
 	        boolean rs = userServcie.confirm(token);
+	        return ResponseEntity.ok(rs);
+        }
+	    catch (UserException e){
+	        return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/users/confirmation_mail")
+    public ResponseEntity sendConfirmationMail(@RequestBody ConfirmationPayload payload){
+	    try{
+	        boolean rs = userServcie.sendConfirmationToken(payload);
 	        return ResponseEntity.ok(rs);
         }
 	    catch (UserException e){
