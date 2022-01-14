@@ -85,12 +85,6 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getAdresse() != null && payload.getAdresse().equals(""))
 			throw new EntrepriseException("L'adresse est obligatoire.");
 
-//		if(payload.getSiteWeb() != null && payload.getSiteWeb().equals(""))
-//			throw new EntrepriseException("Le site web est obligatoire.");
-//
-//		if(payload.getLogo() != null && payload.getLogo().equals(""))
-//			throw new EntrepriseException("Le logo est obligatoire.");
-
 		if(payload.getFormeJuridique() == 0 )
 			throw new EntrepriseException("La forme juridique est obligatoire.");
 
@@ -103,7 +97,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(payload.getSecteurs() != null && payload.getSecteurs().size() == 0)
 			throw new EntrepriseException("Il faut au minimum un secteurs d'activite.");
 
-		entreprise = payloadToDTO.createEntreprise(payload);
+		entreprise = payloadToDTO.createEntreprise(payload, entreprise);
 		entreprise.setActif(true);
 		try {
 			FormeJuridiqueDTO formeJuridique = referentielService.getFormeJuridique((long)payload.getFormeJuridique());

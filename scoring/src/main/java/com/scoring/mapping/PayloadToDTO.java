@@ -21,25 +21,20 @@ public class PayloadToDTO {
 	 * @param entreprise
 	 * @return
 	 */
-	public EntrepriseDTO createEntreprise(EntreprisePayload entreprise){
-		if(entreprise == null)
-			return null;
-		EntrepriseDTO dto = new EntrepriseDTO();
-		dto.setId(entreprise.getId());
-		dto.setRaisonSociale(entreprise.getRaisonSociale());
-		dto.setAnnee(entreprise.getAnnee());
-		dto.setCapital(entreprise.getCapital());
-//		dto.setSecteurs(entreprise.getSecteurs());
-		dto.setDescription(entreprise.getDescription());
-		dto.setRegime(entreprise.getRegime());
-		dto.setAdresse(entreprise.getAdresse());
-		dto.setSiteWeb(entreprise.getSiteWeb());
-		dto.setLogo(entreprise.getLogo());
-		dto.setEligible(entreprise.isEligible());
+	public EntrepriseDTO createEntreprise(EntreprisePayload payload, EntrepriseDTO entreprise){
+		if(payload == null)
+			return entreprise;
+		entreprise.setId(payload.getId());
+		entreprise.setRaisonSociale(payload.getRaisonSociale());
+		entreprise.setAnnee(payload.getAnnee());
+		entreprise.setCapital(payload.getCapital());
+		entreprise.setDescription(payload.getDescription());
+		entreprise.setRegime(payload.getRegime());
+		entreprise.setAdresse(payload.getAdresse());
+		entreprise.setSiteWeb(payload.getSiteWeb());
+		entreprise.setLogo(payload.getLogo());
 
-//		dto.setFormeJuridique(entreprise.getFormeJuridique());
-
-		return dto;
+		return entreprise;
 	}
 
 	public DirigeantDTO createDirigeant(DirigeantPayload dirigeant) {

@@ -255,7 +255,15 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public boolean confirm(String token) throws UserException {
-		User user = userRepository.findByConfirmationToken(token).orElseThrow(() -> new UserException("Confirmation :: user not found."));
+		User user = userRepository.findByConfirmationToken(token).orElse(null);
+		if (user == null){
+			String username = jwtUtils.getUserNameFromJwtToken(token);
+			user = userRepository.findByEmailOrUsername(username, username).get();
+		}
+
+		if (user.getConfirme() == 1){
+			return true;
+		}
 		try {
 		    if(jwtUtils.validateJwtToken(token) && jwtUtils.getUserNameFromJwtToken(token).equals(user.getUsername())){
 			    user.setConfirmationToken(null);
