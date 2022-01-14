@@ -254,7 +254,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public boolean confirm(String token) throws UserException {
+	public int confirm(String token) throws UserException {
 		User user = userRepository.findByConfirmationToken(token).orElse(null);
 		if (user == null){
 			String username = jwtUtils.getUserNameFromJwtToken(token);
@@ -262,7 +262,7 @@ public class UserServiceImpl implements IUserService{
 		}
 
 		if (user.getConfirme() == 1){
-			return true;
+			return Constante.CONFIRMED_ACCOUNT;
 		}
 		try {
 		    if(jwtUtils.validateJwtToken(token) && jwtUtils.getUserNameFromJwtToken(token).equals(user.getUsername())){
@@ -275,7 +275,7 @@ public class UserServiceImpl implements IUserService{
 		catch (Exception e){
 			throw new UserException("Confirmation :: "+e.getMessage());
 		}
-		return true;
+		return Constante.CONFIRMING_ACCOUNT;
 	}
 
 	@Override

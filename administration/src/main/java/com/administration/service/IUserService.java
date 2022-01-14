@@ -29,7 +29,7 @@ public interface IUserService {
 
 	public UserDTO addEntrepriseToUser(Long id, int entrepriseId) throws UserException;
 
-	public boolean confirm(String token) throws UserException;
+	public int confirm(String token) throws UserException;
 
 	boolean sendConfirmationToken(ConfirmationPayload payload) throws UserException;
 

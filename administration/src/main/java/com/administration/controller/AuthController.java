@@ -192,7 +192,7 @@ public class AuthController {
     @GetMapping("/users/confirm")
     public ResponseEntity confirm(@RequestParam String token){
 	    try{
-	        boolean rs = userServcie.confirm(token);
+	        int rs = userServcie.confirm(token);
 	        return ResponseEntity.ok(rs);
         }
 	    catch (UserException e){
