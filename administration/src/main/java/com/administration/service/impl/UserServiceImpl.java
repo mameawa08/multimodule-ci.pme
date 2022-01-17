@@ -408,6 +408,12 @@ public class UserServiceImpl implements IUserService{
 				throw new UserException("L'email <"+email+"> est déjà associé à un compte.");
 			}
 		}
+		else{
+			User user = userRepository.findByEmail(email).orElse(null);
+			if (user != null && !user.getId().equals(id)){
+				throw new UserException("L'email <"+email+"> est déjà associé à un compte.");
+			}
+		}
 
 		if(!Pattern.compile(REGEX_EMAIL).matcher(email).matches())
 			throw new UserException("Le format de l'email est invalide.");

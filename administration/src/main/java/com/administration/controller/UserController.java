@@ -78,7 +78,10 @@ public class UserController {
 			UserDTO user = userService.createUser(paylaod);
 			return ResponseEntity.status(HttpStatus.CREATED).body(user);
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.badRequest().body(new FieldValidationError(
+					userService.getFieldName(e.getMessage()),
+					e.getMessage()
+			));
 		}
 	}
 
