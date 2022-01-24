@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.scoring.models.DemandeScoring;
 
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -18,7 +19,7 @@ public interface DemandeScoringRepository extends JpaRepository<DemandeScoring, 
     @Query("SELECT DISTINCT d FROM DemandeScoring d WHERE d.entreprise.id = :idEntreprise and d.status = :status ")
 	DemandeScoring findDemandeByStatus(@Param("idEntreprise") Long idEntreprise, @Param("status") int status);
 
-    DemandeScoring findByEntreprise_IdAndStatusNot(Long idEntreprise, int status);
+    DemandeScoring findByEntreprise_IdAndStatusNotIn(Long idEntreprise, List<Integer> status);
 
     @Query("SELECT DISTINCT d FROM DemandeScoring d WHERE d.entreprise.id=:idEntreprise and d.status != 6 ")
     DemandeScoring findDemandeNonClotureParEntreprise(@Param("idEntreprise") Long idEntreprise);

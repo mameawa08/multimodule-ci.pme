@@ -1,8 +1,11 @@
 package com.scoring.services.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.scoring.models.Entreprise;
+import com.scoring.repository.EntrepriseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.codec.DecodingException;
@@ -55,8 +58,11 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	@Autowired
 	private ICalculScoreService calculScoreService;
 
+	@Autowired
+	private EntrepriseRepository entrepriseRepository;
 
-    @Override
+
+	@Override
     public List<DemandeScoringDTO> getDemandes() throws DemandeException {
     	List<DemandeScoring> demandes = demandeScoringRepository.findAllByOrderByIdDesc();
         return dtoFactory.createListDemandeScoring(demandes);
@@ -73,7 +79,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(idEntreprise);
 
-			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
+			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTURE, Constante.ETAT_DEMANDE_REJETE));
 			if (demandeScoring != null){
 				throw new DemandeException("Une demande de scoring est deja en cours.");
 			}
@@ -130,6 +136,12 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         		demande.setStatus(Constante.ETAT_DEMANDE_REJETE);
         	demande.setMotif_rejet(demandePayload.getMotif_rejet());
         	demandeScoringRepository.save(demande);
+
+        	Entreprise entreprise = entrepriseRepository.findById(demande.getEntreprise().getId()).orElse(null);
+        	if(entreprise != null){
+        		entreprise.setEligible(false);
+        		entrepriseRepository.saveAndFlush(entreprise);
+			}
         	return true;
 		}
         catch (Exception e){
@@ -170,6 +182,12 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
             }
 
         	demandeScoringRepository.save(demande);
+        	//Reinitialiser entreprise
+			Entreprise entreprise = entrepriseRepository.findById(demande.getEntreprise().getId()).orElse(null);
+			if(entreprise != null){
+				entreprise.setEligible(false);
+				entrepriseRepository.saveAndFlush(entreprise);
+			}
         	return true;
 		}
         catch (Exception e){
@@ -191,7 +209,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 
 	@Override
 	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
-		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNot(idEntreprise, Constante.ETAT_DEMANDE_CLOTURE);
+		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTURE, Constante.ETAT_DEMANDE_REJETE));
 		DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
 		if(dto != null){
 			dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
@@ -241,8 +259,8 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 			try {
 				scoreDTO = calculScoreService.getScoreFinal(dto.getId());
 			} catch (CalculScoreException e) {
-				
 				e.printStackTrace();
+				dto.setScoreFinal(0);
 			}
     		if(scoreDTO!=null) 
     			dto.setScoreFinal(scoreDTO.getScore_final());

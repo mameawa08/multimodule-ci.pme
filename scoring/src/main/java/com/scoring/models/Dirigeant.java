@@ -25,7 +25,7 @@ public class Dirigeant {
 	private String nationalite;
 	private String adresse;
 	private String typePiece;
-	private Long numeroCI;
+	private String numeroCI;
 	private boolean actif;
 
 	@OneToOne

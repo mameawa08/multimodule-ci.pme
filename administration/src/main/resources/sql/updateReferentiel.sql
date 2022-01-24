@@ -9,4 +9,4 @@ ALTER TABLE question ALTER COLUMN libelle TYPE character varying(700);
 
 ALTER TABLE reponse_qualitative ALTER COLUMN libelle TYPE character varying(700);
 
-
+alter table dirigeant alter column numeroci type  varchar(50);

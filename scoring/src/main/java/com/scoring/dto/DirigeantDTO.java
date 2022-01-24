@@ -19,7 +19,7 @@ public class DirigeantDTO {
 	private String nationalite;
 	private String adresse;
 	private String typePiece;
-	private Long numeroCI;
+	private String numeroCI;
 	private boolean actif;
 
 	private EntrepriseDTO entreprise;
