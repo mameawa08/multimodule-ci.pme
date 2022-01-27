@@ -1,5 +1,6 @@
 package com.administration.service.impl;
 
+import com.administration.dto.DemandeScoringDTO;
 import com.administration.dto.EntrepriseDTO;
 import com.administration.exception.ScoringConnectException;
 import com.administration.service.IScoringConnectService;
@@ -42,6 +43,18 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
             System.out.println("Entreprise ID :: "+idEntreprise);
             return idEntreprise;
         }
+    }
+
+    @Override
+    public DemandeScoringDTO getUserDemande(Long idUser) {
+        String url = baseUrl+"/scoring/api/demandes/users/"+idUser;
+
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<DemandeScoringDTO> resp = rt.exchange(url, HttpMethod.GET, httpEntity, DemandeScoringDTO.class);
+        return resp.getBody();
     }
 
     private HttpHeaders getHttpHeaders() {

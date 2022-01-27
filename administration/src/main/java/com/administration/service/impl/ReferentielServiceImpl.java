@@ -2,6 +2,9 @@ package com.administration.service.impl;
 
 import java.util.List;
 
+import com.administration.dto.NiveauEtudeDTO;
+import com.administration.model.NiveauEtude;
+import com.administration.repository.NiveauEtudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,9 @@ public class ReferentielServiceImpl implements IReferentielService {
 	@Autowired
 	private ModelFactory modelFactory;
 
+	@Autowired
+	private NiveauEtudeRepository niveauEtudeRepository;
+
 	@Override
 	public List<SecteurActiviteDTO> getListeSecteurs() {
 		List<SecteurActivite> secteurs = secteurRepository.findAll();
@@ -60,5 +66,15 @@ public class ReferentielServiceImpl implements IReferentielService {
 		return dtoFactory.createFormeJuridique(forme);
 	}
 
+	@Override
+	public List<NiveauEtudeDTO> getListNiveauEtude() {
+		List<NiveauEtude> niveauEtudes = niveauEtudeRepository.findAll();
+		return dtoFactory.createListNiveauEtude(niveauEtudes);
+	}
 
+	@Override
+	public NiveauEtudeDTO getNiveauEtude(Long id) throws ReferentielException {
+		NiveauEtude niveauEtude = niveauEtudeRepository.findById(id).orElseThrow(() -> new ReferentielException("Niveau etude not found."));
+		return dtoFactory.createNiveauEtude(niveauEtude);
+	}
 }

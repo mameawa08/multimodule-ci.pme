@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import com.administration.dto.DemandeScoringDTO;
 import com.administration.exception.ScoringConnectException;
 import com.administration.model.Profil;
 import com.administration.payload.ConfirmationPayload;
@@ -130,8 +131,14 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean switchStatus(Long id) throws UserException{
 		User user = userRepository.findById(id).orElseThrow(() -> new UserException("User :: "+id+" not found."));
-		user.setActif(user.getActif() == 1 ? 0 : 1);
 		try {
+			if(user.getProfil().getId().equals(Constante.ROLE_ENTR)){
+				DemandeScoringDTO demande = scoringConnectService.getUserDemande(user.getId());
+				if((demande != null && demande.getStatus() > 1)){
+					throw new UserException("Impossible de désactiver l'utilisateur :: une demande de scoring est en cours.");
+				}
+			}
+			user.setActif(user.getActif() == 1 ? 0 : 1);
 			userRepository.save(user);
 			return true;
 		} catch (Exception e) {

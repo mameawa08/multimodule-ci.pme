@@ -1,35 +1,12 @@
 package com.administration.mapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
-import com.administration.dto.CalibrageDTO;
-import com.administration.dto.FormeJuridiqueDTO;
-import com.administration.dto.HabilitationDTO;
-import com.administration.dto.ParametreDTO;
-import com.administration.dto.Ponderation_scoreDTO;
-import com.administration.dto.ProfilDTO;
-import com.administration.dto.QuestionDTO;
-import com.administration.dto.RatioDTO;
-import com.administration.dto.ReponseQualitativeDTO;
-import com.administration.dto.SecteurActiviteDTO;
-import com.administration.dto.ThemeDTO;
-import com.administration.dto.UserDTO;
-import com.administration.model.Calibrage;
-import com.administration.model.FormeJuridique;
-import com.administration.model.Habilitation;
-import com.administration.model.Parametre;
-import com.administration.model.Ponderation_score;
-import com.administration.model.Profil;
-import com.administration.model.Question;
-import com.administration.model.Ratio;
-import com.administration.model.ReponseQualitative;
-import com.administration.model.SecteurActivite;
-import com.administration.model.Theme;
-import com.administration.model.User;
+import com.administration.dto.*;
+import com.administration.model.*;
 import com.administration.payload.UserPaylaod;
 
 
@@ -344,6 +321,22 @@ public class DTOFactory {
 
 		return listTheme.stream().map(this::createTheme).collect(Collectors.toList());
 
+	}
+
+	public NiveauEtudeDTO createNiveauEtude(NiveauEtude niveauEtude){
+		if (niveauEtude == null)
+			return null;
+		NiveauEtudeDTO dto = new NiveauEtudeDTO();
+		dto.setId(niveauEtude.getId());
+		dto.setLibelle(niveauEtude.getLibelle());
+		dto.setActif(niveauEtude.getActif());
+		return dto;
+	}
+
+	public List<NiveauEtudeDTO> createListNiveauEtude(List<NiveauEtude> niveauEtudes){
+		if(niveauEtudes == null || (niveauEtudes != null && niveauEtudes.size() == 0))
+			return Collections.emptyList();
+		return niveauEtudes.stream().map(this::createNiveauEtude).collect(Collectors.toList());
 	}
 	
 }

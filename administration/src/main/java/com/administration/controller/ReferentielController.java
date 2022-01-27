@@ -2,6 +2,7 @@ package com.administration.controller;
 
 import java.util.List;
 
+import com.administration.dto.NiveauEtudeDTO;
 import com.administration.exception.ReferentielException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,22 @@ public class ReferentielController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
-	
-	
+
+	@GetMapping(value = "/niveaux-etudes")
+	public ResponseEntity getListeNiveauEdute()  {
+		List<NiveauEtudeDTO> niveauEtudes = referentielService.getListNiveauEtude();
+		return ResponseEntity.ok(niveauEtudes);
+
+	}
+
+	@GetMapping(value = "/niveaux-etudes/{id}")
+	public ResponseEntity getNiveauEdute(@PathVariable Long id){
+		try {
+			NiveauEtudeDTO niveauEtude = referentielService.getNiveauEtude(id);
+			return ResponseEntity.ok(niveauEtude);
+		} catch (ReferentielException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }
