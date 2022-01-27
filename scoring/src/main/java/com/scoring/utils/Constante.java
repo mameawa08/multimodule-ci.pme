@@ -20,11 +20,12 @@ public class Constante {
     public static final String P7                                   = "P7";
 
     public static final int ETAT_DEMANDE_BROUILLON                  = 1;
-    public static final int ETAT_DEMANDE_ENVOYE                     = 2;
+    public static final int ETAT_DEMANDE_ENVOYEE                    = 2;
     public static final int ETAT_DEMANDE_EN_COURS                   = 3;
-    public static final int ETAT_DEMANDE_REJETE                 	= 4;
+    public static final int ETAT_DEMANDE_REJETEE                    = 4;
     public static final int ETAT_DEMANDE_PROVISOIRE                 = 5;
-    public static final int ETAT_DEMANDE_CLOTURE                	= 6;
+    public static final int ETAT_DEMANDE_CLOTUREE                   = 6;
+    public static final int ETAT_DEMANDE_ANNULEE                    = 7;
 
 
     public static final Long PROFIL_EXPERT_PME                      = 4L;

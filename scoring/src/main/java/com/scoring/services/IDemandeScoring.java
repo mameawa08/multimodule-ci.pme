@@ -4,6 +4,7 @@ import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.payloads.DemandePayload;
 import com.scoring.payloads.RapportPayload;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -33,10 +34,8 @@ public interface IDemandeScoring {
 
     DemandeScoringDTO getDemandeLastClosed(Long idEntreprise);
 
-	String getLibelleStatutDemande(int statut);
-
 	DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException;
 
-	
 
+    DemandeScoringDTO getUserDemandeOuverte(Long idUser);
 }

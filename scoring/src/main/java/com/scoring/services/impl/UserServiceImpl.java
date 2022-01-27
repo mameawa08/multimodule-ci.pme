@@ -73,7 +73,16 @@ public class UserServiceImpl implements IUserService {
         return  resp.getBody();
     }
 
-//    Private Methods
+    @Override
+    public UserDTO getUserById(Long idUser) {
+        HttpHeaders headers = getHttpHeaders();
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<UserDTO>resp = rt.exchange(baseUrl + "/auth/users/" + idUser, HttpMethod.GET, entity, new ParameterizedTypeReference<UserDTO>(){});
+        return  resp.getBody();
+    }
+
+    //    Private Methods
     private HttpHeaders getHttpHeaders() {
         OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
 

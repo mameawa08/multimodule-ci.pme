@@ -1,6 +1,10 @@
 package com.scoring.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,6 +16,7 @@ public class DateUtils {
 	private static final int DAY = 24 * HOUR;
 	private static final Long MONTH = 31 * Long.valueOf(DAY);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat dateFormatWithDash = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public static String formatDate(Date date) {
@@ -80,4 +85,21 @@ public class DateUtils {
 		Long duree=new Date(date2.getTime()-date1.getTime()).getTime();
 		return duree;
 	}
+
+	public static Date parseDate(String date){
+		try {
+			return dateFormatWithDash.parse(date);
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public static LocalDate toLocalDate(Date date){
+    	return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public static int getAge(Date date){
+    	return Period.between(toLocalDate(date), LocalDate.now()).getYears();
+	}
+
 }

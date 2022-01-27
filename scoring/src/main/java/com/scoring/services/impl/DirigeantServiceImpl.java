@@ -16,6 +16,7 @@ import com.scoring.repository.DirigeantRepository;
 import com.scoring.services.IDirigeantService;
 
 import com.scoring.services.IEntrepriseService;
+import com.scoring.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +104,9 @@ public class DirigeantServiceImpl implements IDirigeantService {
 
 		if(payload.getEntreprise() == 0)
 			throw new DirigeantException("L'entreprise est obligatoire.");
+
+		if (DateUtils.getAge(DateUtils.parseDate(payload.getDate())) < 18)
+			throw new DirigeantException("Le dirigeant doit avoir au moins 18 ans.");
 
 		dirigeant = payloadToDTO.createDirigeant(payload);
 		dirigeant.setActif(true);

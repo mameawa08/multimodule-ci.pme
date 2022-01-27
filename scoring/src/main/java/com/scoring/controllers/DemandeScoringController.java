@@ -19,6 +19,8 @@ import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.payloads.DemandePayload;
 import com.scoring.services.IDemandeScoring;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -150,5 +152,11 @@ public class DemandeScoringController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@GetMapping(value="/users/{idUser}")
+	public ResponseEntity getUserDemandeOuverte(@PathVariable Long idUser){
+		return ResponseEntity.ok(demandeScoringService.getUserDemandeOuverte(idUser));
+	}
+	
 
 }

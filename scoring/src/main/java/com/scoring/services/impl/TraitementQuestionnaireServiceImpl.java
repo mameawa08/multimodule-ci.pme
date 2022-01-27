@@ -98,6 +98,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			entrepriseDTO.setEligible(false);
 			DirigeantDTO dirigeantDTO = dtoFactory.createDirigeant(dirigeantRepository.findDirigeantByEntreprise(entrepriseDTO.getId()));
 			iMailService.sendNotification(dirigeantDTO);
+//			set demande status to 'elimine'
+			demandeDTO.setStatus(Constante.ETAT_DEMANDE_ANNULEE);
 		}else
 			entrepriseDTO.setEligible(true);
 		if(demandeDTO!=null) 

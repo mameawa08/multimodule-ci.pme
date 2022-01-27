@@ -352,6 +352,7 @@ public class DTOFactory {
 		dto.setRepEli(demandeScoring.isRepEli());
 		dto.setIndicateurAjoute(demandeScoring.isIndicateurAjoute());
 		dto.setRepQuali(demandeScoring.isRepQuali());
+		dto.setLibelleStatut(getLibelleStatutDemande(demandeScoring.getStatus()));
 		return dto;
 	}
 	
@@ -360,6 +361,35 @@ public class DTOFactory {
 			return new ArrayList<>();
 
 		return demandes.stream().map(this::createDemandeScoring).collect(Collectors.toList());
+	}
+
+	public String getLibelleStatutDemande(int statut) {
+		String libelle="";
+		switch(statut)
+		{
+			case 1:
+				libelle="Brouillon";
+				break;
+			case 2:
+				libelle="Envoyée";
+				break;
+			case 3:
+				libelle="En cours";
+				break;
+			case 4:
+				libelle="Rejetée";
+				break;
+			case 5:
+				libelle="Provisoire";
+				break;
+			case 6:
+				libelle="Clôturée";
+				break;
+			case 7:
+				libelle = "Annulée";
+				break;
+		}
+		return libelle;
 	}
 
 	

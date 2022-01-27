@@ -61,7 +61,6 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	@Autowired
 	private EntrepriseRepository entrepriseRepository;
 
-
 	@Override
     public List<DemandeScoringDTO> getDemandes() throws DemandeException {
     	List<DemandeScoring> demandes = demandeScoringRepository.findAllByOrderByIdDesc();
@@ -79,7 +78,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		try {
 			EntrepriseDTO entreprise = entrepriseService.getEntreprise(idEntreprise);
 
-			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTURE, Constante.ETAT_DEMANDE_REJETE));
+			DemandeScoring demandeScoring = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTUREE, Constante.ETAT_DEMANDE_REJETEE, Constante.ETAT_DEMANDE_ANNULEE));
 			if (demandeScoring != null){
 				throw new DemandeException("Une demande de scoring est deja en cours.");
 			}
@@ -101,7 +100,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	public boolean envoyerDemande(Long id) throws DemandeException{
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DecodingException("Demande scoring :: "+id+" not found."));
         try {
-            demande.setStatus(Constante.ETAT_DEMANDE_ENVOYE);
+            demande.setStatus(Constante.ETAT_DEMANDE_ENVOYEE);
             demande.setDateEnvoie(new Date());
             demandeScoringRepository.save(demande);
             List<UserDTO> users = userService.getUsersByProfil(Constante.PROFIL_EXPERT_PME);
@@ -133,7 +132,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
         try{
         	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS)
-        		demande.setStatus(Constante.ETAT_DEMANDE_REJETE);
+        		demande.setStatus(Constante.ETAT_DEMANDE_REJETEE);
         	demande.setMotif_rejet(demandePayload.getMotif_rejet());
         	demandeScoringRepository.save(demande);
 
@@ -170,14 +169,13 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     	DemandeScoring demande = demandeScoringRepository.findDemandeByStatus(idEntreprise, statutDemande);
 		return dtoFactory.createDemandeScoring(demande);
 	}
-    
 
     @Override
     public boolean cloturerDemande(Long id) throws DemandeException {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
         try{
         	if(demande.getStatus()==Constante.ETAT_DEMANDE_PROVISOIRE){
-        		demande.setStatus(Constante.ETAT_DEMANDE_CLOTURE);
+        		demande.setStatus(Constante.ETAT_DEMANDE_CLOTUREE);
                 demande.setRapportGenere(true);
             }
 
@@ -195,26 +193,17 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 		}
     }
 
-
     @Override
 	public DemandeScoringDTO getDemandeNonClotureParEntreprise(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeNonClotureParEntreprise(idEntreprise);
-    	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
-		if(dto != null){
-    		dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
-		}
-		return dto;
-	}
+    	return dtoFactory.createDemandeScoring(demande);
 
+	}
 
 	@Override
 	public DemandeScoringDTO getDemandeOuverte(Long idEntreprise) {
-		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTURE, Constante.ETAT_DEMANDE_REJETE));
-		DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
-		if(dto != null){
-			dto.setLibelleStatut(getLibelleStatutDemande(demande.getStatus()));
-		}
-		return dto;
+		DemandeScoring demande = demandeScoringRepository.findByEntreprise_IdAndStatusNotIn(idEntreprise, Arrays.asList(Constante.ETAT_DEMANDE_CLOTUREE, Constante.ETAT_DEMANDE_REJETEE, Constante.ETAT_DEMANDE_ANNULEE));
+		return dtoFactory.createDemandeScoring(demande);
 	}
 
     @Override
@@ -224,37 +213,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     }
     
     @Override
-    public String getLibelleStatutDemande(int statut) {
-       String libelle="";
-       switch(statut)
-       {
-       case 1:
-    	   libelle="Brouillon";
-    	   break;
-       case 2:
-    	   libelle="Envoyée";
-    	   break;
-       case 3:
-    	   libelle="En cours";
-    	   break;
-       case 4:
-    	   libelle="Rejetée";
-    	   break;
-       case 5:
-    	   libelle="Provisoire";
-    	   break;
-       case 6:
-    	   libelle="Clôturée";
-       }
-       return libelle;
-    }
-    
-    @Override
     public DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException {
     	DemandeScoring demande = demandeScoringRepository.findDemandeEnvoyee(idEntreprise);
     	DemandeScoringDTO dto = dtoFactory.createDemandeScoring(demande);
     	if(dto!=null){
-    		dto.setLibelleStatut(getLibelleStatutDemande(dto.getStatus()));
     		ScoresParPMEDTO scoreDTO = null;
 			try {
 				scoreDTO = calculScoreService.getScoreFinal(dto.getId());
@@ -267,4 +229,11 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     	}
         return dto;
     }
+
+	@Override
+	public DemandeScoringDTO getUserDemandeOuverte(Long idUser) {
+		UserDTO user = userService.getUserById(idUser);
+		return getDemandeOuverte(user.getEntrepriseId());
+	}
 }
+

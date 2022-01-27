@@ -2,6 +2,7 @@ package com.scoring.services;
 
 
 import com.scoring.config.AccessTokenDetails;
+import com.scoring.dto.DemandeScoringDTO;
 import com.scoring.dto.UserDTO;
 import com.scoring.exceptions.UserException;
 
@@ -14,4 +15,7 @@ public interface IUserService {
     AccessTokenDetails getConnectedUser();
 
     List<UserDTO> getUsersByProfil(Long id) throws UserException;
+
+    UserDTO getUserById(Long idUser);
+
 }
