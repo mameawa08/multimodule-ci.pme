@@ -146,6 +146,24 @@ public class UserServiceImpl implements IUserService{
 		}
 	}
 
+	@Override
+	public boolean deleteUser(Long id) throws UserException{
+		User user = userRepository.findById(id).orElseThrow(() -> new UserException("User :: "+id+" not found."));
+		try {
+			if(user.getProfil().getId().equals(Constante.ROLE_ENTR)){
+				DemandeScoringDTO demande = scoringConnectService.getUserDemande(user.getId());
+				if((demande != null && demande.getStatus() > 1)){
+					throw new UserException("Impossible de supprimer l'utilisateur :: une demande de scoring est en cours.");
+				}
+			}
+			user.setActif(-1);
+			userRepository.save(user);
+			return true;
+		} catch (Exception e) {
+			throw new  UserException(e.getMessage());
+		}
+	}
+
 	//Private methodes
 	@Override
     public boolean validatePassword(String password) {

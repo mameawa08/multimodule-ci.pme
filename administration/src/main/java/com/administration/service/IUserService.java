@@ -21,7 +21,9 @@ public interface IUserService {
 
 	public UserDTO findUserByEmail(String email);
 
-	public boolean validatePassword(String password);
+    boolean deleteUser(Long id) throws UserException;
+
+    public boolean validatePassword(String password);
 
 	public void updatePassword(Long id, UpdatePasswordBody updatePasswordBody) throws UserException;
 
