@@ -428,7 +428,7 @@ public class UserServiceImpl implements IUserService{
 
 	private void validateEmail(String email, Long id) throws UserException {
 		if(id == null){
-			Optional<User> user = userRepository.findByEmail(email);
+			Optional<User> user = userRepository.findByEmailAndActifIsNot(email, -1);
 			if(user.isPresent()){
 				throw new UserException("L'email <"+email+"> est déjà associé à un compte.");
 			}

@@ -65,7 +65,7 @@ public class AuthController {
     // @Operation(summary = "Send reset password mail", description = "Send a link to reset a password", tags = {"auth"})
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotBody forgotBody,  HttpServletRequest request) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
         try {
-            User user = userRepository.findByEmailOrUsername(forgotBody.getEmailOrUsername(), forgotBody.getEmailOrUsername())
+            User user = userRepository.findByEmailAndActifNot(forgotBody.getEmailOrUsername(),  -1)
                 .orElseThrow(() -> new UserException("User doesn't exist."));
             UserDTO userDTO = dtoFactory.createUser(user);
 
@@ -155,7 +155,7 @@ public class AuthController {
     // @Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "User infos", description = "Return connected user informations", tags = {"auth"})
     public ResponseEntity<?> me(Principal principal){
         try {
-            User user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UserException("User not found."));
+            User user = userRepository.findByUsernameAndActifIsNot(principal.getName(), -1).orElseThrow(() -> new UserException("User not found."));
 
             UserDTO userDTO = dtoFactory.createUser(user);
 
@@ -163,7 +163,7 @@ public class AuthController {
                 "INNER JOIN habilitation_par_profil hp ON h.id = hp.habilitation_id " +
                 "INNER JOIN profils r ON r.profil_id = hp.role_id " +
                 "INNER JOIN users u ON u.profil_id = r.profil_id " +
-                "WHERE u.username = ?";
+                "WHERE u.username = ? and u.actif != -1";
 
             List<String> habilitations = jdbcTemplate.queryForList(sql, new String[]{user.getUsername()}, String.class);
 

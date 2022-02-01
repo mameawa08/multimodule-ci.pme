@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(s).orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + s));
+        User user = userRepository.findByUsernameAndActifIsNot(s, -1).orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + s));
         UserDetailsImpl userDetails = new UserDetailsImpl();
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 "INNER JOIN habilitation_par_profil hp ON h.id = hp.habilitation_id " +
                 "INNER JOIN profils r ON r.profil_id = hp.role_id " +
                 "INNER JOIN users u ON u.profil_id = r.profil_id " +
-                "WHERE u.username = ?";
+                "WHERE u.username = ? and u.actif != -1";
 //                "INNER JOIN users u ON ur.user_id = u.user_id " +
 
         List<String> strings = jdbcTemplate.queryForList(sql, new String[]{s}, String.class);
