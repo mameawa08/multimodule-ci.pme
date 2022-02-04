@@ -61,7 +61,7 @@ public class ReponseServiceImpl implements IReponseService {
 			throw new Exception("La classe de la réponse est obligatoire !");
 		}
 		if (reponsePayload.getIdQuestion() == null) {
-			throw new Exception("Veuillez choisir une question à rattacher à cette réponse !");
+			throw new Exception("Veuillez choisir une questionEligibilite à rattacher à cette réponse !");
 		}
 		
 		ReponseQualitativeDTO reponseDTO = new ReponseQualitativeDTO();

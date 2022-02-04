@@ -91,7 +91,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	public QuestionDTO createQuestion(QuestionPayload questionPayload) throws Exception {
 		int nbre;
 		if (questionPayload.getLibelle() == null || questionPayload.getLibelle().equals("")) {
-			throw new Exception("Le libellé de la question est obligatoire !");
+			throw new Exception("Le libellé de la questionEligibilite est obligatoire !");
 		}
 		QuestionDTO questionDTO = new QuestionDTO();
 		questionDTO.setId(questionPayload.getId());
@@ -127,7 +127,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	public boolean deleteQuestion(Long idQuestion) throws Exception {
 		try {
 			if (idQuestion == null) {
-				throw new Exception("La question à supprimer est nulle !");
+				throw new Exception("La questionEligibilite à supprimer est nulle !");
 			}
 			Question q = questionRepository.findById(idQuestion).orElseThrow(()-> new Exception("Not found."));
 			if (q != null){

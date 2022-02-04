@@ -10,8 +10,8 @@ INSERT INTO habilitations(id, code, libelle) VALUES (1, 'VOIR_PARAM', 'Voir list
 INSERT INTO habilitations(id, code, libelle) VALUES (2, 'CREER_PARAM', 'Créer un paramètre');
 INSERT INTO habilitations(id, code, libelle) VALUES (3, 'SUP_PARAM', 'Supprimer un Paramètre');
 INSERT INTO habilitations(id, code, libelle) VALUES (4, 'VOIR_QUEST', 'Voir liste des questions');
-INSERT INTO habilitations(id, code, libelle) VALUES (5, 'CREER_QUEST', 'Créer une question');
-INSERT INTO habilitations(id, code, libelle) VALUES (6, 'SUP_QUEST', 'Supprimer une question');
+INSERT INTO habilitations(id, code, libelle) VALUES (5, 'CREER_QUEST', 'Créer une questionEligibilite');
+INSERT INTO habilitations(id, code, libelle) VALUES (6, 'SUP_QUEST', 'Supprimer une questionEligibilite');
 INSERT INTO habilitations(id, code, libelle) VALUES (7, 'VOIR_REP', 'Voir liste des reponses');
 INSERT INTO habilitations(id, code, libelle) VALUES (8, 'CREER_REP', 'Créer une reponse');
 INSERT INTO habilitations(id, code, libelle) VALUES (9, 'SUP_REP', 'Supprimer une reponse');
