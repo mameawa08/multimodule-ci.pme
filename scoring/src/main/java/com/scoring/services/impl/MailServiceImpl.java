@@ -50,10 +50,11 @@ public class MailServiceImpl implements IMailService {
 	private InternetAddress from;
 
 	@Async
-	public void sendNotification(DirigeantDTO dirigeantDTO) throws Exception {
+	public void sendNotification(DirigeantDTO dirigeantDTO, String msg) throws Exception {
 		MimeMessage message = sender.createMimeMessage();
 		Map<String, Object> model = new HashMap();
 		model.put("url", url);
+		model.put("text", msg);
 		model.put("date", formatDateNormal(new Date()));
 		String text = feedTemplate(model, "templates/velocity/notification.ftl");
 	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getRaisonSociale());

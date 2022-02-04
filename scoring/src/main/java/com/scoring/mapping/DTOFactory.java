@@ -387,6 +387,9 @@ public class DTOFactory {
 			case 4:
 				libelle = Constante.LIBELLE_STATUT_ANNULEE;
 				break;
+			case 5:
+				libelle = Constante.LIBELLE_STATUT_CLOTUREE;
+				break;
 		}
 		dto.setLibelleStatut(libelle);
 		dto.setQuestionnaireAjoute(demande.isQuestionnaireAjoute());

@@ -17,5 +17,7 @@ public interface IDemandeAccompagnementService {
 
     DemandeAccompagnementDTO receptionnerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException;
 
-    DemandeAccompagnementDTO annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException;
+    boolean annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException;
+
+    boolean closeDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException;
 }

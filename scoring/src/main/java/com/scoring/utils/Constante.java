@@ -41,10 +41,12 @@ public class Constante {
     public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_ENVOYEE           = 2;
     public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE      = 3;
     public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_ANNULEE           = 4;
+    public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_CLOTUREE          = 5;
 
     public static final String LIBELLE_STATUT_BROUILLON                     = "Brouillon";
     public static final String LIBELLE_STATUT_ENVOYEE                       = "Envoyée";
     public static final String LIBELLE_STATUT_RECEPTIONNEE                  = "Réceptionnée";
     public static final String LIBELLE_STATUT_ANNULEE                       = "Annulée";
+    public static final String LIBELLE_STATUT_CLOTUREE                      = "Cloturée";
 
 }

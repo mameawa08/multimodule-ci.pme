@@ -48,11 +48,11 @@ public class DemandeAccompagnementController {
         }
     }
 
-    @RequestMapping(path = "/{idDemandeAccompagnement}/annuler", method = {RequestMethod.PATCH, RequestMethod.PUT})
+    @DeleteMapping(path = "/{idDemandeAccompagnement}")
     private ResponseEntity annulerDemandeAccompagnement(@PathVariable Long idDemandeAccompagnement){
         try {
-            DemandeAccompagnementDTO demande = demandeAccompagnementService.annulerDemandeAccompagnement(idDemandeAccompagnement);
-            return ResponseEntity.ok(demande);
+            boolean rs = demandeAccompagnementService.annulerDemandeAccompagnement(idDemandeAccompagnement);
+            return ResponseEntity.ok(rs);
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

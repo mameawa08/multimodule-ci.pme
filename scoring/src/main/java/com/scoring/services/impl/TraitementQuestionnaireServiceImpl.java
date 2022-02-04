@@ -87,16 +87,20 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 				sendMail=false;
 			listReponseParPME.add(reponse_par_PME);
 		}
+		DirigeantDTO dirigeantDTO = dtoFactory.createDirigeant(dirigeantRepository.findDirigeantByEntreprise(entrepriseDTO.getId()));
 		if(sendMail==false){
 			entrepriseDTO.setEligible(false);
-			DirigeantDTO dirigeantDTO = dtoFactory.createDirigeant(dirigeantRepository.findDirigeantByEntreprise(entrepriseDTO.getId()));
-			iMailService.sendNotification(dirigeantDTO);
+			iMailService.sendNotification(dirigeantDTO, "Votre entreprise n'est pas éligible !");
 //			set demande status to 'elimine'
 			demandeDTO.setStatus(Constante.ETAT_DEMANDE_ANNULEE);
 			demandeDTO.setMotif("PME non éligible");
-		}else
+		}
+		else{
 			entrepriseDTO.setEligible(true);
-		if(demandeDTO!=null) 
+			iMailService.sendNotification(dirigeantDTO, "Votre entreprise est éligible !");
+
+		}
+		if(demandeDTO!=null)
 			demandeDTO.setRepEli(true);
 		
 		Entreprise entreprise = modelFactory.createEntreprise(entrepriseDTO);

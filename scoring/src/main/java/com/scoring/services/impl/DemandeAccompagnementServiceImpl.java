@@ -4,8 +4,10 @@ import com.scoring.dto.DemandeAccompagnementDTO;
 import com.scoring.exceptions.DemandeAccompagnementException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
+import com.scoring.models.AccompagnementAEligibilte;
 import com.scoring.models.DemandeAccompagnement;
 import com.scoring.models.DemandeScoring;
+import com.scoring.repository.AccompagnementAEligibiliteRepository;
 import com.scoring.repository.DemandeAccompagnementRepository;
 import com.scoring.repository.DemandeScoringRepository;
 import com.scoring.services.IDemandeAccompagnementService;
@@ -30,6 +32,9 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
 
     @Autowired
     private ModelFactory modelFactory;
+
+    @Autowired
+    private AccompagnementAEligibiliteRepository accompagnementAEligibiliteRepository;
 
     @Override
     public DemandeAccompagnementDTO getDemandeAccompagnementByDemandeScoring(Long demandeScoring){
@@ -89,13 +94,26 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
     }
 
     @Override
-    public DemandeAccompagnementDTO annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+    public boolean annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
-        if(demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_BROUILLON){
-            demandeAccompagnement.setStatus(Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ANNULEE);
+        List<AccompagnementAEligibilte> aEligibiltes = accompagnementAEligibiliteRepository.findByDemandeAccompagnement_Id(idDemandeAccompagnement);
+
+        accompagnementAEligibiliteRepository.deleteAll(aEligibiltes);
+        demandeAccompagnementRepository.delete(demandeAccompagnement);
+
+        return true;
+    }
+
+    @Override
+    public boolean closeDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+        DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
+        if(demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE){
+            demandeAccompagnement.setStatus(Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_CLOTUREE);
+            demandeAccompagnement.setDateReception(new Date());
             demandeAccompagnementRepository.saveAndFlush(demandeAccompagnement);
         }
-        return dtoFactory.createDemandeAccompagnement(demandeAccompagnement);
+
+        return true;
     }
 
 
