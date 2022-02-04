@@ -1,6 +1,9 @@
 package com.scoring.controllers;
 
+import com.scoring.dto.AccompagnementAEligibilteDTO;
+import com.scoring.dto.QuestionDTO;
 import com.scoring.dto.ScoreEntrepriseParParametreDTO;
+import com.scoring.payloads.AccompagnementPayload;
 import com.scoring.payloads.QuestionnaireQualitatifPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,12 @@ import com.scoring.dto.ReponseParPMEDTO;
 import com.scoring.models.ReponseParPME;
 import com.scoring.payloads.QuestionnaireEliPayload;
 import com.scoring.services.ITraitementQuestionnaireService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 
 @RestController
@@ -71,5 +80,26 @@ public class TraitementQuestionnaireController {
 		}
 	}
 
+	@GetMapping(value="/liste-questions-non-reponses/{idDemandeScoring}")
+	public  ResponseEntity getListeQuestionEligibiliteNonReponse(@PathVariable Long  idDemandeScoring){
+		List<QuestionDTO> reponses = traitementQuestionnaireService.getListReponseQuestionEligibiliteNon(idDemandeScoring);
+		return ResponseEntity.ok(reponses);
+	}
+	
+	@PostMapping(value="/accompagnement")
+	public  ResponseEntity traiterQuestionnaireAccompagnement(@RequestBody AccompagnementPayload payload) {
+		try {
+		    boolean rs = traitementQuestionnaireService.traiterQuestionnaireAccompagnement(payload);
+		    return ResponseEntity.ok(rs);
+        }
+		catch (Exception e){
+		    return ResponseEntity.badRequest().body(e.getMessage());
+        }
+	}
 
+	@GetMapping("/liste-reponses/accompagnement/{idDemandeAccompagnement}")
+	public ResponseEntity getReponseAccompagnement(@PathVariable Long idDemandeAccompagnement){
+	    List<AccompagnementAEligibilteDTO> aEligibilteDTOS = traitementQuestionnaireService.getReponseAccompagnement(idDemandeAccompagnement);
+	    return ResponseEntity.ok(aEligibilteDTOS);
+    }
 }

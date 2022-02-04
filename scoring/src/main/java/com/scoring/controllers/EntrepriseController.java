@@ -2,6 +2,8 @@ package com.scoring.controllers;
 
 import java.util.List;
 
+import com.scoring.dto.DemandeAccompagnementDTO;
+import com.scoring.services.IDemandeAccompagnementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,9 @@ public class EntrepriseController {
 
 	@Autowired
 	private IPieceJointeService pieceJointeService;
+
+	@Autowired
+	private IDemandeAccompagnementService demandeAccompagnementService;
 
 	@GetMapping("")
 	public ResponseEntity<?> all() {
@@ -115,6 +120,12 @@ public class EntrepriseController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+
+	@GetMapping(path = "/{idEntreprise}/demandes-accompagnements")
+	private ResponseEntity getDemandeAccompagnements(@PathVariable Long idEntreprise){
+		List<DemandeAccompagnementDTO> demandes = demandeAccompagnementService.getDemandeAccompagnementByEntreprise(idEntreprise);
+		return ResponseEntity.ok(demandes);
 	}
 
 

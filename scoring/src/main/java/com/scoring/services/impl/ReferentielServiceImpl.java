@@ -65,8 +65,12 @@ public class ReferentielServiceImpl implements IReferentielService {
     
     @Override
    	public QuestionDTO getQuestionById(Long idQuestion) throws Exception {
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity entity = new HttpEntity(headers);
+
    		ResponseEntity<QuestionDTO> resp = 
-   				rt.exchange(baseUrl+"/questions/"+idQuestion, HttpMethod.GET, null, QuestionDTO.class);
+   				rt.exchange(baseUrl+"/questions/"+idQuestion, HttpMethod.GET, entity, QuestionDTO.class);
    		return resp.getBody();
    	}
 

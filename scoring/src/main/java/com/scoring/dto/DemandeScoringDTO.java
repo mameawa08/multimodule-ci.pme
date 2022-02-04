@@ -19,7 +19,7 @@ public class DemandeScoringDTO {
   
     private int status;
    
-    private String motif_rejet;
+    private String motif;
 
     private Date dateEnvoie;
 

@@ -17,6 +17,7 @@ import com.scoring.models.ScoresParPME;
 import com.scoring.models.ValeurRatio;
 import com.scoring.models.*;
 import com.scoring.services.IReferentielService;
+import com.scoring.utils.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -192,7 +193,7 @@ public class DTOFactory {
 			return null;
 		ReponseParPMEDTO dto = new ReponseParPMEDTO();
 		dto.setId(reponse.getId());
-		dto.setReponse_eligibilite(reponse.isReponse_eligibilite());
+		dto.setReponse_eligibilite(reponse.isReponseEligibilite());
 		dto.setDemandeScoringDTO(createDemandeScoring(reponse.getDemandeScoring()));
 		dto.setIdQuestion(reponse.getIdQuestion());
 		dto.setId_reponse_quali(reponse.getId_reponse_quali());
@@ -342,7 +343,7 @@ public class DTOFactory {
 			return null;
 		DemandeScoringDTO dto = new DemandeScoringDTO();
 		dto.setId(demandeScoring.getId());
-		dto.setMotif_rejet(demandeScoring.getMotif_rejet());
+		dto.setMotif(demandeScoring.getMotif());
 		dto.setStatus(demandeScoring.getStatus());
 		dto.setEntrepriseDTO(createEntreprise(demandeScoring.getEntreprise()));
 		dto.setDateEnvoie(demandeScoring.getDateEnvoie());
@@ -363,7 +364,62 @@ public class DTOFactory {
 		return demandes.stream().map(this::createDemandeScoring).collect(Collectors.toList());
 	}
 
-	public String getLibelleStatutDemande(int statut) {
+	public DemandeAccompagnementDTO createDemandeAccompagnement(DemandeAccompagnement demande){
+		if(demande == null) return null;
+		DemandeAccompagnementDTO dto = new DemandeAccompagnementDTO();
+		dto.setId(demande.getId());
+		dto.setDateCreation(demande.getDateCreation());
+		dto.setDemandeScoring(createDemandeScoring(demande.getDemandeScoring()));
+		dto.setStatus(demande.getStatus());
+		dto.setDateEnvoi(demande.getDateEnvoi());
+		dto.setDateReception(demande.getDateReception());
+		String libelle = "";
+		switch (demande.getStatus()){
+			case 1:
+				libelle = Constante.LIBELLE_STATUT_BROUILLON;
+				break;
+			case 2:
+				libelle = Constante.LIBELLE_STATUT_ENVOYEE;
+				break;
+			case 3:
+				libelle = Constante.LIBELLE_STATUT_RECEPTIONNEE;
+				break;
+			case 4:
+				libelle = Constante.LIBELLE_STATUT_ANNULEE;
+				break;
+		}
+		dto.setLibelleStatut(libelle);
+		dto.setQuestionnaireAjoute(demande.isQuestionnaireAjoute());
+		return dto;
+	}
+
+	public List<DemandeAccompagnementDTO> createListDemandeAccompagnement(List<DemandeAccompagnement> demandes){
+		if (demandes == null || demandes.size() == 0)
+			return new ArrayList<>();
+
+		return demandes.stream().map(this::createDemandeAccompagnement).collect(Collectors.toList());
+	}
+
+	public AccompagnementAEligibilteDTO createAccompagnementAEligibilte(AccompagnementAEligibilte accompagnement){
+		if (accompagnement == null) return null;
+
+		AccompagnementAEligibilteDTO dto = new AccompagnementAEligibilteDTO();
+		dto.setId(accompagnement.getId());
+		dto.setAccompagnement(accompagnement.getAccompagnement());
+		dto.setQuestionEligibilite(accompagnement.getQuestionEligibilite());
+		dto.setDemandeAccompagnement(createDemandeAccompagnement(accompagnement.getDemandeAccompagnement()));
+
+		return dto;
+	}
+
+	public List<AccompagnementAEligibilteDTO> createListAccompagnementAEligibilte(List<AccompagnementAEligibilte> accompagnements){
+		if (accompagnements == null || accompagnements.size() == 0)
+			return new ArrayList<>();
+		return accompagnements.stream().map(this::createAccompagnementAEligibilte).collect(Collectors.toList());
+	}
+
+//	Privates Methods
+	private String getLibelleStatutDemande(int statut) {
 		String libelle="";
 		switch(statut)
 		{

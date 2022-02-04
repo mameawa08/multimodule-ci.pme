@@ -37,4 +37,14 @@ public class Constante {
     public static final int SCORE_NE_SAIS_PAS                       = 0;
 
 
+    public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_BROUILLON         = 1;
+    public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_ENVOYEE           = 2;
+    public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE      = 3;
+    public static final int STATUT_DEMANDE_ACCOMPAGNEMENT_ANNULEE           = 4;
+
+    public static final String LIBELLE_STATUT_BROUILLON                     = "Brouillon";
+    public static final String LIBELLE_STATUT_ENVOYEE                       = "Envoyée";
+    public static final String LIBELLE_STATUT_RECEPTIONNEE                  = "Réceptionnée";
+    public static final String LIBELLE_STATUT_ANNULEE                       = "Annulée";
+
 }

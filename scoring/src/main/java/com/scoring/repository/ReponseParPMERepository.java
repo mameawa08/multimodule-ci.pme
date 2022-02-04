@@ -26,4 +26,6 @@ public interface ReponseParPMERepository extends JpaRepository<ReponseParPME, Lo
 
     @Query("SELECT r FROM ReponseParPME r WHERE r.demandeScoring.id = :idDemande AND r.id_reponse_quali IS NOT NULL")
     List<ReponseParPME> findReponseParPMEQualitatifByDemande(Long idDemande);
+
+    List<ReponseParPME> findByDemandeScoring_IdAndReponseEligibilite(Long idDemande, boolean reponse);
 }

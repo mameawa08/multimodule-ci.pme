@@ -45,7 +45,7 @@ public class DemandeScoring implements Serializable {
     private int status;
     
     @Type(type="text")
-    private String motif_rejet;
+    private String motif;
 
     @Column(nullable = true)
     private Date dateEnvoie;

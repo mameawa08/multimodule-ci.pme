@@ -35,7 +35,7 @@ public class ReponseParPME implements Serializable {
     private Long id;
 	
 	@Column(nullable=true)
-	private boolean reponse_eligibilite;
+	private boolean reponseEligibilite;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_demande")

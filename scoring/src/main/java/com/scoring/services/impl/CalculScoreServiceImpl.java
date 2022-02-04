@@ -374,7 +374,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			List<Integer> scores = new ArrayList<>();
 			int total = 0;
 			for (ReponseParPME reponse : reponses){
-				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
+				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: questionEligibilite "+reponse.getIdQuestion()+" not found."));
 				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
 				if (parametre.getCode().equals(question.getParametre().getCode())){
 					total += reponseQualitative.getScore();
@@ -393,7 +393,7 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			double total = 0;
 			int nombreQuestion = 0;
 			for (ReponseParPME reponse : reponses){
-				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: question "+reponse.getIdQuestion()+" not found."));
+				Question question = questionRepository.findById(reponse.getIdQuestion()).orElseThrow(() -> new CalculScoreException("Calcul de score :: questionEligibilite "+reponse.getIdQuestion()+" not found."));
 				ReponseQualitative reponseQualitative = reponseQualitativeRepository.findById(reponse.getId_reponse_quali()).orElseThrow(() -> new CalculScoreException("Calcul de score :: reponse "+reponse.getId_reponse_quali()+" not found."));
 				if (parametre.getCode().equals(question.getParametre().getCode()) && !reponseQualitative.getId().equals(Constante.REPONSE_NE_SAPPLIQUE_PAS)){
 					total += reponseQualitative.getScore();

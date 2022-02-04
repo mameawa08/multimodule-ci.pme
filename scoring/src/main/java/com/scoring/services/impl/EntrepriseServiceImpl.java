@@ -1,7 +1,9 @@
 package com.scoring.services.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.scoring.config.AccessTokenDetails;
 import com.scoring.dto.DemandeScoringDTO;
@@ -22,6 +24,7 @@ import com.scoring.services.IEntrepriseService;
 
 import com.scoring.services.IReferentielService;
 import com.scoring.services.IUserService;
+import com.scoring.utils.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -144,12 +147,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		List<EntrepriseDTO> entreprisesDTO = new ArrayList<EntrepriseDTO>();
 		for(Entreprise pme : entreprises){
 			DemandeScoringDTO dto = null;
-			try {
-				dto = demandeScoringService.getDemandeEnvoyee(pme.getId());
-			} catch (DemandeException e) {
-				e.printStackTrace();
-			}
-			if(dto!=null){
+			dto = demandeScoringService.getDemandeLastClosed(pme.getId());
+			if(dto!=null && Arrays.asList(Constante.ETAT_DEMANDE_ENVOYEE, Constante.ETAT_DEMANDE_EN_COURS, Constante.ETAT_DEMANDE_PROVISOIRE, Constante.ETAT_DEMANDE_ANNULEE).contains(dto.getStatus())){
 				EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(pme);
 				entrepriseDTO.setDemandeNonCloturee(dto);
 				entreprisesDTO.add(entrepriseDTO);

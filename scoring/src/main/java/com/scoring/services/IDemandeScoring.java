@@ -36,6 +36,7 @@ public interface IDemandeScoring {
 
 	DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException;
 
-
     DemandeScoringDTO getUserDemandeOuverte(Long idUser);
+
+    boolean relancerDemandeScoring(Long id) throws DemandeException;
 }

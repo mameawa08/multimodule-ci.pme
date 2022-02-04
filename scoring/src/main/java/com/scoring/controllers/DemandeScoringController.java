@@ -2,9 +2,11 @@ package com.scoring.controllers;
 
 import java.util.List;
 
+import com.scoring.dto.DemandeAccompagnementDTO;
 import com.scoring.dto.RapportFile;
 import com.scoring.exceptions.FileGenerationException;
 import com.scoring.payloads.RapportPayload;
+import com.scoring.services.IDemandeAccompagnementService;
 import com.scoring.services.IFileGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class DemandeScoringController {
 
 	@Autowired
 	private IFileGenerationService fileGenerationService;
+
+	@Autowired
+	private IDemandeAccompagnementService demandeAccompagnementService;
 
 
 	@GetMapping("")
@@ -157,6 +162,20 @@ public class DemandeScoringController {
 	public ResponseEntity getUserDemandeOuverte(@PathVariable Long idUser){
 		return ResponseEntity.ok(demandeScoringService.getUserDemandeOuverte(idUser));
 	}
-	
 
+	@GetMapping(path = "/{idDemandeScoring}/demandes-accompagnements")
+	private ResponseEntity getDemandeAccompagnement(@PathVariable Long idDemandeScoring){
+		DemandeAccompagnementDTO demande = demandeAccompagnementService.getDemandeAccompagnementByDemandeScoring(idDemandeScoring);
+		return ResponseEntity.ok(demande);
+	}
+
+	@GetMapping("/{id}/relancer")
+	public ResponseEntity relancerDemande(@PathVariable Long id){
+		try {
+			boolean rs = demandeScoringService.relancerDemandeScoring(id);
+			return ResponseEntity.ok(rs);
+		} catch (DemandeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }

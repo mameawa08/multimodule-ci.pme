@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scoring.dto.*;
-import com.scoring.services.ICalculScoreService;
-import com.scoring.services.IDemandeScoring;
+import com.scoring.models.*;
+import com.scoring.payloads.*;
+import com.scoring.repository.*;
+import com.scoring.services.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,24 +15,6 @@ import org.springframework.stereotype.Service;
 import com.scoring.exceptions.TraitementQuestionnaireException;
 import com.scoring.mapping.DTOFactory;
 import com.scoring.mapping.ModelFactory;
-import com.scoring.models.DemandeScoring;
-import com.scoring.models.Entreprise;
-import com.scoring.models.Question;
-import com.scoring.models.ReponseParPME;
-import com.scoring.models.ReponseQualitative;
-import com.scoring.payloads.QuestionnaireEliPayload;
-import com.scoring.payloads.QuestionnaireQualitatifPayload;
-import com.scoring.payloads.ReponseParPMEPayload;
-import com.scoring.payloads.ReponseQualitativePayload;
-import com.scoring.repository.DemandeScoringRepository;
-import com.scoring.repository.DirigeantRepository;
-import com.scoring.repository.EntrepriseRepository;
-import com.scoring.repository.QuestionRepository;
-import com.scoring.repository.ReponseParPMERepository;
-import com.scoring.repository.ReponseQualitativeRepository;
-import com.scoring.services.IEntrepriseService;
-import com.scoring.services.IMailService;
-import com.scoring.services.ITraitementQuestionnaireService;
 import com.scoring.utils.Constante;
 
 @Service
@@ -72,7 +56,16 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	@Autowired
 	private IDemandeScoring demandeScoringService;
 
-	@Override
+	@Autowired
+	private DemandeAccompagnementRepository demandeAccompagnementRepository;
+
+	@Autowired
+	private AccompagnementAEligibiliteRepository accompagnementAEligilibiteRepository;
+
+	@Autowired
+	private IReferentielService referentielService;
+
+    @Override
 	public boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception {
 		List<ReponseParPME> listReponseParPME = new ArrayList<ReponseParPME>();
 		boolean sendMail=true;
@@ -100,6 +93,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			iMailService.sendNotification(dirigeantDTO);
 //			set demande status to 'elimine'
 			demandeDTO.setStatus(Constante.ETAT_DEMANDE_ANNULEE);
+			demandeDTO.setMotif("PME non éligible");
 		}else
 			entrepriseDTO.setEligible(true);
 		if(demandeDTO!=null) 
@@ -115,14 +109,12 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			return false;
 	}
 
-
 	@Override
 	public List<ReponseParPMEDTO> getListeRepQuestEli(Long idDemande) throws Exception {
 		List<ReponseParPME> listReponses = reponseParPMERepository.findRepQuestEliByDemande(idDemande);
 		List<ReponseParPMEDTO> listReponsesDTO = dtoFactory.createListReponseParPME(listReponses);
 		return listReponsesDTO;
 	}
-
 
 	@Override
 	public boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException {
@@ -148,7 +140,6 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 		return true;
 	}
-
 
 	@Override
 	public ScoreEntrepriseParParametreDTO validateQuestionnaireQualitifByParametre(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException {
@@ -200,6 +191,57 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		return dtoFactory.createListReponseParPME(reponses);
 	}
 
+	@Override
+	public List<QuestionDTO> getListReponseQuestionEligibiliteNon(Long idDemande){
+		List<ReponseParPME> reponses = reponseParPMERepository.findByDemandeScoring_IdAndReponseEligibilite(idDemande, false);
+        List<QuestionDTO> questions = new ArrayList<>();
+		try {
+            for (ReponseParPME reponse : reponses){
+                QuestionDTO question = referentielService.getQuestionById(reponse.getIdQuestion());
+                questions.add(question);
+            }
+        }
+		catch (Exception e){
+		    e.printStackTrace();
+        }
+		return questions;
+	}
+
+	@Override
+	public boolean traiterQuestionnaireAccompagnement(AccompagnementPayload payload) throws TraitementQuestionnaireException{
+		DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(payload.getIdDemandeAccompagnement())
+				.orElseThrow(() -> new TraitementQuestionnaireException("Demande accompagnement n'existe pas."));
+		AccompagnementAEligibilte accompagnement;
+		try {
+			for(ReponseAccompagnement reponse : payload.getReponses()){
+				accompagnement = accompagnementAEligilibiteRepository
+						.findByDemandeAccompagnement_IdAndQuestionEligibilite(payload.getIdDemandeAccompagnement(), reponse.getIdQuestion());
+				if(accompagnement == null){
+					accompagnement = new AccompagnementAEligibilte();
+					accompagnement.setDemandeAccompagnement(demandeAccompagnement);
+					accompagnement.setAccompagnement(reponse.getAccompagnement());
+					accompagnement.setQuestionEligibilite(reponse.getIdQuestion());
+				}
+				else{
+					accompagnement.setAccompagnement(reponse.getAccompagnement());
+				}
+				accompagnementAEligilibiteRepository.saveAndFlush(accompagnement);
+
+				demandeAccompagnement.setQuestionnaireAjoute(true);
+				demandeAccompagnementRepository.saveAndFlush(demandeAccompagnement);
+			}
+			return true;
+		}
+		catch (Exception e){
+			throw new TraitementQuestionnaireException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<AccompagnementAEligibilteDTO> getReponseAccompagnement(Long idDemandeAccompagnement){
+    	List<AccompagnementAEligibilte> aEligibiltes = accompagnementAEligilibiteRepository.findByDemandeAccompagnement_Id(idDemandeAccompagnement);
+    	return dtoFactory.createListAccompagnementAEligibilte(aEligibiltes);
+	}
 
 //	Private methods
 	private void saveReponses(Long idDemande, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
@@ -208,8 +250,8 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
 
 		for (ReponseQualitativePayload rep : reps) {
-	//					Get question
-			Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: question "+rep.getIdQuestion()+" not found."));
+	//					Get questionEligibilite
+			Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: questionEligibilite "+rep.getIdQuestion()+" not found."));
 			QuestionDTO questionDTO = dtoFactory.createQuestion(question);
 
 	//					Get Reponse qualitative

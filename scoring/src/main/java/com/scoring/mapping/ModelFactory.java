@@ -85,7 +85,7 @@ public class ModelFactory {
 			return null;
 		ReponseParPME model = new ReponseParPME();
 		model.setId(reponseDTO.getId());
-		model.setReponse_eligibilite(reponseDTO.isReponse_eligibilite());
+		model.setReponseEligibilite(reponseDTO.isReponse_eligibilite());
 		model.setDemandeScoring(createDemandeScoring(reponseDTO.getDemandeScoringDTO()));
 		model.setIdQuestion(reponseDTO.getIdQuestion());
 		model.setId_reponse_quali(reponseDTO.getId_reponse_quali());
@@ -182,9 +182,6 @@ public class ModelFactory {
 
 		return score;
 	}
-	
-	
-
 
 	public ScoreEntrepriseParParametre createScoreEntrepriseParParametre(ScoreEntrepriseParParametreDTO score){
 		if (score == null)
@@ -217,7 +214,7 @@ public class ModelFactory {
 			return null;
 		DemandeScoring demandeScoring = new DemandeScoring();
 		demandeScoring.setId(demandeScoringDTO.getId());
-		demandeScoring.setMotif_rejet(demandeScoringDTO.getMotif_rejet());
+		demandeScoring.setMotif(demandeScoringDTO.getMotif());
 		demandeScoring.setStatus(demandeScoringDTO.getStatus());
 		demandeScoring.setEntreprise(createEntreprise(demandeScoringDTO.getEntrepriseDTO()));
 		demandeScoring.setDateEnvoie(demandeScoringDTO.getDateEnvoie());
@@ -230,5 +227,29 @@ public class ModelFactory {
 		return demandeScoring;
 	}
 
+	public DemandeAccompagnement createDemandeAccompagnement(DemandeAccompagnementDTO demande){
+		if(demande == null) return null;
+		DemandeAccompagnement model = new DemandeAccompagnement();
+		model.setId(demande.getId());
+		model.setDateCreation(demande.getDateCreation());
+		model.setDemandeScoring(createDemandeScoring(demande.getDemandeScoring()));
+		model.setStatus(demande.getStatus());
+		model.setDateEnvoi(demande.getDateEnvoi());
+		model.setDateReception(demande.getDateReception());
+		model.setQuestionnaireAjoute(demande.isQuestionnaireAjoute());
+		return model;
+	}
+
+	public AccompagnementAEligibilte createAccompagnementAEligibilte(AccompagnementAEligibilteDTO accompagnement){
+		if (accompagnement == null) return null;
+
+		AccompagnementAEligibilte model = new AccompagnementAEligibilte();
+		model.setId(accompagnement.getId());
+		model.setAccompagnement(accompagnement.getAccompagnement());
+		model.setQuestionEligibilite(accompagnement.getQuestionEligibilite());
+		model.setDemandeAccompagnement(createDemandeAccompagnement(accompagnement.getDemandeAccompagnement()));
+
+		return model;
+	}
 
 }

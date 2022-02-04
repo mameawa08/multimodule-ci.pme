@@ -133,7 +133,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         try{
         	if(demande.getStatus()==Constante.ETAT_DEMANDE_EN_COURS)
         		demande.setStatus(Constante.ETAT_DEMANDE_REJETEE);
-        	demande.setMotif_rejet(demandePayload.getMotif_rejet());
+        	demande.setMotif(demandePayload.getMotif_rejet());
         	demandeScoringRepository.save(demande);
 
         	Entreprise entreprise = entrepriseRepository.findById(demande.getEntreprise().getId()).orElse(null);
@@ -234,6 +234,21 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	public DemandeScoringDTO getUserDemandeOuverte(Long idUser) {
 		UserDTO user = userService.getUserById(idUser);
 		return getDemandeOuverte(user.getEntrepriseId());
+	}
+
+	@Override
+	public boolean relancerDemandeScoring(Long id) throws DemandeException {
+		DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
+		try{
+			if(demande.getStatus()==Constante.ETAT_DEMANDE_ANNULEE){
+				demande.setStatus(Constante.ETAT_DEMANDE_BROUILLON);
+			}
+			demandeScoringRepository.save(demande);
+			return true;
+		}
+		catch (Exception e){
+			throw new DemandeException(e.getMessage(), e);
+		}
 	}
 }
 
