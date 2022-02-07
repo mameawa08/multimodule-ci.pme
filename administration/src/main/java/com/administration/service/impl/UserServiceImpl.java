@@ -434,7 +434,7 @@ public class UserServiceImpl implements IUserService{
 			}
 		}
 		else{
-			User user = userRepository.findByEmail(email).orElse(null);
+			User user = userRepository.findByEmailAndActifIsNot(email, -1).orElse(null);
 			if (user != null && !user.getId().equals(id)){
 				throw new UserException("L'email <"+email+"> est déjà associé à un compte.");
 			}
