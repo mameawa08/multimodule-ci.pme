@@ -14,6 +14,8 @@ public interface IUserService {
 
     AccessTokenDetails getConnectedUser();
 
+    UserDTO getConnectedUserInfos();
+
     List<UserDTO> getUsersByProfil(Long id) throws UserException;
 
     UserDTO getUserById(Long idUser);

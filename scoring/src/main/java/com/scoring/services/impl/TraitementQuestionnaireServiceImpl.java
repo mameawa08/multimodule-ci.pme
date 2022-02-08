@@ -9,6 +9,7 @@ import com.scoring.payloads.*;
 import com.scoring.repository.*;
 import com.scoring.services.*;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,9 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	@Autowired
 	private IReferentielService referentielService;
 
+	@Autowired
+	private IUserService userService;
+
     @Override
 	public boolean validateQuestionnaireEli(QuestionnaireEliPayload questionnaireEliPayload) throws Exception {
 		List<ReponseParPME> listReponseParPME = new ArrayList<ReponseParPME>();
@@ -88,17 +92,21 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			listReponseParPME.add(reponse_par_PME);
 		}
 		DirigeantDTO dirigeantDTO = dtoFactory.createDirigeant(dirigeantRepository.findDirigeantByEntreprise(entrepriseDTO.getId()));
+        UserDTO connectedUser = userService.getConnectedUserInfos();
+        String message = "";
 		if(sendMail==false){
 			entrepriseDTO.setEligible(false);
-			iMailService.sendNotification(dirigeantDTO, "Votre entreprise n'est pas éligible !");
+            message = "Votre entreprise n'est pas éligible !";
+            sendNotification(dirigeantDTO, connectedUser, message);
+
 //			set demande status to 'elimine'
 			demandeDTO.setStatus(Constante.ETAT_DEMANDE_ANNULEE);
 			demandeDTO.setMotif("PME non éligible");
 		}
 		else{
 			entrepriseDTO.setEligible(true);
-			iMailService.sendNotification(dirigeantDTO, "Votre entreprise est éligible !");
-
+            message = "Votre entreprise est éligible !";
+			sendNotification(dirigeantDTO, connectedUser, message);
 		}
 		if(demandeDTO!=null)
 			demandeDTO.setRepEli(true);
@@ -113,7 +121,7 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 			return false;
 	}
 
-	@Override
+    @Override
 	public List<ReponseParPMEDTO> getListeRepQuestEli(Long idDemande) throws Exception {
 		List<ReponseParPME> listReponses = reponseParPMERepository.findRepQuestEliByDemande(idDemande);
 		List<ReponseParPMEDTO> listReponsesDTO = dtoFactory.createListReponseParPME(listReponses);
@@ -286,4 +294,18 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 		demandeRepository.save(demande);
 	}
 
+    private void sendNotification(DirigeantDTO dirigeantDTO, UserDTO connectedUser, String message) throws Exception {
+        if(dirigeantDTO.getEmail().equals(connectedUser.getEmail())){
+            DestinataireDTO dest = dtoFactory.createDestinataire(dirigeantDTO);
+            iMailService.sendNotification(dest, message);
+        }
+        else {
+            DestinataireDTO dest = dtoFactory.createDestinataire(dirigeantDTO);
+            iMailService.sendNotification(dest, message);
+
+            DestinataireDTO dest1 = dtoFactory.createDestinataire(connectedUser);
+            dest1.setNomEntreprise(dirigeantDTO.getEntreprise().getRaisonSociale());
+            iMailService.sendNotification(dest1, message);
+        }
+    }
 }

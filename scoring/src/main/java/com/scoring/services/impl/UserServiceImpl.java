@@ -51,8 +51,6 @@ public class UserServiceImpl implements IUserService {
             throw new UserException("Erreur lors de l'ajout de l'entreprise.");
     }
 
-
-
     @Override
     public AccessTokenDetails getConnectedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +60,17 @@ public class UserServiceImpl implements IUserService {
             return accessTokenDetails;
         }
         return null;
+    }
+
+    @Override
+    public UserDTO getConnectedUserInfos(){
+        AccessTokenDetails auth = getConnectedUser();
+        try {
+            return getUserById(auth.getUserId());
+        }
+        catch (Exception e){
+            return  null;
+        }
     }
 
     @Override

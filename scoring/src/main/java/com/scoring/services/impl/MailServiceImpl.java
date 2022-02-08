@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.scoring.dto.DestinataireDTO;
 import com.scoring.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,14 +51,14 @@ public class MailServiceImpl implements IMailService {
 	private InternetAddress from;
 
 	@Async
-	public void sendNotification(DirigeantDTO dirigeantDTO, String msg) throws Exception {
+	public void sendNotification(DestinataireDTO dest, String msg) throws Exception {
 		MimeMessage message = sender.createMimeMessage();
 		Map<String, Object> model = new HashMap();
 		model.put("url", url);
 		model.put("text", msg);
 		model.put("date", formatDateNormal(new Date()));
 		String text = feedTemplate(model, "templates/velocity/notification.ftl");
-	    sendMail(message, from, dirigeantDTO.getEmail(), text, "Eligibilite "+ dirigeantDTO.getEntreprise().getRaisonSociale());
+	    sendMail(message, from, dest.getEmail(), text, "Eligibilite "+ dest.getNomEntreprise());
 	}
 
 	@Override

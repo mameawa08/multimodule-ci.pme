@@ -421,6 +421,29 @@ public class DTOFactory {
 		return accompagnements.stream().map(this::createAccompagnementAEligibilte).collect(Collectors.toList());
 	}
 
+	public DestinataireDTO createDestinataire(DirigeantDTO dirigeant){
+		if (dirigeant == null)
+			return null;
+		DestinataireDTO dto = new DestinataireDTO();
+		dto.setPrenom(dirigeant.getPrenom());
+		dto.setNom(dirigeant.getNom());
+		dto.setEmail(dirigeant.getEmail());
+		dto.setNomEntreprise(dirigeant.getEntreprise().getRaisonSociale());
+
+		return dto;
+	}
+
+	public DestinataireDTO createDestinataire(UserDTO user){
+		if (user == null)
+			return null;
+		DestinataireDTO dto = new DestinataireDTO();
+		dto.setPrenom(user.getPrenom());
+		dto.setNom(user.getNom());
+		dto.setEmail(user.getEmail());
+
+		return dto;
+	}
+
 //	Privates Methods
 	private String getLibelleStatutDemande(int statut) {
 		String libelle="";
