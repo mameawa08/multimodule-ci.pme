@@ -68,5 +68,6 @@ public class DemandeScoring implements Serializable {
     @Column(columnDefinition = "boolean default false")
 	private boolean 	repQuali=false;
 
-
+    @Column
+    private Long traiterPar;
 }

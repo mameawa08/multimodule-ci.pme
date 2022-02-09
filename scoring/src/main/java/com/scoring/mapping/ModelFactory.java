@@ -224,6 +224,7 @@ public class ModelFactory {
 		demandeScoring.setRepEli(demandeScoringDTO.isRepEli());
 		demandeScoring.setIndicateurAjoute(demandeScoringDTO.isIndicateurAjoute());
 		demandeScoring.setRepQuali(demandeScoringDTO.isRepQuali());
+		demandeScoring.setTraiterPar(demandeScoringDTO.getTraiterPar());
 		return demandeScoring;
 	}
 

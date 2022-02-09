@@ -39,4 +39,6 @@ public class DemandeScoringDTO {
 	
 	private double scoreFinal;
 
+    private Long traiterPar;
+
 }

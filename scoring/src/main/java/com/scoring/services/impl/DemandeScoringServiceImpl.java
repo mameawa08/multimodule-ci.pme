@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.scoring.config.AccessTokenDetails;
 import com.scoring.models.Entreprise;
 import com.scoring.repository.EntrepriseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,8 +117,10 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
     @Override
     public boolean receptionnerDemande(Long id) throws DemandeException {
         DemandeScoring demande = demandeScoringRepository.findById(id).orElseThrow(() -> new DemandeException("Demande scoring :: "+id+" not found."));
+		AccessTokenDetails user = userService.getConnectedUser();
         try{
         	demande.setStatus(Constante.ETAT_DEMANDE_EN_COURS);
+        	demande.setTraiterPar(user.getUserId());
         	demande.setDateReception(new Date());
         	demandeScoringRepository.save(demande);
         	return true;

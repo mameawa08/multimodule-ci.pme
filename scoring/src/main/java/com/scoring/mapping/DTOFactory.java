@@ -354,6 +354,7 @@ public class DTOFactory {
 		dto.setIndicateurAjoute(demandeScoring.isIndicateurAjoute());
 		dto.setRepQuali(demandeScoring.isRepQuali());
 		dto.setLibelleStatut(getLibelleStatutDemande(demandeScoring.getStatus()));
+		dto.setTraiterPar(demandeScoring.getTraiterPar());
 		return dto;
 	}
 	
