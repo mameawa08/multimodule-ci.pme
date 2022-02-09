@@ -12,4 +12,12 @@ public class Constante {
     public static final int CONFIRMED_ACCOUNT             = 1;
     public static final int UNCONFIRMED_ACCOUNT           = 0;
     public static final int CONFIRMING_ACCOUNT            = 2;
+
+    public static final int ETAT_DEMANDE_BROUILLON                  = 1;
+    public static final int ETAT_DEMANDE_ENVOYEE                    = 2;
+    public static final int ETAT_DEMANDE_EN_COURS                   = 3;
+    public static final int ETAT_DEMANDE_REJETEE                    = 4;
+    public static final int ETAT_DEMANDE_PROVISOIRE                 = 5;
+    public static final int ETAT_DEMANDE_CLOTUREE                   = 6;
+    public static final int ETAT_DEMANDE_ANNULEE                    = 7;
 }

@@ -150,7 +150,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				entrepriseDTO.setDemandeNonCloturee(dto);
 				entreprisesDTO.add(entrepriseDTO);
 			}
-			else if(dto.getStatus() == Constante.ETAT_DEMANDE_ANNULEE){
+			else if(dto != null && dto.getStatus() == Constante.ETAT_DEMANDE_ANNULEE){
 				DemandeAccompagnementDTO accompagnement = demandeAccompagnementService.getDemandeAccompagnementByDemandeScoring(dto.getId());
 				entrepriseDTO.setDemandeAccompagnement(accompagnement);
 				entreprisesDTO.add(entrepriseDTO);

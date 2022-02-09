@@ -1,6 +1,7 @@
 package com.administration.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -152,7 +153,7 @@ public class UserServiceImpl implements IUserService{
 		try {
 			if(user.getProfil().getId().equals(Constante.ROLE_ENTR)){
 				DemandeScoringDTO demande = scoringConnectService.getUserDemande(user.getId());
-				if((demande != null && demande.getStatus() > 1)){
+				if((demande != null && !Arrays.asList(Constante.ETAT_DEMANDE_CLOTUREE, Constante.ETAT_DEMANDE_REJETEE).contains(demande.getStatus()))){
 					throw new UserException("Impossible de supprimer l'utilisateur :: une demande de scoring est en cours.");
 				}
 			}
