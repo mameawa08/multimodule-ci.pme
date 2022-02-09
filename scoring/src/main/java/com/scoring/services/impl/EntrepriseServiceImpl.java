@@ -49,7 +49,6 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	@Autowired
 	private IDemandeAccompagnementService demandeAccompagnementService;
 
-
 	@Override
 	public List<EntrepriseDTO> getEntreprises() throws EntrepriseException{
 		List<Entreprise> entreprises = entrepriseRepository.findAll();
@@ -158,4 +157,5 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		}
 		return entreprisesDTO;
 	}
+
 }

@@ -236,7 +236,7 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
 	@Override
 	public DemandeScoringDTO getUserDemandeOuverte(Long idUser) {
 		UserDTO user = userService.getUserById(idUser);
-		return getDemandeOuverte(user.getEntrepriseId());
+		return getDemandeLastClosed(user.getEntrepriseId());
 	}
 
 	@Override

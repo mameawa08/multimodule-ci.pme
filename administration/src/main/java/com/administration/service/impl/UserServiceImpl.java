@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import com.administration.dto.DemandeAccompagnementDTO;
 import com.administration.dto.DemandeScoringDTO;
 import com.administration.exception.ScoringConnectException;
 import com.administration.model.Profil;
@@ -154,6 +155,12 @@ public class UserServiceImpl implements IUserService{
 			if(user.getProfil().getId().equals(Constante.ROLE_ENTR)){
 				DemandeScoringDTO demande = scoringConnectService.getUserDemande(user.getId());
 				if((demande != null && !Arrays.asList(Constante.ETAT_DEMANDE_CLOTUREE, Constante.ETAT_DEMANDE_REJETEE).contains(demande.getStatus()))){
+					if(demande.getStatus() == Constante.ETAT_DEMANDE_ANNULEE){
+						DemandeAccompagnementDTO accompagnement = scoringConnectService.getDemandeAccompagnement(demande.getId());
+						if(accompagnement != null){
+							throw new UserException("Impossible de supprimer l'utilisateur :: une demande d'accompagnement est en cours.");
+						}
+					}
 					throw new UserException("Impossible de supprimer l'utilisateur :: une demande de scoring est en cours.");
 				}
 			}

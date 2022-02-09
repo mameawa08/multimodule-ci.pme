@@ -40,7 +40,7 @@ public class MailServiceImpl implements IMailService {
 
     @PostConstruct
     public void init() throws UnsupportedEncodingException {
-        from = new InternetAddress("awi@awaconsulting.com", "cipme.ci");
+        from = new InternetAddress("awi@awaconsulting.com", "Agence CI PME");
     }
 
     @Override

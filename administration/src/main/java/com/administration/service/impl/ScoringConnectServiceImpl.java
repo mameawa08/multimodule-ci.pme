@@ -1,5 +1,6 @@
 package com.administration.service.impl;
 
+import com.administration.dto.DemandeAccompagnementDTO;
 import com.administration.dto.DemandeScoringDTO;
 import com.administration.dto.EntrepriseDTO;
 import com.administration.exception.ScoringConnectException;
@@ -57,6 +58,20 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
         return resp.getBody();
     }
 
+    @Override
+    public DemandeAccompagnementDTO getDemandeAccompagnement(Long idDemandeScoring) {
+        String url = baseUrl+"/api/demandes-accompagnements/"+idDemandeScoring;
+
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<DemandeAccompagnementDTO> resp = rt.exchange(url, HttpMethod.GET, httpEntity, DemandeAccompagnementDTO.class);
+        return resp.getBody();
+    }
+
+
+//    Private Methods
     private HttpHeaders getHttpHeaders() {
         OAuth2AuthenticationDetails principal = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
 
