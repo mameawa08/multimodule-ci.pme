@@ -155,7 +155,7 @@ public class AuthController {
     // @Operation(security = @SecurityRequirement(name = "bearerAuth"), summary = "User infos", description = "Return connected user informations", tags = {"auth"})
     public ResponseEntity<?> me(Principal principal){
         try {
-            User user = userRepository.findByUsernameAndActifIsNot(principal.getName(), -1).orElseThrow(() -> new UserException("User not found."));
+            User user = userRepository.findByEmailAndActifNot(principal.getName(), -1).orElseThrow(() -> new UserException("User not found."));
 
             UserDTO userDTO = dtoFactory.createUser(user);
 

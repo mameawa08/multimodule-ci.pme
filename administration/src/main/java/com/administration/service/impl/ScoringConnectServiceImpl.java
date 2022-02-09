@@ -60,7 +60,7 @@ public class ScoringConnectServiceImpl implements IScoringConnectService {
 
     @Override
     public DemandeAccompagnementDTO getDemandeAccompagnement(Long idDemandeScoring) {
-        String url = baseUrl+"/api/demandes-accompagnements/"+idDemandeScoring;
+        String url = baseUrl+"/scoring/api/demandes/"+idDemandeScoring+"/demandes-accompagnements";
 
         HttpHeaders headers = getHttpHeaders();
 
