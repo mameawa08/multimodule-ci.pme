@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import com.scoring.config.AccessTokenDetails;
-import com.scoring.dto.DemandeScoringDTO;
-import com.scoring.dto.EntrepriseDTO;
-import com.scoring.dto.FormeJuridiqueDTO;
-import com.scoring.dto.SecteurActiviteDTO;
+import com.scoring.dto.*;
 import com.scoring.exceptions.DemandeException;
 import com.scoring.exceptions.EntrepriseException;
 import com.scoring.exceptions.ReferentielException;
@@ -19,11 +16,8 @@ import com.scoring.mapping.PayloadToDTO;
 import com.scoring.models.Entreprise;
 import com.scoring.payloads.EntreprisePayload;
 import com.scoring.repository.EntrepriseRepository;
-import com.scoring.services.IDemandeScoring;
-import com.scoring.services.IEntrepriseService;
+import com.scoring.services.*;
 
-import com.scoring.services.IReferentielService;
-import com.scoring.services.IUserService;
 import com.scoring.utils.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +45,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	
 	@Autowired
 	private IDemandeScoring demandeScoringService;
+
+	@Autowired
+	private IDemandeAccompagnementService demandeAccompagnementService;
 
 
 	@Override
@@ -147,10 +144,15 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		List<EntrepriseDTO> entreprisesDTO = new ArrayList<EntrepriseDTO>();
 		for(Entreprise pme : entreprises){
 			DemandeScoringDTO dto = null;
+			EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(pme);
 			dto = demandeScoringService.getDemandeLastClosed(pme.getId());
-			if(dto!=null && Arrays.asList(Constante.ETAT_DEMANDE_ENVOYEE, Constante.ETAT_DEMANDE_EN_COURS, Constante.ETAT_DEMANDE_PROVISOIRE, Constante.ETAT_DEMANDE_ANNULEE).contains(dto.getStatus())){
-				EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(pme);
+			if(dto!=null && Arrays.asList(Constante.ETAT_DEMANDE_ENVOYEE, Constante.ETAT_DEMANDE_EN_COURS, Constante.ETAT_DEMANDE_PROVISOIRE).contains(dto.getStatus())){
 				entrepriseDTO.setDemandeNonCloturee(dto);
+				entreprisesDTO.add(entrepriseDTO);
+			}
+			else if(dto.getStatus() == Constante.ETAT_DEMANDE_ANNULEE){
+				DemandeAccompagnementDTO accompagnement = demandeAccompagnementService.getDemandeAccompagnementByDemandeScoring(dto.getId());
+				entrepriseDTO.setDemandeAccompagnement(accompagnement);
 				entreprisesDTO.add(entrepriseDTO);
 			}
 		}
