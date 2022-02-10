@@ -103,61 +103,70 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	private IDemandeScoring demandeScoringService;
 
 
-	public double getRatio1(IndicateurDTO indicateurDTO) throws Exception {
-		double somme1, somme2, value;
-		somme1 = indicateurDTO.getBkActifCirculant()+indicateurDTO.getBtTresorerieActif();
-		somme2=indicateurDTO.getDpPassifCirculant()+indicateurDTO.getDtTresoreriePassif();
-		value=somme1/somme2;
-		return value;
+	public double getRatio1(IndicateurDTO indicateurDTO) {
+		double somme1, somme2;
+		somme1 = indicateurDTO.getBkActifCirculant() + indicateurDTO.getBtTresorerieActif();
+		somme2 = indicateurDTO.getDpPassifCirculant() + indicateurDTO.getDtTresoreriePassif();
+		if(somme1 == 0 || somme2 == 0){
+			return 0;
+		}
+		return somme1 / somme2;
 	}
 		
-	public double getRatio2(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=indicateurDTO.getXiResultatNet()/indicateurDTO.getCaCapitauxPropres();
-		return value;
+	public double getRatio2(IndicateurDTO indicateurDTO)  {
+		if(indicateurDTO.getXiResultatNet() == 0 || indicateurDTO.getCaCapitauxPropres() == 0){
+			return 0;
+		}
+		return indicateurDTO.getXiResultatNet() / indicateurDTO.getCaCapitauxPropres();
 	}
 
-	public double getRatio3(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=indicateurDTO.getEndettement_struct()/indicateurDTO.getCaf();
-		return value;
+	public double getRatio3(IndicateurDTO indicateurDTO)  {
+		if(indicateurDTO.getEndettement_struct() == 0 || indicateurDTO.getCaf() == 0){
+			return 0;
+		}
+		return indicateurDTO.getEndettement_struct() / indicateurDTO.getCaf();
 	}
 		
-	public double getRatio4(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=indicateurDTO.getCaCapitauxPropres()/indicateurDTO.getDfTotalResources();
-		return value;
+	public double getRatio4(IndicateurDTO indicateurDTO)  {
+		if(indicateurDTO.getCaCapitauxPropres() == 0 || indicateurDTO.getDfTotalResources() == 0){
+			return 0;
+		}
+		return indicateurDTO.getCaCapitauxPropres()/indicateurDTO.getDfTotalResources();
 	}
 		
-	public double getRatio5(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=(indicateurDTO.getBiCreanceClient()*360)/(indicateurDTO.getXbChiffresDaffaires()*1.18);
-		return value;
+	public double getRatio5(IndicateurDTO indicateurDTO)  {
+		if(indicateurDTO.getBiCreanceClient() == 0 || indicateurDTO.getXbChiffresDaffaires() == 0){
+			return 0;
+		}
+		return (indicateurDTO.getBiCreanceClient()*360) / (indicateurDTO.getXbChiffresDaffaires()*1.18);
 	}
 		
-	public double getRatio6(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=(indicateurDTO.getDjDettesFournisseurs()*360)/(indicateurDTO.getRaAchats()*1.18);
-		return value;
+	public double getRatio6(IndicateurDTO indicateurDTO)  {
+		if(indicateurDTO.getDjDettesFournisseurs() == 0 || indicateurDTO.getRaAchats() == 0){
+			return 0;
+		}
+		return (indicateurDTO.getDjDettesFournisseurs()*360) / (indicateurDTO.getRaAchats()*1.18);
 	}
 		
-	public double getRatio7(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=indicateurDTO.getXdExcedentBrutExploit()/indicateurDTO.getCaCapitauxPropres();
-		return value;
+	public double getRatio7(IndicateurDTO indicateurDTO) {
+		if(indicateurDTO.getXdExcedentBrutExploit() == 0 || indicateurDTO.getCaCapitauxPropres() == 0){
+			return 0;
+		}
+		return indicateurDTO.getXdExcedentBrutExploit()/indicateurDTO.getCaCapitauxPropres();
 	}
 		
-	public double getRatio8(IndicateurDTO indicateurDTO) throws Exception {
-		double value;
-		value=indicateurDTO.getRmChargesFinancieres()/indicateurDTO.getXdExcedentBrutExploit();
-		return value;
+	public double getRatio8(IndicateurDTO indicateurDTO) {
+		if (indicateurDTO.getRmChargesFinancieres() == 0 || indicateurDTO.getXdExcedentBrutExploit() == 0){
+			return 0;
+		}
+		return indicateurDTO.getRmChargesFinancieres()/indicateurDTO.getXdExcedentBrutExploit();
 	}
 	
 	@Override
 	public List<ValeurRatioDTO> calculRatios(Long idDemande) throws Exception {
 		List<ValeurRatioDTO> listValeurRatio = new ArrayList<ValeurRatioDTO>();
 		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByDemande(idDemande);
-		if(listValeur!=null && !listValeur.isEmpty()){
+		if(listValeur != null && !listValeur.isEmpty()){
 			for(ValeurRatio val : listValeur){
 				ValeurRatioDTO dto = dtoFactory.createValeurRatio(val);
 				RatioDTO ratiodTO = referentielService.getRatioById(dto.getIdRatio());
@@ -170,12 +179,13 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
 			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idDemande);
 			DemandeScoringDTO demande = null;
-			if(idDemande==null)
+			if(idDemande==null){
 				throw new IndicateurException("L'id de la demande est obligatoire pour ce calcul !");
+			}
 			else{
-				//entrepriseDTO = dtoFactory.createEntreprise(entrepriseRepository.findById(idEntreprise).orElseThrow(() -> new Exception("Not found.")));
 				demande = demandeScoringService.getDemande(idDemande);
 			}
+
 			for(int i=1; i<=8;i++){
 				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
 				valeurRatioDTO.setDemandeScoringDTO(demande);
@@ -199,8 +209,9 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 					valeurRatioDTO.setValeur(new BigDecimal(getRatio7(lastIndicateur)));
 				else if(i==8)
 					valeurRatioDTO.setValeur(new BigDecimal(getRatio8(lastIndicateur)));
+
 				CalibrageDTO calibrageDTO = referentielService.getCalibrageByRatioAndValeurCalcule(valeurRatioDTO.getIdRatio(), valeurRatioDTO.getValeur());
-				if(calibrageDTO!=null) 
+				if(calibrageDTO!=null)
 					valeurRatioDTO.setClasse(calibrageDTO.getClasse());
 				ValeurRatio valeurRatio = modelFactory.createValeurRatio(valeurRatioDTO);
 				valeurRatio = valeurRatioRepository.save(valeurRatio);
@@ -216,15 +227,28 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		scoreAndratios.setListValeurRatioDTO(calculRatios(idDemande));
 		ScoresParPMEDTO scoreDTO = new ScoresParPMEDTO();
 		ScoresParPME scoreparPME =  scoreParPMERepository.findScoreByDemande(idDemande);
-		if(scoreparPME!=null && scoreparPME.getScore_financier()!=0)
-			scoreDTO=dtoFactory.createScoreParPME(scoreparPME);
+		if(scoreparPME != null && scoreparPME.getScore_financier() != 0)
+			scoreDTO = dtoFactory.createScoreParPME(scoreparPME);
 		else{
 			scoreDTO.setDemandeScoringDTO(demandeScoringService.getDemande(idDemande));
-			double score_financier=0.0;
-			for(ValeurRatioDTO valeur : scoreAndratios.getListValeurRatioDTO()){
+			double score_financier = 0.0;
+			double sommePonderationRatioZero = 0L;
+			int nbRatioZero = 0;
+			List<ValeurRatioDTO> valeurRatios = scoreAndratios.getListValeurRatioDTO();
+			for(ValeurRatioDTO valeur : valeurRatios){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
-				double ponderation = ratioDTO.getPonderation()/100.0;
-				score_financier = score_financier + (valeur.getClasse()*(ponderation));
+				double ponderation = ratioDTO.getPonderation() / 100.0;
+				if(valeur.getValeur().equals(0L)){
+					sommePonderationRatioZero += ponderation;
+					nbRatioZero++;
+				}
+			}
+			double ponderationPlus = sommePonderationRatioZero / (scoreAndratios.getListValeurRatioDTO().size() - nbRatioZero);
+			for(ValeurRatioDTO valeurRatio : valeurRatios){
+				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatio.getIdRatio());
+				double ponderation = ratioDTO.getPonderation() / 100.0;
+				score_financier = score_financier + (valeurRatio.getClasse() * (ponderation + ponderationPlus));
+
 			}
 			scoreDTO.setScore_financier(score_financier);
 			ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
