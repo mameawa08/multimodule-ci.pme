@@ -154,39 +154,21 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 	}
 
 	@Override
-	public ScoreEntrepriseParParametreDTO validateQuestionnaireQualitifByParametre(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException {
-		List<ReponseParPME> reponses = new ArrayList<>();
-		try {
-			List<ReponseQualitativePayload> reps = payload.getListReponse();
-
-			if (reps != null && reps.size() > 0){
-				saveReponses(payload.getIdEntreprise(), reps);
-
-				ScoreEntrepriseParParametreDTO scoreEntrepriseParParametreDTO = calculScoreService.calculScoreParametreQualitatif(0L, payload.getIdEntreprise());
-
-				return  scoreEntrepriseParParametreDTO;
-
-			}
-			return null;
-
-		} catch (Exception e) {
-			throw new TraitementQuestionnaireException("Traitement questionnaire ::"+e.getMessage());
-		}
-	}
-
-	@Override
 	public ScoreEntrepriseParParametreDTO validateQuestionnaireQualitifByParametre(Long idParametre, QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException{
 		List<ReponseParPME> reponses = new ArrayList<>();
 		try {
 			List<ReponseQualitativePayload> reps = payload.getListReponse();
-
+//			Nombre de question du parametre
+			ParametreDTO parametre = referentielService.getParamtre(idParametre);
+//			verifier le nombre de question avec une reponse "ne s'applique pas"
+			checkReponse(parametre.getNbre_question(), reps);
+//			Enregistrement et calcul du  score du parametre
 			if (reps != null && reps.size() > 0){
 				saveReponses(payload.getIdDemande(), reps);
 
 				ScoreEntrepriseParParametreDTO scoreEntrepriseParParametreDTO = calculScoreService.calculScoreParametreQualitatif(payload.getIdDemande(), idParametre);
 
 				return  scoreEntrepriseParParametreDTO;
-
 			}
 			return null;
 
@@ -257,12 +239,11 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
 
 //	Private methods
 	private void saveReponses(Long idDemande, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
-		//Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: entreprise "+entrepriseId+" not found."));;
 		DemandeScoring demande = demandeRepository.findById(idDemande).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaire :: demande "+idDemande+" not found."));
 		List<ReponseParPMEDTO> reponseParPMEDTOs = new ArrayList<>();
 
 		for (ReponseQualitativePayload rep : reps) {
-	//					Get questionEligibilite
+	//					Get question
 			Question question = questionRepository.findById(rep.getIdQuestion()).orElseThrow(() -> new TraitementQuestionnaireException("Traitement questionnaaire :: questionEligibilite "+rep.getIdQuestion()+" not found."));
 			QuestionDTO questionDTO = dtoFactory.createQuestion(question);
 
@@ -308,4 +289,10 @@ public class TraitementQuestionnaireServiceImpl implements ITraitementQuestionna
             iMailService.sendNotification(dest1, message);
         }
     }
+
+    private void checkReponse(int nbQuestion, List<ReponseQualitativePayload> reps) throws TraitementQuestionnaireException {
+		if(nbQuestion == (int)reps.stream().filter(r -> r.getReponse().equals(Constante.REPONSE_NE_SAPPLIQUE_PAS)).count()){
+			throw new TraitementQuestionnaireException("Il faut au moins une question qui s'applique à la PME");
+		}
+	}
 }

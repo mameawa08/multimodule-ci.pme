@@ -20,8 +20,6 @@ public interface ITraitementQuestionnaireService {
 
     boolean validateQuestionnaireQualitif(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException;
 
-    ScoreEntrepriseParParametreDTO validateQuestionnaireQualitifByParametre(QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException;
-
     ScoreEntrepriseParParametreDTO validateQuestionnaireQualitifByParametre(Long idParametre, QuestionnaireQualitatifPayload payload) throws TraitementQuestionnaireException;
 
     List<ReponseParPMEDTO> getListeReponseQuestionQUalitatif(Long idDemande) throws TraitementQuestionnaireException;
