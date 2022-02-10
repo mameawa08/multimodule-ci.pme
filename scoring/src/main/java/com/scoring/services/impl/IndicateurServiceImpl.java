@@ -87,74 +87,40 @@ public class IndicateurServiceImpl implements IIndicateurService {
 			indicateur.setActif(true);
 		}
 
-		if (payload.getBkActifCirculant() == 0)
-			throw new IndicateurException("L'actif circulant est obligatoire.");
+		if (payload.getBkActifCirculant() == 0 &&
+			payload.getBtTresorerieActif() == 0 &&
+			payload.getDpPassifCirculant() == 0 &&
+			payload.getDtTresoreriePassif() == 0 &&
+			payload.getXiResultatNet() == 0 &&
+			payload.getXbChiffresDaffaires() == 0 &&
+			payload.getBiCreanceClient() == 0 &&
+			payload.getCaCapitauxPropres() == 0 &&
+			payload.getDfTotalRessources() == 0 &&
+			payload.getDjDettesFournisseurs() == 0 &&
+			payload.getRaAchats() == 0 &&
+			payload.getXdExcedentBrutExploit() == 0 &&
+			payload.getRmChargesFinancieres() == 0 &&
+			payload.getDaEmpruntsDettes() == 0 &&
+			payload.getDbDettesAcquisitions() == 0 &&
+			payload.getTkRevenusFinanciers() == 0 &&
+			payload.getTlReprisesDepreciations() == 0 &&
+			payload.getTmTransfertCharges() == 0 &&
+			payload.getRqParticipations() == 0 &&
+			payload.getRsImpot() == 0
+		){
+			throw new IndicateurException("Il faut au moins une valeur pour une année donnée.");
+		}
+		if(payload.getEntreprise() == 0)
+			throw new IndicateurException("L'entreprise est obligatoire");
 
-		if (payload.getBtTresorerieActif() == 0)
-			throw new IndicateurException("L'actif tresorerie est obligatoire.");
-
-		if (payload.getDpPassifCirculant() == 0)
-			throw new IndicateurException("Le passif circulant est obligatoire.");
-
-		if (payload.getDtTresoreriePassif() == 0)
-			throw new IndicateurException("Le passif tresorerie est obligatoire.");
-
-		if (payload.getXiResultatNet() == 0)
-			throw new IndicateurException("Le resultat net est obligatoire.");
-
-		if (payload.getXbChiffresDaffaires() == 0)
-			throw new IndicateurException("Le chiffre d'affaire est obligatoire.");
-
-		if (payload.getBiCreanceClient() == 0)
-			throw new IndicateurException("La creance client est obligatoire.");
-
-		if (payload.getCaCapitauxPropres() == 0)
-			throw new IndicateurException("Le capital propre est obligatoire.");
-
-		if (payload.getDfTotalRessources() == 0)
-			throw new IndicateurException("Le total des ressource est obligatoire.");
-
-		if (payload.getDjDettesFournisseurs() == 0)
-			throw new IndicateurException("La dette des fournisseurs est obligatoire.");
-
-		if (payload.getRaAchats() == 0)
-			throw new IndicateurException("L'achat est obligatoire.");
-		
-		if (payload.getXdExcedentBrutExploit() == 0)
-			throw new IndicateurException("L'excédent brut est obligatoire.");
-		
-		if (payload.getRmChargesFinancieres() == 0)
-			throw new IndicateurException("Les charges financières sont obligatoires.");
-		
-		if (payload.getDaEmpruntsDettes() == 0)
-			throw new IndicateurException("Les emprunts et dettes financières sont obligatoires.");
-		
-		if (payload.getDbDettesAcquisitions() == 0)
-			throw new IndicateurException("Les dettes et acquisitions sont obligatoires.");
-		
-		if (payload.getTkRevenusFinanciers() == 0)
-			throw new IndicateurException("Les revenus financiers sont obligatoires.");
-		
-		if (payload.getTlReprisesDepreciations() == 0)
-			throw new IndicateurException("Les reprises de provisions et dépréciations sont obligatoires.");
-		
-		if (payload.getTmTransfertCharges() == 0)
-			throw new IndicateurException("Les transferts de charges financières sont obligatoires.");
-		
-		if (payload.getRqParticipations() == 0)
-			throw new IndicateurException("Les participations des travailleurs sont obligatoires.");
-		
-		if (payload.getRsImpot() == 0)
-			throw new IndicateurException("L'impôt sur le résultat est obligatoire.");
+		if(payload.getIdDemande() == 0)
+			throw new IndicateurException("La demande de scoring est obligatoire");
 
 		if(payload.getAnnee() != 0 && (payload.getAnnee() < (year - 5) || payload.getAnnee() > year))
 			throw new IndicateurException("L'indicateur doit au moins etre des 5 dernieres annees.");
 
 		if(payload.getDerniereAnnee() != 0 && (payload.getDerniereAnnee() < (year - 5) || payload.getDerniereAnnee() > year))
 			throw new IndicateurException("La derniere annee de l'etat financier est obligatoire.");
-
-		if(payload.getEntreprise() == 0)
-			throw new IndicateurException("L'entreprise est obligatoire");
 
 		indicateur = payloadToDTO.createIndicateur(payload, indicateur);
 		indicateur.setEndettement_struct(indicateur.getDaEmpruntsDettes()
