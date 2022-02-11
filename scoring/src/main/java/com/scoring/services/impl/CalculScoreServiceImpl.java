@@ -238,17 +238,18 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 			for(ValeurRatioDTO valeur : valeurRatios){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
 				double ponderation = ratioDTO.getPonderation() / 100.0;
-				if(valeur.getValeur().equals(0L)){
+				if(valeur.getValeur().equals(BigDecimal.ZERO)){
 					sommePonderationRatioZero += ponderation;
 					nbRatioZero++;
 				}
 			}
 			double ponderationPlus = sommePonderationRatioZero / (scoreAndratios.getListValeurRatioDTO().size() - nbRatioZero);
 			for(ValeurRatioDTO valeurRatio : valeurRatios){
-				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatio.getIdRatio());
-				double ponderation = ratioDTO.getPonderation() / 100.0;
-				score_financier = score_financier + (valeurRatio.getClasse() * (ponderation + ponderationPlus));
-
+				if(!valeurRatio.getValeur().equals(BigDecimal.ZERO)){
+					RatioDTO ratioDTO = referentielService.getRatioById(valeurRatio.getIdRatio());
+					double ponderation = ratioDTO.getPonderation() / 100.0;
+					score_financier = score_financier + (valeurRatio.getClasse() * (ponderation + ponderationPlus));
+				}
 			}
 			scoreDTO.setScore_financier(score_financier);
 			ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
