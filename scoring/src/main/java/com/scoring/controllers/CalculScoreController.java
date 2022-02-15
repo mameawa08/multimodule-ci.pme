@@ -29,6 +29,7 @@ public class CalculScoreController {
 			ScoresAndRatioDTO scoreAndRatios = calculScoreService.getScoreFinAndRatios(idDemande);
 			return ResponseEntity.ok(scoreAndRatios);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

@@ -1,10 +1,8 @@
 package com.scoring.services.impl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -165,59 +163,59 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 	@Override
 	public List<ValeurRatioDTO> calculRatios(Long idDemande) throws Exception {
 		List<ValeurRatioDTO> listValeurRatio = new ArrayList<ValeurRatioDTO>();
-		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByDemande(idDemande);
-		if(listValeur != null && !listValeur.isEmpty()){
-			for(ValeurRatio val : listValeur){
-				ValeurRatioDTO dto = dtoFactory.createValeurRatio(val);
-				RatioDTO ratiodTO = referentielService.getRatioById(dto.getIdRatio());
-				dto.setNomRatio(ratiodTO.getLibelle());
-				dto.setCodeRatio(ratiodTO.getCode());
-				listValeurRatio.add(dto);
-			}
-			//listValeurRatio = dtoFactory.createListValeurRatio(listValeur);
-		}else{
-			List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
-			IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idDemande);
-			DemandeScoringDTO demande = null;
-			if(idDemande==null){
-				throw new IndicateurException("L'id de la demande est obligatoire pour ce calcul !");
-			}
-			else{
-				demande = demandeScoringService.getDemande(idDemande);
-			}
-
-			for(int i=1; i<=8;i++){
-				ValeurRatioDTO valeurRatioDTO = new ValeurRatioDTO();
-				valeurRatioDTO.setDemandeScoringDTO(demande);
-				valeurRatioDTO.setIdRatio(listRatioDTO.get(i-1).getId());
-				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatioDTO.getIdRatio());
-				valeurRatioDTO.setNomRatio(ratioDTO.getLibelle());
-				valeurRatioDTO.setCodeRatio(ratioDTO.getCode());
-				if(i==1)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio1(lastIndicateur)));
-				else if(i==2)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio2(lastIndicateur)));
-				else if(i==3)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio3(lastIndicateur)));
-				else if(i==4)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio4(lastIndicateur)));
-				else if(i==5)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio5(lastIndicateur)));
-				else if(i==6)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio6(lastIndicateur)));
-				else if(i==7)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio7(lastIndicateur)));
-				else if(i==8)
-					valeurRatioDTO.setValeur(new BigDecimal(getRatio8(lastIndicateur)));
-
-				CalibrageDTO calibrageDTO = referentielService.getCalibrageByRatioAndValeurCalcule(valeurRatioDTO.getIdRatio(), valeurRatioDTO.getValeur());
-				if(calibrageDTO!=null)
-					valeurRatioDTO.setClasse(calibrageDTO.getClasse());
-				ValeurRatio valeurRatio = modelFactory.createValeurRatio(valeurRatioDTO);
-				valeurRatio = valeurRatioRepository.save(valeurRatio);
-				listValeurRatio.add(valeurRatioDTO);
-			}
+		if(idDemande==null){
+			throw new IndicateurException("L'id de la demande est obligatoire pour ce calcul !");
 		}
+		//get demande scoring
+		DemandeScoringDTO demande = demande = demandeScoringService.getDemande(idDemande);
+		//get liste valeur ratio existant
+		List<ValeurRatio> listValeur = valeurRatioRepository.findValeurRatioByDemande(idDemande);
+		listValeur = listValeur.stream().sorted(Comparator.comparingLong(ValeurRatio::getIdRatio)).collect(Collectors.toList());
+//		get liste ratio
+		List<RatioDTO> listRatioDTO = referentielService.getlisteRatios();
+		listRatioDTO = listRatioDTO.stream().sorted(Comparator.comparingLong(RatioDTO::getId)).collect(Collectors.toList());
+		//get indicateur de la dernier annee
+		IndicateurDTO lastIndicateur = indicateurService.getLastIndicateur(idDemande);
+
+		for(int i=1; i<=8;i++){
+			ValeurRatioDTO valeurRatioDTO;
+			if(listValeur.size() != 0 && listValeur.get(i - 1) != null){
+				valeurRatioDTO = dtoFactory.createValeurRatio(listValeur.get(i - 1));
+			}
+			else {
+				valeurRatioDTO = new ValeurRatioDTO();
+				valeurRatioDTO.setDemandeScoringDTO(demande);
+				valeurRatioDTO.setIdRatio(listRatioDTO.get(i - 1).getId());
+			}
+			RatioDTO ratioDTO = referentielService.getRatioById(valeurRatioDTO.getIdRatio());
+			valeurRatioDTO.setNomRatio(ratioDTO.getLibelle());
+			valeurRatioDTO.setCodeRatio(ratioDTO.getCode());
+			if(i==1)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio1(lastIndicateur)));
+			else if(i==2)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio2(lastIndicateur)));
+			else if(i==3)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio3(lastIndicateur)));
+			else if(i==4)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio4(lastIndicateur)));
+			else if(i==5)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio5(lastIndicateur)));
+			else if(i==6)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio6(lastIndicateur)));
+			else if(i==7)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio7(lastIndicateur)));
+			else if(i==8)
+				valeurRatioDTO.setValeur(BigDecimal.valueOf(getRatio8(lastIndicateur)));
+
+//			calibre la valeur ratio
+			CalibrageDTO calibrageDTO = referentielService.getCalibrageByRatioAndValeurCalcule(valeurRatioDTO.getIdRatio(), valeurRatioDTO.getValeur());
+			if(calibrageDTO!=null)
+				valeurRatioDTO.setClasse(calibrageDTO.getClasse());
+			ValeurRatio valeurRatio = modelFactory.createValeurRatio(valeurRatioDTO);
+			valeurRatio = valeurRatioRepository.save(valeurRatio);
+			listValeurRatio.add(valeurRatioDTO);
+		}
+
 		return listValeurRatio;
 	}
 	
@@ -229,32 +227,37 @@ public class CalculScoreServiceImpl implements ICalculScoreService {
 		ScoresParPME scoreparPME =  scoreParPMERepository.findScoreByDemande(idDemande);
 		if(scoreparPME != null && scoreparPME.getScore_financier() != 0)
 			scoreDTO = dtoFactory.createScoreParPME(scoreparPME);
-		else{
+		else {
 			scoreDTO.setDemandeScoringDTO(demandeScoringService.getDemande(idDemande));
-			double score_financier = 0.0;
-			double sommePonderationRatioZero = 0L;
-			int nbRatioZero = 0;
-			List<ValeurRatioDTO> valeurRatios = scoreAndratios.getListValeurRatioDTO();
-			for(ValeurRatioDTO valeur : valeurRatios){
+		}
+
+		double score_financier = 0.0;
+		double sommePonderationRatioZero = 0L;
+		int nbRatioZero = 0;
+		List<ValeurRatioDTO> valeurRatios = scoreAndratios.getListValeurRatioDTO();
+//			get le nombre de ratio equal a zero et la somme des ponderation de ces ratios
+		for(ValeurRatioDTO valeur : valeurRatios){
+			if(valeur.getValeur().equals(BigDecimal.ZERO)){
 				RatioDTO ratioDTO = referentielService.getRatioById(valeur.getIdRatio());
 				double ponderation = ratioDTO.getPonderation() / 100.0;
-				if(valeur.getValeur().equals(BigDecimal.ZERO)){
-					sommePonderationRatioZero += ponderation;
-					nbRatioZero++;
-				}
+				sommePonderationRatioZero += ponderation;
+				nbRatioZero++;
 			}
-			double ponderationPlus = sommePonderationRatioZero / (scoreAndratios.getListValeurRatioDTO().size() - nbRatioZero);
-			for(ValeurRatioDTO valeurRatio : valeurRatios){
-				if(!valeurRatio.getValeur().equals(BigDecimal.ZERO)){
-					RatioDTO ratioDTO = referentielService.getRatioById(valeurRatio.getIdRatio());
-					double ponderation = ratioDTO.getPonderation() / 100.0;
-					score_financier = score_financier + (valeurRatio.getClasse() * (ponderation + ponderationPlus));
-				}
-			}
-			scoreDTO.setScore_financier(score_financier);
-			ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
-			score = scoreParPMERepository.save(score);
 		}
+		//redistribution des ponderation des ratios nulls
+		double ponderationPlus = sommePonderationRatioZero / (scoreAndratios.getListValeurRatioDTO().size() - nbRatioZero);
+		for(ValeurRatioDTO valeurRatio : valeurRatios){
+			if(!valeurRatio.getValeur().equals(BigDecimal.ZERO)){
+				RatioDTO ratioDTO = referentielService.getRatioById(valeurRatio.getIdRatio());
+				double ponderation = ratioDTO.getPonderation() / 100.0;
+				score_financier = score_financier + (valeurRatio.getClasse() * (ponderation + ponderationPlus));
+			}
+		}
+//		save score financier
+		scoreDTO.setScore_financier(score_financier);
+		ScoresParPME score = modelFactory.createScoreParPME(scoreDTO);
+		score = scoreParPMERepository.save(score);
+
 		scoreAndratios.setScoreDTO(scoreDTO);
 		return scoreAndratios;
 	}
