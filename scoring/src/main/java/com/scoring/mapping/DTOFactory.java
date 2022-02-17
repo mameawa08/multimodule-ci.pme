@@ -394,6 +394,7 @@ public class DTOFactory {
 		}
 		dto.setLibelleStatut(libelle);
 		dto.setQuestionnaireAjoute(demande.isQuestionnaireAjoute());
+		dto.setTraiterPar(demande.getTraiterPar());
 		return dto;
 	}
 

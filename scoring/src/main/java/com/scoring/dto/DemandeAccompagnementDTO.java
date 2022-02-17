@@ -25,4 +25,6 @@ public class DemandeAccompagnementDTO {
 
     private boolean questionnaireAjoute;
 
+    private Long traiterPar;
+
 }

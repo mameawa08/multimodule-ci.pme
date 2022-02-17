@@ -30,4 +30,7 @@ public class DemandeAccompagnement {
 
     @Column(columnDefinition = "boolean default false")
     private boolean questionnaireAjoute;
+
+    @Column
+    private Long traiterPar;
 }

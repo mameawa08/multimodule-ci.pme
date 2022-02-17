@@ -1,5 +1,6 @@
 package com.scoring.services.impl;
 
+import com.scoring.config.AccessTokenDetails;
 import com.scoring.dto.DemandeAccompagnementDTO;
 import com.scoring.exceptions.DemandeAccompagnementException;
 import com.scoring.mapping.DTOFactory;
@@ -11,6 +12,7 @@ import com.scoring.repository.AccompagnementAEligibiliteRepository;
 import com.scoring.repository.DemandeAccompagnementRepository;
 import com.scoring.repository.DemandeScoringRepository;
 import com.scoring.services.IDemandeAccompagnementService;
+import com.scoring.services.IUserService;
 import com.scoring.utils.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,27 +38,29 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
     @Autowired
     private AccompagnementAEligibiliteRepository accompagnementAEligibiliteRepository;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
-    public DemandeAccompagnementDTO getDemandeAccompagnementByDemandeScoring(Long demandeScoring){
+    public DemandeAccompagnementDTO getDemandeAccompagnementByDemandeScoring(Long demandeScoring) {
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findByDemandeScoring_Id(demandeScoring);
         return dtoFactory.createDemandeAccompagnement(demandeAccompagnement);
     }
 
     @Override
-    public List<DemandeAccompagnementDTO> getDemandeAccompagnementByEntreprise(Long entreprise){
+    public List<DemandeAccompagnementDTO> getDemandeAccompagnementByEntreprise(Long entreprise) {
         List<DemandeAccompagnement> demandeAccompagnement = demandeAccompagnementRepository.findByDemandeScoring_Entreprise_Id(entreprise);
         return dtoFactory.createListDemandeAccompagnement(demandeAccompagnement);
     }
 
     @Override
-    public DemandeAccompagnementDTO createDemandeAccompagnement(Long idDemandeScoring) throws DemandeAccompagnementException{
+    public DemandeAccompagnementDTO createDemandeAccompagnement(Long idDemandeScoring) throws DemandeAccompagnementException {
         DemandeScoring demandeScoring = demandeScoringRepository.findById(idDemandeScoring).orElseThrow(() -> new DemandeAccompagnementException("Demande scoring not found."));
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findByDemandeScoring_Id(demandeScoring.getId());
         DemandeAccompagnementDTO dto;
-        if (demandeAccompagnement != null){
+        if (demandeAccompagnement != null) {
             throw new DemandeAccompagnementException("Une demande d'accompagnement existe déjà.");
-        }
-        else{
+        } else {
             dto = new DemandeAccompagnementDTO();
             dto.setDateCreation(new Date());
             dto.setDemandeScoring(dtoFactory.createDemandeScoring(demandeScoring));
@@ -72,9 +76,9 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
     }
 
     @Override
-    public DemandeAccompagnementDTO envoyerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+    public DemandeAccompagnementDTO envoyerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException {
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
-        if(demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_BROUILLON || demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ANNULEE){
+        if (demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_BROUILLON || demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ANNULEE) {
             demandeAccompagnement.setStatus(Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ENVOYEE);
             demandeAccompagnement.setDateEnvoi(new Date());
             demandeAccompagnementRepository.saveAndFlush(demandeAccompagnement);
@@ -83,18 +87,20 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
     }
 
     @Override
-    public DemandeAccompagnementDTO receptionnerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+    public DemandeAccompagnementDTO receptionnerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException {
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
-        if(demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ENVOYEE){
+        AccessTokenDetails user = userService.getConnectedUser();
+        if (demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_ENVOYEE) {
             demandeAccompagnement.setStatus(Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE);
             demandeAccompagnement.setDateReception(new Date());
+            demandeAccompagnement.setTraiterPar(user.getUserId());
             demandeAccompagnementRepository.saveAndFlush(demandeAccompagnement);
         }
         return dtoFactory.createDemandeAccompagnement(demandeAccompagnement);
     }
 
     @Override
-    public boolean annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+    public boolean annulerDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException {
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
         List<AccompagnementAEligibilte> aEligibiltes = accompagnementAEligibiliteRepository.findByDemandeAccompagnement_Id(idDemandeAccompagnement);
 
@@ -105,9 +111,9 @@ public class DemandeAccompagnementServiceImpl implements IDemandeAccompagnementS
     }
 
     @Override
-    public boolean closeDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException{
+    public boolean closeDemandeAccompagnement(Long idDemandeAccompagnement) throws DemandeAccompagnementException {
         DemandeAccompagnement demandeAccompagnement = demandeAccompagnementRepository.findById(idDemandeAccompagnement).orElseThrow(() -> new DemandeAccompagnementException("Demande accompagnement not found"));
-        if(demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE){
+        if (demandeAccompagnement.getStatus() == Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_RECEPTIONNEE) {
             demandeAccompagnement.setStatus(Constante.STATUT_DEMANDE_ACCOMPAGNEMENT_CLOTUREE);
             demandeAccompagnement.setDateReception(new Date());
             demandeAccompagnementRepository.saveAndFlush(demandeAccompagnement);

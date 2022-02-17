@@ -238,6 +238,7 @@ public class ModelFactory {
 		model.setDateEnvoi(demande.getDateEnvoi());
 		model.setDateReception(demande.getDateReception());
 		model.setQuestionnaireAjoute(demande.isQuestionnaireAjoute());
+		model.setTraiterPar(demande.getTraiterPar());
 		return model;
 	}
 

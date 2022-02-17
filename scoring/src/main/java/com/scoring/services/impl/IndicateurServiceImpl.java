@@ -53,9 +53,7 @@ public class IndicateurServiceImpl implements IIndicateurService {
 	@Autowired
 	private IDemandeScoring demandeScoringService;
 
-
 	int year = Calendar.getInstance().get(Calendar.YEAR);
-
 
 	@Override
 	public List<IndicateurDTO> getIndicateurs() throws IndicateurException{
@@ -130,7 +128,6 @@ public class IndicateurServiceImpl implements IIndicateurService {
 		indicateur.setCaf(indicateur.getXdExcedentBrutExploit()+indicateur.getProduit_financier()
 				+indicateur.getRmChargesFinancieres()+indicateur.getRqParticipations()+indicateur.getRsImpot());
 		try {
-			//EntrepriseDTO entreprise = entrepriseService.getEntreprise((long)payload.getEntreprise());
 			DemandeScoringDTO demandeScoringDTO = demandeScoringService.getDemande(payload.getIdDemande());
 			indicateur.setDemandeScoringDTO(demandeScoringDTO);
 
@@ -143,8 +140,6 @@ public class IndicateurServiceImpl implements IIndicateurService {
 				demandeScoringDTO.setIndicateurAjoute(true);
 				DemandeScoring demandeScoring = modelFactory.createDemandeScoring(demandeScoringDTO);
 				demandeScoringRepository.save(demandeScoring);
-				/*Entreprise entreprise1  = modelFactory.createEntreprise(entreprise);
-				entrepriseRepository.save(entreprise1);*/
 			}
 
 		}  catch (DemandeException e) {
