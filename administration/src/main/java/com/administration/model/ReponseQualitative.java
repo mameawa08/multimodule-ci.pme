@@ -23,14 +23,15 @@ public class ReponseQualitative implements Serializable {
 	private static final long serialVersionUID = 5297205263579630551L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+	@SequenceGenerator(name = "scoring_generator", sequenceName = "reponse_qualitative_seq", allocationSize = 1000)
 	@Column(name="id")
     private Long id;
 	
 	@Column
 	private String code;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String libelle;
     
     @Column

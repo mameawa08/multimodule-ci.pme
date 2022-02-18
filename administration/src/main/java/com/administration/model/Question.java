@@ -24,14 +24,15 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 9024440466491855084L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+	@SequenceGenerator(name = "scoring_generator", sequenceName = "question_seq", allocationSize = 1000)
 	@Column(name="id")
     private Long id;
 	
 	@Column
 	private String code;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String libelle;
     
     @Column(name = "actif")

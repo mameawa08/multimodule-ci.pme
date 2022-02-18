@@ -1,12 +1,6 @@
 package com.scoring.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +12,8 @@ import lombok.Setter;
 public class Repondant {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+    @SequenceGenerator(name = "scoring_generator", sequenceName = "repondant_seq", allocationSize = 1000)
 	private Long id;
 	private String nom;
 	private String prenom;

@@ -12,7 +12,8 @@ import javax.persistence.*;
 public class ScoreEntrepriseParParametre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+    @SequenceGenerator(name = "scoring_generator", sequenceName = "score_entreprise_par_parametre_seq", allocationSize = 1000)
     private Long id;
 
     @ManyToOne

@@ -14,7 +14,8 @@ import java.util.List;
 public class Entreprise {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+    @SequenceGenerator(name = "scoring_generator", sequenceName = "entreprise_seq", allocationSize = 1000)
 	private Long 		id;
 	private String 		raisonSociale;
 	private int 		annee;

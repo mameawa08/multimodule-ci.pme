@@ -12,7 +12,8 @@ import lombok.Setter;
 public class Dirigeant {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+    @SequenceGenerator(name = "scoring_generator", sequenceName = "dirigeant_seq", allocationSize = 1000)
 	private Long id;
 	private String nom;
 	private String prenom;

@@ -16,7 +16,8 @@ import lombok.Setter;
 public class PieceJointe {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_generator")
+    @SequenceGenerator(name = "scoring_generator", sequenceName = "piece_jointe_seq", allocationSize = 1000)
 	private Long id;
 	private String nomPiece;
 	private Date DateCreation;
