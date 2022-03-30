@@ -130,7 +130,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>scoring-awi</finalName>
+		<finalName>scoring</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
