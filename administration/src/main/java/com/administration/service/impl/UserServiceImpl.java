@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import com.administration.config.oauth.repository.OAuthAccessTokenRepository;
 import com.administration.dto.DemandeAccompagnementDTO;
 import com.administration.dto.DemandeScoringDTO;
 import com.administration.exception.ScoringConnectException;
@@ -70,6 +71,9 @@ public class UserServiceImpl implements IUserService{
 
     @Autowired
     private ProfilRepository profilRepository;
+
+	@Autowired
+	private OAuthAccessTokenRepository oauthAccessToken;
 
 	@Override
 	public List<UserDTO> getUsers() throws UserException{
@@ -166,6 +170,7 @@ public class UserServiceImpl implements IUserService{
 			}
 			user.setActif(-1);
 			userRepository.save(user);
+			oauthAccessToken.deleteOauthAccessTokenByUserName(user.getUsername());
 			return true;
 		} catch (Exception e) {
 			throw new  UserException(e.getMessage());
