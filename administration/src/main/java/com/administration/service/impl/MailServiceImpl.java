@@ -36,11 +36,14 @@ public class MailServiceImpl implements IMailService {
     @Value("${url.server}")
     String url;
 
+    @Value("${spring.mail.username}")
+    String mailSender;
+
     private InternetAddress from;
 
     @PostConstruct
     public void init() throws UnsupportedEncodingException {
-        from = new InternetAddress("awi@awaconsulting.com", "Agence CI PME");
+        from = new InternetAddress(mailSender, "Agence CI PME");
     }
 
     @Override
