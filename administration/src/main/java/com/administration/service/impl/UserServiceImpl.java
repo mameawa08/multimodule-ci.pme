@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import com.administration.config.oauth.entities.OauthAccessToken;
 import com.administration.config.oauth.repository.OAuthAccessTokenRepository;
 import com.administration.dto.DemandeAccompagnementDTO;
 import com.administration.dto.DemandeScoringDTO;
@@ -170,7 +171,12 @@ public class UserServiceImpl implements IUserService{
 			}
 			user.setActif(-1);
 			userRepository.save(user);
-			oauthAccessToken.deleteOauthAccessTokenByUserName(user.getUsername());
+
+			List<OauthAccessToken> tokens = oauthAccessToken.findByUserName(user.getUsername());
+			if(tokens.size() != 0){
+				oauthAccessToken.deleteAll(tokens);
+			}
+//			oauthAccessToken.deleteOauthAccessTokenByUserName(user.getUsername());
 			return true;
 		} catch (Exception e) {
 			throw new  UserException(e.getMessage());
