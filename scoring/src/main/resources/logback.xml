@@ -24,14 +24,22 @@
         </rollingPolicy>
     </appender>
 
-    <root level="WARN">
+    <root level="TRACE">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="RollingFile" />
     </root>
 
-    <logger name="com.scoring" level="TRACE" />
-    <logger name="org.springframework" level="WARN" />
-    <logger name="org.springframework.security" level="WARN">
+    <logger name="com.scoring" level="TRACE" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="RollingFile" />
+    </logger>
+
+    <logger name="org.springframework" level="TRACE" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="RollingFile" />
+    </logger>
+
+    <logger name="org.springframework.security" level="TRACE">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="RollingFile" />
     </logger>
