@@ -214,6 +214,12 @@ public class DemandeScoringServiceImpl implements IDemandeScoring {
         DemandeScoring demandeScoring = demandeScoringRepository.findFirstByEntreprise_IdOrderByDateCreationDesc(idEntreprise);
         return dtoFactory.createDemandeScoring(demandeScoring);
     }
+
+	@Override
+    public DemandeScoringDTO getLastDemandeScoring(Long idEntreprise) {
+        DemandeScoring demandeScoring = demandeScoringRepository.findFirstByEntreprise_IdOrderByDateCreationDesc(idEntreprise);
+        return dtoFactory.createDemandeScoring(demandeScoring);
+    }
     
     @Override
     public DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException {

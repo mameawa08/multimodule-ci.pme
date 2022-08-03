@@ -34,6 +34,8 @@ public interface IDemandeScoring {
 
     DemandeScoringDTO getDemandeLastClosed(Long idEntreprise);
 
+    DemandeScoringDTO getLastDemandeScoring(Long idEntreprise);
+
 	DemandeScoringDTO getDemandeEnvoyee(Long idEntreprise) throws DemandeException;
 
     DemandeScoringDTO getUserDemandeOuverte(Long idUser);

@@ -123,11 +123,9 @@ public class EntrepriseController {
 	}
 
 	@GetMapping(path = "/{idEntreprise}/demandes-accompagnements")
-	private ResponseEntity getDemandeAccompagnements(@PathVariable Long idEntreprise){
+	public ResponseEntity getDemandeAccompagnements(@PathVariable Long idEntreprise){
 		List<DemandeAccompagnementDTO> demandes = demandeAccompagnementService.getDemandeAccompagnementByEntreprise(idEntreprise);
 		return ResponseEntity.ok(demandes);
 	}
-
-
 
 }

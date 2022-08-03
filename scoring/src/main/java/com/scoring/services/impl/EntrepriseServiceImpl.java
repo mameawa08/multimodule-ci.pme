@@ -144,8 +144,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		for(Entreprise pme : entreprises){
 			DemandeScoringDTO dto = null;
 			EntrepriseDTO entrepriseDTO = dtoFactory.createEntreprise(pme);
-			dto = demandeScoringService.getDemandeLastClosed(pme.getId());
-			if(dto!=null && Arrays.asList(Constante.ETAT_DEMANDE_ENVOYEE, Constante.ETAT_DEMANDE_EN_COURS, Constante.ETAT_DEMANDE_PROVISOIRE, Constante.ETAT_DEMANDE_REJETEE).contains(dto.getStatus())){
+			dto = demandeScoringService.getLastDemandeScoring(pme.getId());
+			if(dto!=null && Arrays.asList(Constante.ETAT_DEMANDE_ENVOYEE, Constante.ETAT_DEMANDE_EN_COURS, Constante.ETAT_DEMANDE_PROVISOIRE, Constante.ETAT_DEMANDE_REJETEE, Constante.ETAT_DEMANDE_CLOTUREE).contains(dto.getStatus())){
 				entrepriseDTO.setDemandeNonCloturee(dto);
 				entreprisesDTO.add(entrepriseDTO);
 			}
